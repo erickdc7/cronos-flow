@@ -7,6 +7,7 @@ const Login = () => {
     const { user, loading } = useAuth()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const [isRegister, setIsRegister] = useState(false)
     const [error, setError] = useState(null)
     const [success, setSuccess] = useState(null)
@@ -30,12 +31,14 @@ const Login = () => {
 
         try {
             if (isRegister) {
+                if (password !== confirmPassword) {
+                    setError('Las contraseñas no coinciden')
+                    setSubmitting(false)
+                    return
+                }
                 const { error } = await supabase.auth.signUp({ email, password })
                 if (error) throw error
                 setSuccess('Cuenta creada. Revisa tu email para confirmar.')
-            } else {
-                const { error } = await supabase.auth.signInWithPassword({ email, password })
-                if (error) throw error
             }
         } catch (err) {
             setError(err.message)
@@ -84,6 +87,20 @@ const Login = () => {
                                 className="w-full bg-gray-800 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:border-gray-500 text-sm"
                             />
                         </div>
+
+                        {isRegister && (
+                            <div>
+                                <label className="text-gray-400 text-sm mb-1 block">Confirmar contraseña</label>
+                                <input
+                                    type="password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    required={isRegister}
+                                    placeholder="••••••••"
+                                    className="w-full bg-gray-800 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:border-gray-500 text-sm"
+                                />
+                            </div>
+                        )}
 
                         {error && (
                             <p className="text-red-400 text-sm bg-red-400/10 px-4 py-2 rounded-lg">

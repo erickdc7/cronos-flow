@@ -18,7 +18,6 @@ const Today = () => {
             setLog(data.log)
             setEntries(data.entries)
         } catch (err) {
-            setError('Error al cargar las actividades')
             console.error(err)
         } finally {
             setLoading(false)
