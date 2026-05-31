@@ -8,9 +8,7 @@ const History = () => {
     const [loading, setLoading] = useState(true)
     const [loadingDetail, setLoadingDetail] = useState(false)
 
-    useEffect(() => {
-        fetchHistory()
-    }, [])
+
 
     const fetchHistory = async () => {
         try {
@@ -22,6 +20,11 @@ const History = () => {
             setLoading(false)
         }
     }
+
+    useEffect(() => {
+        fetchHistory()
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+    }, [])
 
     const handleSelectDay = async (date) => {
         setLoadingDetail(true)
@@ -74,8 +77,8 @@ const History = () => {
                                     key={log.id}
                                     onClick={() => handleSelectDay(log.date)}
                                     className={`text-left bg-gray-900 border rounded-xl p-4 transition-all hover:border-gray-600 ${selectedLog?.date === log.date
-                                            ? 'border-white'
-                                            : 'border-gray-800'
+                                        ? 'border-white'
+                                        : 'border-gray-800'
                                         }`}
                                 >
                                     <p className="text-white text-sm font-medium capitalize mb-2">
@@ -116,8 +119,8 @@ const History = () => {
                                             <div
                                                 key={entry.id}
                                                 className={`flex items-start gap-3 p-3 rounded-lg ${entry.done
-                                                        ? 'bg-green-950/30'
-                                                        : 'bg-gray-800/50'
+                                                    ? 'bg-green-950/30'
+                                                    : 'bg-gray-800/50'
                                                     }`}
                                             >
                                                 <span className="mt-0.5 flex-shrink-0">

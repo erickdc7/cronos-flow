@@ -39,6 +39,9 @@ const Login = () => {
                 const { error } = await supabase.auth.signUp({ email, password })
                 if (error) throw error
                 setSuccess('Cuenta creada. Revisa tu email para confirmar.')
+            } else {
+                const { error } = await supabase.auth.signInWithPassword({ email, password })
+                if (error) throw error
             }
         } catch (err) {
             setError(err.message)

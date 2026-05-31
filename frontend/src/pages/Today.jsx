@@ -19,6 +19,7 @@ const Today = () => {
             setEntries(data.entries)
         } catch (err) {
             console.error(err)
+            setError('Error al cargar las actividades')
         } finally {
             setLoading(false)
         }
@@ -26,7 +27,7 @@ const Today = () => {
 
     useEffect(() => {
         fetchToday()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/set-state-in-effect
     }, [])
 
     const handleUpdate = (updatedEntry) => {
