@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getActivities, createActivity, updateActivity, deleteActivity } from '../lib/api'
+import { getActivities, createActivity, updateActivity, deleteActivity, syncToday } from '../lib/api'
 
 const Settings = () => {
     const [activities, setActivities] = useState([])
@@ -12,12 +12,11 @@ const Settings = () => {
     const [editTitle, setEditTitle] = useState('')
     const [editDescription, setEditDescription] = useState('')
 
-
-
     const fetchActivities = async () => {
         try {
             const { data } = await getActivities()
             setActivities(data)
+            await syncToday()
         } catch (err) {
             console.error('Error al cargar actividades:', err)
         } finally {

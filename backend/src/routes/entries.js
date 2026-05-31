@@ -93,4 +93,36 @@ router.post('/', async (req, res) => {
     }
 })
 
+// DELETE /api/entries/:id — eliminar actividad temporal
+router.delete('/:id', async (req, res) => {
+    const { id } = req.params
+
+    try {
+        // Verificar que existe y es temporal
+        const { data: entry, error: fetchError } = await supabase
+            .from('log_entries')
+            .select('*')
+            .eq('id', id)
+            .eq('is_temp', true)
+            .single()
+
+        if (fetchError || !entry) {
+            return res.status(404).json({ error: 'Actividad no encontrada o no es temporal' })
+        }
+
+        const { error } = await supabase
+            .from('log_entries')
+            .delete()
+            .eq('id', id)
+
+        if (error) throw error
+
+        res.json({ message: 'Actividad eliminada' })
+
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: 'Error al eliminar la actividad' })
+    }
+})
+
 module.exports = router

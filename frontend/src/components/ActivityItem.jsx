@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { toggleEntry, updateNote } from '../lib/api'
+import { toggleEntry, updateNote, deleteTempEntry } from '../lib/api'
 
-const ActivityItem = ({ entry, onUpdate }) => {
+const ActivityItem = ({ entry, onUpdate, onDelete }) => {
     const [isEditingNote, setIsEditingNote] = useState(false)
     const [note, setNote] = useState(entry.note || '')
     const [loading, setLoading] = useState(false)
@@ -25,6 +25,16 @@ const ActivityItem = ({ entry, onUpdate }) => {
             setIsEditingNote(false)
         } catch (error) {
             console.error('Error al guardar nota:', error)
+        }
+    }
+
+    const handleDelete = async () => {
+        if (!confirm('¿Eliminar esta actividad?')) return
+        try {
+            await deleteTempEntry(entry.id)
+            onDelete(entry.id)
+        } catch (error) {
+            console.error('Error al eliminar:', error)
         }
     }
 
@@ -70,6 +80,16 @@ const ActivityItem = ({ entry, onUpdate }) => {
                 >
                     {entry.note ? '📝' : '+ nota'}
                 </button>
+
+                {/* Botón eliminar solo para temporales */}
+                {entry.is_temp && (
+                    <button
+                        onClick={handleDelete}
+                        className="text-gray-600 hover:text-red-400 transition-colors text-xs"
+                    >
+                        ✕
+                    </button>
+                )}
             </div>
 
             {/* Nota */}

@@ -36,6 +36,10 @@ const Today = () => {
         )
     }
 
+    const handleDelete = (deletedId) => {
+        setEntries(prev => prev.filter(e => e.id !== deletedId))
+    }
+
     const handleAddTemp = async (e) => {
         e.preventDefault()
         if (!tempTitle.trim()) return
@@ -118,6 +122,7 @@ const Today = () => {
                                 key={entry.id}
                                 entry={entry}
                                 onUpdate={handleUpdate}
+                                onDelete={handleDelete}
                             />
                         ))}
                     </div>

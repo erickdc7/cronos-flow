@@ -33,3 +33,5 @@ export const deleteActivity = (id) => api.delete(`/api/activities/${id}`)
 // History
 export const getHistory = () => api.get('/api/history')
 export const getHistoryByDate = (date) => api.get(`/api/history/${date}`)
+export const syncToday = () => api.post('/api/activities/sync-today')
+export const deleteTempEntry = (id) => api.delete(`/api/entries/${id}`)
