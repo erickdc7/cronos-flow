@@ -16,6 +16,7 @@ const authMiddleware = async (req, res, next) => {
     }
 
     req.user = user
+    req.timezone = req.headers['x-timezone'] || 'America/Lima'
     next()
 }
 

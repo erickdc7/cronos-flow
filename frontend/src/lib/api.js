@@ -13,6 +13,9 @@ api.interceptors.request.use(async (config) => {
         config.headers.Authorization = `Bearer ${session.access_token}`
     }
 
+    // Detectar y enviar la zona horaria del usuario automáticamente
+    config.headers['X-Timezone'] = Intl.DateTimeFormat().resolvedOptions().timeZone
+
     return config
 })
 

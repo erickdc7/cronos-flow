@@ -59,7 +59,7 @@ router.post('/', async (req, res) => {
         if (error) throw error
 
         // Sincronizar con el log del día actual si ya existe
-        const today = new Date().toISOString().split('T')[0]
+        const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
 
         const { data: todayLog } = await supabase
             .from('daily_logs')
@@ -122,7 +122,7 @@ router.patch('/:id', async (req, res) => {
 
         // Si se actualizó el título, sincronizarlo en el log de hoy
         if (title !== undefined) {
-            const today = new Date().toISOString().split('T')[0]
+            const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
             const { data: todayLog } = await supabase
                 .from('daily_logs')
                 .select('id')
@@ -171,7 +171,7 @@ router.delete('/:id', async (req, res) => {
 // POST /api/activities/sync-today — sincroniza actividades faltantes con el log de hoy
 router.post('/sync-today', async (req, res) => {
     const userId = req.user.id
-    const today = new Date().toISOString().split('T')[0]
+    const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
 
     try {
         // Buscar el log de hoy

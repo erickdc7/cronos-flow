@@ -5,7 +5,7 @@ const supabase = require('../lib/supabase')
 // GET /api/today — trae o crea el log del día actual
 router.get('/', async (req, res) => {
     const userId = req.user.id
-    const today = new Date().toISOString().split('T')[0] // "2026-05-31"
+    const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone }) // "2026-05-31"
 
     try {
         // 1. Buscar si ya existe un log para hoy
