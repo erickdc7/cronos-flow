@@ -2,7 +2,7 @@
 
 **Cronos Flow** es una aplicación web fullstack para registrar y hacer seguimiento de tus actividades diarias. Permite definir una plantilla de actividades que se repite automáticamente cada día, marcarlas como completadas, agregar anotaciones, y consultar el historial de días anteriores.
 
-🌐 **Live:** [cronos-flow-frontend.vercel.app](https://cronos-flow-frontend.vercel.app)
+🌐 **Live:** [cronos-flow-frontend.vercel.app](https://cronos-flow-notes.vercel.app/)
 
 ---
 
