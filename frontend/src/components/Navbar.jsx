@@ -1,5 +1,12 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { Timer, CalendarDays, Clock, ListTodo, LogOut } from 'lucide-react'
+
+const navLinks = [
+    { to: '/', label: 'Hoy', icon: Clock },
+    { to: '/history', label: 'Historial', icon: CalendarDays },
+    { to: '/settings', label: 'Actividades', icon: ListTodo },
+]
 
 const Navbar = () => {
     const { user, logout } = useAuth()
@@ -8,55 +15,52 @@ const Navbar = () => {
     const isActive = (path) => location.pathname === path
 
     return (
-        <nav className="bg-gray-900 border-b border-gray-800 px-6 py-4">
-            <div className="max-w-4xl mx-auto flex items-center justify-between">
+        <nav className="sticky top-0 z-40 bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/60">
+            <div className="max-w-4xl mx-auto flex items-center justify-between px-4 sm:px-6 h-16">
 
                 {/* Logo */}
-                <span className="text-white font-bold text-xl tracking-tight">
-                    ⏳ Cronos Flow
-                </span>
+                <Link to="/" className="flex items-center gap-2 group">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center transition-colors duration-200 group-hover:bg-emerald-500/15">
+                        <Timer className="w-4 h-4 text-emerald-400" strokeWidth={2} />
+                    </div>
+                    <span className="text-zinc-100 font-semibold text-sm tracking-tight hidden sm:block">
+                        Cronos Flow
+                    </span>
+                </Link>
 
-                {/* Links */}
-                <div className="flex items-center gap-6">
-                    <Link
-                        to="/"
-                        className={`text-sm font-medium transition-colors ${isActive('/')
-                            ? 'text-white'
-                            : 'text-gray-400 hover:text-white'
-                            }`}
-                    >
-                        Hoy
-                    </Link>
-                    <Link
-                        to="/history"
-                        className={`text-sm font-medium transition-colors ${isActive('/history')
-                            ? 'text-white'
-                            : 'text-gray-400 hover:text-white'
-                            }`}
-                    >
-                        Historial
-                    </Link>
-                    <Link
-                        to="/settings"
-                        className={`text-sm font-medium transition-colors ${isActive('/settings')
-                            ? 'text-white'
-                            : 'text-gray-400 hover:text-white'
-                            }`}
-                    >
-                        Actividades
-                    </Link>
+                {/* Navigation Links */}
+                <div className="flex items-center gap-1">
+                    {navLinks.map(({ to, label, icon: Icon }) => (
+                        <Link
+                            key={to}
+                            to={to}
+                            className={`
+                                relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium
+                                transition-colors duration-200
+                                ${isActive(to)
+                                    ? 'text-zinc-100 bg-zinc-800/60'
+                                    : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/30'
+                                }
+                            `}
+                        >
+                            <Icon className="w-4 h-4" strokeWidth={isActive(to) ? 2 : 1.5} />
+                            <span className="hidden sm:inline">{label}</span>
+                        </Link>
+                    ))}
                 </div>
 
-                {/* Usuario y logout */}
+                {/* User & Logout */}
                 <div className="flex items-center gap-3">
-                    <span className="text-gray-400 text-sm hidden sm:block">
+                    <span className="text-zinc-600 text-xs hidden md:block truncate max-w-[160px]">
                         {user?.email}
                     </span>
                     <button
                         onClick={logout}
-                        className="text-sm text-gray-400 hover:text-white transition-colors"
+                        className="flex items-center gap-1.5 text-zinc-600 hover:text-zinc-300 transition-colors duration-200 text-sm px-2 py-1.5 rounded-lg hover:bg-zinc-800/40"
+                        title="Cerrar sesión"
                     >
-                        Salir
+                        <LogOut className="w-4 h-4" strokeWidth={1.5} />
+                        <span className="hidden sm:inline text-xs">Salir</span>
                     </button>
                 </div>
 

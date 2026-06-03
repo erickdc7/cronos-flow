@@ -1,10 +1,13 @@
 import { useState } from 'react'
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
+import { Check, FileText, X, Zap } from 'lucide-react'
 import { toggleEntry, updateNote, deleteTempEntry } from '../lib/api'
 
-const ActivityItem = ({ entry, onUpdate, onDelete }) => {
+const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
     const [isEditingNote, setIsEditingNote] = useState(false)
     const [note, setNote] = useState(entry.note || '')
     const [loading, setLoading] = useState(false)
+    const shouldReduceMotion = useReducedMotion()
 
     const handleToggle = async () => {
         setLoading(true)
@@ -38,98 +41,135 @@ const ActivityItem = ({ entry, onUpdate, onDelete }) => {
         }
     }
 
-    return (
-        <div className={`bg-gray-900 border rounded-xl p-4 transition-all ${entry.done
-            ? 'border-green-800 bg-green-950/20'
-            : 'border-gray-800'
-            }`}>
-
-            {/* Fila principal */}
+    const content = (
+        <div className={`
+            group rounded-xl border p-4 transition-all duration-200
+            ${entry.done
+                ? 'bg-emerald-950/20 border-emerald-900/40'
+                : 'bg-zinc-900/60 border-zinc-800/60 hover:border-zinc-700/60'
+            }
+        `}>
+            {/* Main row */}
             <div className="flex items-center gap-3">
                 <button
                     onClick={handleToggle}
                     disabled={loading}
-                    className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0 ${entry.done
-                        ? 'bg-green-500 border-green-500'
-                        : 'border-gray-600 hover:border-green-500'
-                        }`}
+                    className={`
+                        w-[22px] h-[22px] rounded-full border-2 flex items-center justify-center
+                        transition-all duration-200 flex-shrink-0
+                        ${entry.done
+                            ? 'bg-emerald-500 border-emerald-500'
+                            : 'border-zinc-600 hover:border-emerald-400'
+                        }
+                        ${loading ? 'opacity-50' : ''}
+                    `}
+                    aria-label={entry.done ? 'Marcar como pendiente' : 'Marcar como completado'}
                 >
                     {entry.done && (
-                        <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                        </svg>
+                        <Check className="w-3 h-3 text-white" strokeWidth={3} />
                     )}
                 </button>
 
-                <span className={`flex-1 text-sm font-medium transition-all ${entry.done
-                    ? 'line-through text-gray-500'
-                    : 'text-gray-100'
-                    }`}>
+                <span className={`
+                    flex-1 text-sm font-medium transition-all duration-200
+                    ${entry.done ? 'line-through text-zinc-600' : 'text-zinc-200'}
+                `}>
                     {entry.title}
                 </span>
 
                 {entry.is_temp && (
-                    <span className="text-xs text-yellow-500 bg-yellow-500/10 px-2 py-0.5 rounded-full">
+                    <span className="flex items-center gap-1 text-[11px] text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full font-medium">
+                        <Zap className="w-3 h-3" strokeWidth={2} />
                         Solo hoy
                     </span>
                 )}
 
                 <button
                     onClick={() => setIsEditingNote(!isEditingNote)}
-                    className="text-gray-600 hover:text-gray-300 transition-colors text-xs"
+                    className="text-zinc-600 hover:text-zinc-300 transition-colors duration-200 p-1 rounded-md hover:bg-zinc-800/60"
+                    title={entry.note ? 'Editar nota' : 'Agregar nota'}
                 >
-                    {entry.note ? '📝' : '+ nota'}
+                    <FileText className="w-3.5 h-3.5" strokeWidth={1.5} />
                 </button>
 
-                {/* Botón eliminar solo para temporales */}
+                {/* Delete button for temp entries */}
                 {entry.is_temp && (
                     <button
                         onClick={handleDelete}
-                        className="text-gray-600 hover:text-red-400 transition-colors text-xs"
+                        className="text-zinc-700 hover:text-red-400 transition-colors duration-200 p-1 rounded-md hover:bg-red-400/10"
+                        title="Eliminar actividad"
                     >
-                        ✕
+                        <X className="w-3.5 h-3.5" strokeWidth={2} />
                     </button>
                 )}
             </div>
 
-            {/* Nota */}
-            {isEditingNote && (
-                <div className="mt-3 pl-9">
-                    <textarea
-                        value={note}
-                        onChange={(e) => setNote(e.target.value)}
-                        placeholder="Escribe una anotación..."
-                        rows={2}
-                        className="w-full bg-gray-800 text-gray-200 text-sm rounded-lg px-3 py-2 border border-gray-700 focus:outline-none focus:border-gray-500 resize-none"
-                    />
-                    <div className="flex gap-2 mt-2">
-                        <button
-                            onClick={handleSaveNote}
-                            className="text-xs bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded-lg transition-colors"
-                        >
-                            Guardar
-                        </button>
-                        <button
-                            onClick={() => {
-                                setNote(entry.note || '')
-                                setIsEditingNote(false)
-                            }}
-                            className="text-xs text-gray-400 hover:text-white px-3 py-1 rounded-lg transition-colors"
-                        >
-                            Cancelar
-                        </button>
-                    </div>
-                </div>
-            )}
+            {/* Note editor */}
+            <AnimatePresence>
+                {isEditingNote && (
+                    <motion.div
+                        initial={shouldReduceMotion ? false : { opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
+                        className="overflow-hidden"
+                    >
+                        <div className="mt-3 pl-[34px]">
+                            <textarea
+                                value={note}
+                                onChange={(e) => setNote(e.target.value)}
+                                placeholder="Escribe una anotación..."
+                                rows={2}
+                                className="w-full bg-zinc-800/60 text-zinc-200 text-sm rounded-lg px-3 py-2 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 resize-none transition-colors duration-200 placeholder:text-zinc-600"
+                            />
+                            <div className="flex gap-2 mt-2">
+                                <button
+                                    onClick={handleSaveNote}
+                                    className="text-xs bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-medium px-3 py-1.5 rounded-lg transition-colors duration-200"
+                                >
+                                    Guardar
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setNote(entry.note || '')
+                                        setIsEditingNote(false)
+                                    }}
+                                    className="text-xs text-zinc-500 hover:text-zinc-300 px-3 py-1.5 rounded-lg transition-colors duration-200"
+                                >
+                                    Cancelar
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-            {/* Mostrar nota guardada */}
+            {/* Saved note display */}
             {!isEditingNote && entry.note && (
-                <p className="mt-2 pl-9 text-xs text-gray-400 italic">
+                <p className="mt-2 pl-[34px] text-xs text-zinc-500 italic leading-relaxed">
                     {entry.note}
                 </p>
             )}
-
         </div>
+    )
+
+    // Wrap in motion for stagger animation
+    if (shouldReduceMotion) {
+        return content
+    }
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+                duration: 0.35,
+                delay: index * 0.04,
+                ease: [0.23, 1, 0.32, 1]
+            }}
+        >
+            {content}
+        </motion.div>
     )
 }
 

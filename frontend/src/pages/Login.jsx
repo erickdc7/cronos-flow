@@ -1,7 +1,10 @@
 import { useState } from 'react'
+import { motion, useReducedMotion } from 'motion/react'
 import { supabase } from '../lib/supabase'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { Timer, AlertCircle, CheckCircle2 } from 'lucide-react'
+import LoadingSpinner from '../components/LoadingSpinner'
 
 const Login = () => {
     const { user, loading } = useAuth()
@@ -12,11 +15,12 @@ const Login = () => {
     const [error, setError] = useState(null)
     const [success, setSuccess] = useState(null)
     const [submitting, setSubmitting] = useState(false)
+    const shouldReduceMotion = useReducedMotion()
 
     if (loading) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-950">
-                <p className="text-gray-400">Cargando...</p>
+            <div className="min-h-[100dvh] flex items-center justify-center bg-zinc-950">
+                <LoadingSpinner message="Cargando..." />
             </div>
         )
     }
@@ -50,86 +54,115 @@ const Login = () => {
         }
     }
 
+    const MotionDiv = shouldReduceMotion ? 'div' : motion.div
+
+    const formItemProps = (delay) => shouldReduceMotion ? {} : {
+        initial: { opacity: 0, y: 12 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.4, delay, ease: [0.23, 1, 0.32, 1] }
+    }
+
     return (
-        <div className="min-h-screen bg-gray-950 flex items-center justify-center px-4">
-            <div className="w-full max-w-md">
+        <div className="min-h-[100dvh] bg-zinc-950 flex items-center justify-center px-4">
+            <div className="w-full max-w-sm">
 
-                {/* Header */}
-                <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-white mb-2">⏳ Cronos Flow</h1>
-                    <p className="text-gray-400">Tu registro diario de actividades</p>
-                </div>
+                {/* Brand Mark */}
+                <MotionDiv
+                    className="flex flex-col items-center mb-8"
+                    {...(shouldReduceMotion ? {} : {
+                        initial: { opacity: 0, y: -8 },
+                        animate: { opacity: 1, y: 0 },
+                        transition: { duration: 0.5, ease: [0.23, 1, 0.32, 1] }
+                    })}
+                >
+                    <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
+                        <Timer className="w-7 h-7 text-emerald-400" strokeWidth={1.5} />
+                    </div>
+                    <h1 className="text-xl font-semibold text-zinc-100 tracking-tight">Cronos Flow</h1>
+                    <p className="text-zinc-500 text-sm mt-1">Tu registro diario de actividades</p>
+                </MotionDiv>
 
-                {/* Card */}
-                <div className="bg-gray-900 border border-gray-800 rounded-2xl p-8">
-                    <h2 className="text-white font-semibold text-lg mb-6">
+                {/* Form Card */}
+                <MotionDiv
+                    className="bg-zinc-900/60 border border-zinc-800/60 rounded-xl p-6"
+                    {...(shouldReduceMotion ? {} : {
+                        initial: { opacity: 0, y: 16 },
+                        animate: { opacity: 1, y: 0 },
+                        transition: { duration: 0.5, delay: 0.1, ease: [0.23, 1, 0.32, 1] }
+                    })}
+                >
+                    <h2 className="text-zinc-200 font-medium text-base mb-5">
                         {isRegister ? 'Crear cuenta' : 'Iniciar sesión'}
                     </h2>
 
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                        <div>
-                            <label className="text-gray-400 text-sm mb-1 block">Email</label>
+                        <MotionDiv {...formItemProps(0.15)}>
+                            <label className="text-zinc-400 text-xs font-medium mb-1.5 block">Email</label>
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                                 placeholder="tu@email.com"
-                                className="w-full bg-gray-800 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:border-gray-500 text-sm"
+                                className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200 placeholder:text-zinc-600"
                             />
-                        </div>
+                        </MotionDiv>
 
-                        <div>
-                            <label className="text-gray-400 text-sm mb-1 block">Contraseña</label>
+                        <MotionDiv {...formItemProps(0.2)}>
+                            <label className="text-zinc-400 text-xs font-medium mb-1.5 block">Contraseña</label>
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                                 placeholder="••••••••"
-                                className="w-full bg-gray-800 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:border-gray-500 text-sm"
+                                className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200 placeholder:text-zinc-600"
                             />
-                        </div>
+                        </MotionDiv>
 
                         {isRegister && (
-                            <div>
-                                <label className="text-gray-400 text-sm mb-1 block">Confirmar contraseña</label>
+                            <MotionDiv {...formItemProps(0.25)}>
+                                <label className="text-zinc-400 text-xs font-medium mb-1.5 block">Confirmar contraseña</label>
                                 <input
                                     type="password"
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     required={isRegister}
                                     placeholder="••••••••"
-                                    className="w-full bg-gray-800 text-white rounded-lg px-4 py-3 border border-gray-700 focus:outline-none focus:border-gray-500 text-sm"
+                                    className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200 placeholder:text-zinc-600"
                                 />
-                            </div>
+                            </MotionDiv>
                         )}
 
                         {error && (
-                            <p className="text-red-400 text-sm bg-red-400/10 px-4 py-2 rounded-lg">
-                                {error}
-                            </p>
+                            <div className="flex items-start gap-2 text-red-400 text-sm bg-red-400/8 border border-red-400/15 px-3.5 py-2.5 rounded-lg">
+                                <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" strokeWidth={2} />
+                                <span>{error}</span>
+                            </div>
                         )}
 
                         {success && (
-                            <p className="text-green-400 text-sm bg-green-400/10 px-4 py-2 rounded-lg">
-                                {success}
-                            </p>
+                            <div className="flex items-start gap-2 text-emerald-400 text-sm bg-emerald-400/8 border border-emerald-400/15 px-3.5 py-2.5 rounded-lg">
+                                <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" strokeWidth={2} />
+                                <span>{success}</span>
+                            </div>
                         )}
 
-                        <button
-                            type="submit"
-                            disabled={submitting}
-                            className="w-full bg-white text-gray-950 font-semibold py-3 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50 text-sm"
-                        >
-                            {submitting
-                                ? 'Cargando...'
-                                : isRegister ? 'Crear cuenta' : 'Entrar'
-                            }
-                        </button>
+                        <MotionDiv {...formItemProps(0.25)}>
+                            <button
+                                type="submit"
+                                disabled={submitting}
+                                className="w-full bg-emerald-500 text-zinc-950 font-semibold py-2.5 rounded-lg hover:bg-emerald-400 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                            >
+                                {submitting
+                                    ? 'Cargando...'
+                                    : isRegister ? 'Crear cuenta' : 'Entrar'
+                                }
+                            </button>
+                        </MotionDiv>
                     </form>
 
-                    <p className="text-center text-gray-500 text-sm mt-6">
+                    <p className="text-center text-zinc-600 text-sm mt-5">
                         {isRegister ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?'}{' '}
                         <button
                             onClick={() => {
@@ -137,12 +170,12 @@ const Login = () => {
                                 setError(null)
                                 setSuccess(null)
                             }}
-                            className="text-white hover:underline"
+                            className="text-zinc-300 hover:text-emerald-400 transition-colors duration-200 font-medium"
                         >
                             {isRegister ? 'Inicia sesión' : 'Regístrate'}
                         </button>
                     </p>
-                </div>
+                </MotionDiv>
 
             </div>
         </div>

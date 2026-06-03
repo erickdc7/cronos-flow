@@ -6,14 +6,15 @@ import Login from './pages/Login'
 import Today from './pages/Today'
 import History from './pages/History'
 import Settings from './pages/Settings'
+import LoadingSpinner from './components/LoadingSpinner'
 
 const App = () => {
   const { user, loading } = useAuth()
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
-        <p className="text-gray-400">Cargando...</p>
+      <div className="min-h-[100dvh] bg-zinc-950 flex items-center justify-center">
+        <LoadingSpinner message="Cargando..." size="large" />
       </div>
     )
   }

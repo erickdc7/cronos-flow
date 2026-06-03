@@ -1,0 +1,57 @@
+import { useEffect, useState } from 'react'
+
+const ProgressRing = ({ percentage = 0, size = 80, strokeWidth = 6 }) => {
+    const [animatedPercentage, setAnimatedPercentage] = useState(0)
+    const radius = (size - strokeWidth) / 2
+    const circumference = radius * 2 * Math.PI
+    const offset = circumference - (animatedPercentage / 100) * circumference
+
+    useEffect(() => {
+        // Animate the percentage on mount and when it changes
+        const timer = setTimeout(() => {
+            setAnimatedPercentage(percentage)
+        }, 100)
+        return () => clearTimeout(timer)
+    }, [percentage])
+
+    return (
+        <div className="relative inline-flex items-center justify-center">
+            <svg
+                width={size}
+                height={size}
+                className="-rotate-90"
+            >
+                {/* Background circle */}
+                <circle
+                    cx={size / 2}
+                    cy={size / 2}
+                    r={radius}
+                    fill="none"
+                    stroke="#27272a"
+                    strokeWidth={strokeWidth}
+                />
+                {/* Progress circle */}
+                <circle
+                    cx={size / 2}
+                    cy={size / 2}
+                    r={radius}
+                    fill="none"
+                    stroke="#34d399"
+                    strokeWidth={strokeWidth}
+                    strokeLinecap="round"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={offset}
+                    className="transition-all duration-700 ease-out"
+                />
+            </svg>
+            {/* Center text */}
+            <div className="absolute inset-0 flex items-center justify-center">
+                <span className="font-mono text-sm font-medium text-zinc-200 tabular-nums">
+                    {percentage}%
+                </span>
+            </div>
+        </div>
+    )
+}
+
+export default ProgressRing
