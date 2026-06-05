@@ -174,9 +174,16 @@ const History = () => {
                                                             <Circle className="w-4 h-4 text-zinc-600 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
                                                         )}
                                                         <div className="flex-1 min-w-0">
-                                                            <p className={`text-sm font-medium ${entry.done ? 'text-zinc-500 line-through' : 'text-zinc-200'}`}>
-                                                                {entry.title}
-                                                            </p>
+                                                            <div className="flex items-center gap-2 flex-wrap">
+                                                                <p className={`text-sm font-medium ${entry.done ? 'text-zinc-500 line-through' : 'text-zinc-200'}`}>
+                                                                    {entry.title}
+                                                                </p>
+                                                                {entry.is_temp && (
+                                                                    <span className="text-xs text-amber-400/80 bg-amber-400/8 border border-amber-400/15 px-1.5 py-0.5 rounded-full font-medium leading-none">
+                                                                        Solo ese día
+                                                                    </span>
+                                                                )}
+                                                            </div>
                                                             {entry.note && (
                                                                 <p className="text-xs text-zinc-600 mt-1 italic leading-relaxed">
                                                                     {entry.note}
