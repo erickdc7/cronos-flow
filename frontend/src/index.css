@@ -90,6 +90,17 @@ body {
   outline-offset: 2px;
 }
 
+/* Inputs: sin outline, solo borde al enfocar */
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+select:focus,
+select:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 /* --- Button Tactile Feedback --- */
 button,
 [role="button"] {
