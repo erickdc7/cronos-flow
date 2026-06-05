@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
             .from('activities')
             .select('*')
             .eq('user_id', userId)
-            .order('order_index')
+            .order('title', { ascending: true })
 
         if (error) throw error
 

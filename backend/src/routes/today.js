@@ -59,7 +59,7 @@ router.get('/', async (req, res) => {
             .from('log_entries')
             .select('*')
             .eq('log_id', log.id)
-            .order('created_at')
+            .order('title', { ascending: true })
 
         if (entriesError) throw entriesError
 

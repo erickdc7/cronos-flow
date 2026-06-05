@@ -21,7 +21,11 @@ const Today = () => {
             setLoading(true)
             const { data } = await getToday()
             setLog(data.log)
-            setEntries(data.entries)
+            const sorted = [...data.entries].sort((a, b) => {
+                if (a.done !== b.done) return a.done ? 1 : -1
+                return a.title.localeCompare(b.title)
+            })
+            setEntries(sorted)
         } catch (err) {
             console.error(err)
             setError('Error al cargar las actividades')
@@ -36,9 +40,13 @@ const Today = () => {
     }, [])
 
     const handleUpdate = (updatedEntry) => {
-        setEntries(prev =>
-            prev.map(e => e.id === updatedEntry.id ? updatedEntry : e)
-        )
+        setEntries(prev => {
+            const updated = prev.map(e => e.id === updatedEntry.id ? updatedEntry : e)
+            return updated.sort((a, b) => {
+                if (a.done !== b.done) return a.done ? 1 : -1
+                return a.title.localeCompare(b.title)
+            })
+        })
     }
 
     const handleDelete = (deletedId) => {
