@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Today from './pages/Today'
 import History from './pages/History'
 import Settings from './pages/Settings'
+import ResetPassword from './pages/ResetPassword'
 import LoadingSpinner from './components/LoadingSpinner'
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
             <Settings />
           </ProtectedRoute>
         } />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
