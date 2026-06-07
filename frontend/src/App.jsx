@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
 import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
@@ -9,8 +9,11 @@ import Settings from './pages/Settings'
 import ResetPassword from './pages/ResetPassword'
 import LoadingSpinner from './components/LoadingSpinner'
 
-const App = () => {
+const AppContent = () => {
   const { user, loading } = useAuth()
+  const location = useLocation()
+
+  const isResetPassword = location.pathname === '/reset-password'
 
   if (loading) {
     return (
@@ -21,10 +24,11 @@ const App = () => {
   }
 
   return (
-    <BrowserRouter>
-      {user && <Navbar />}
+    <>
+      {user && !isResetPassword && <Navbar />}
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/" element={
           <ProtectedRoute>
             <Today />
@@ -40,9 +44,16 @@ const App = () => {
             <Settings />
           </ProtectedRoute>
         } />
-        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
+    </>
+  )
+}
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   )
 }
