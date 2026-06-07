@@ -52,6 +52,13 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
         }
     }
 
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault()
+            handleSaveNote()
+        }
+    }
+    
     const content = (
         <div className={`
             group rounded-xl border p-4 transition-all duration-200
@@ -128,6 +135,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                         <div className="mt-3 pl-[34px]">
                             <textarea
                                 ref={noteRef}
+                                onKeyDown={handleKeyDown}
                                 value={note}
                                 onChange={(e) => setNote(e.target.value)}
                                 placeholder="Escribe una anotación..."
