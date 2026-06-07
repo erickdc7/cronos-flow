@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 import { Check, FileText, X, Zap } from 'lucide-react'
 import { toggleEntry, updateNote, deleteTempEntry } from '../lib/api'
@@ -8,6 +8,17 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
     const [note, setNote] = useState(entry.note || '')
     const [loading, setLoading] = useState(false)
     const shouldReduceMotion = useReducedMotion()
+    const noteRef = useRef(null)
+
+    useEffect(() => {
+        if (isEditingNote && noteRef.current) {
+            const el = noteRef.current
+            el.focus()
+            // Mover el cursor al final del texto existente
+            const length = el.value.length
+            el.setSelectionRange(length, length)
+        }
+    }, [isEditingNote])
 
     const handleToggle = async () => {
         setLoading(true)
@@ -116,6 +127,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                     >
                         <div className="mt-3 pl-[34px]">
                             <textarea
+                                ref={noteRef}
                                 value={note}
                                 onChange={(e) => setNote(e.target.value)}
                                 placeholder="Escribe una anotación..."
