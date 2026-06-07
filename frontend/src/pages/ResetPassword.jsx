@@ -11,32 +11,29 @@ const ResetPassword = () => {
     const [error, setError] = useState(null)
     const [success, setSuccess] = useState(null)
     const [submitting, setSubmitting] = useState(false)
-    const [validSession, setValidSession] = useState(false)
-    const [checking, setChecking] = useState(true)
+    const [ready, setReady] = useState(false)
     const navigate = useNavigate()
     const shouldReduceMotion = useReducedMotion()
 
     useEffect(() => {
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-            if (event === 'PASSWORD_RECOVERY') {
-                setValidSession(true)
-                setChecking(false)
-            } else if (event === 'SIGNED_IN' && session) {
-                // También válido si ya procesó el token
-                setValidSession(true)
-                setChecking(false)
+        // Supabase procesa el hash de la URL automáticamente
+        // y dispara PASSWORD_RECOVERY en onAuthStateChange
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            async (event, session) => {
+                if (event === 'PASSWORD_RECOVERY') {
+                    setReady(true)
+                }
+            }
+        )
+
+        // También verificar si ya hay sesión activa con recovery
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                setReady(true)
             }
         })
 
-        // Timeout por si el evento nunca llega
-        const timeout = setTimeout(() => {
-            setChecking(false)
-        }, 3000)
-
-        return () => {
-            subscription.unsubscribe()
-            clearTimeout(timeout)
-        }
+        return () => subscription.unsubscribe()
     }, [])
 
     const handleSubmit = async (e) => {
@@ -58,7 +55,8 @@ const ResetPassword = () => {
             const { error } = await supabase.auth.updateUser({ password })
             if (error) throw error
             setSuccess('Contraseña actualizada correctamente. Redirigiendo...')
-            setTimeout(() => navigate('/'), 2000)
+            await supabase.auth.signOut()
+            setTimeout(() => navigate('/login'), 2000)
         } catch (err) {
             setError(err.message)
         } finally {
@@ -66,31 +64,15 @@ const ResetPassword = () => {
         }
     }
 
-    if (checking) {
+    const MotionDiv = shouldReduceMotion ? 'div' : motion.div
+
+    if (!ready) {
         return (
             <div className="min-h-[100dvh] flex items-center justify-center bg-zinc-950">
                 <LoadingSpinner message="Verificando enlace..." />
             </div>
         )
     }
-
-    if (!validSession) {
-        return (
-            <div className="min-h-[100dvh] flex items-center justify-center bg-zinc-950 px-4">
-                <div className="text-center">
-                    <p className="text-zinc-400 text-sm mb-4">El enlace no es válido o ya expiró.</p>
-                    <button
-                        onClick={() => navigate('/login')}
-                        className="text-emerald-400 hover:text-emerald-300 text-sm transition-colors duration-200"
-                    >
-                        Volver al login
-                    </button>
-                </div>
-            </div>
-        )
-    }
-
-    const MotionDiv = shouldReduceMotion ? 'div' : motion.div
 
     return (
         <div className="min-h-[100dvh] bg-zinc-950 flex items-center justify-center px-4">
@@ -131,6 +113,7 @@ const ResetPassword = () => {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
+                                autoFocus
                                 placeholder="••••••••"
                                 className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200 placeholder:text-zinc-600"
                             />
@@ -171,6 +154,7 @@ const ResetPassword = () => {
                         </button>
                     </form>
                 </MotionDiv>
+
             </div>
         </div>
     )
