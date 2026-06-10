@@ -31,6 +31,31 @@ const Login = () => {
 
     if (user && !justRegistered) return <Navigate to="/" replace />
 
+    if (user && justRegistered) return (
+        <div className="min-h-[100dvh] bg-zinc-950 flex items-center justify-center px-4">
+            <div className="w-full max-w-sm text-center">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 mx-auto">
+                    <Timer className="w-7 h-7 text-emerald-400" strokeWidth={1.5} />
+                </div>
+                <h1 className="text-xl font-semibold text-zinc-100 tracking-tight mb-2">Cronos Flow</h1>
+                <div className="bg-zinc-900/60 border border-zinc-800/60 rounded-xl p-6 mt-6">
+                    <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto mb-3" strokeWidth={1.5} />
+                    <h2 className="text-zinc-100 font-semibold text-base mb-2">¡Cuenta confirmada!</h2>
+                    <p className="text-zinc-500 text-sm mb-4">Tu email fue verificado correctamente.</p>
+                    <button
+                        onClick={() => {
+                            setJustRegistered(false)
+                            setSuccess(null)
+                        }}
+                        className="w-full bg-emerald-500 text-zinc-950 font-semibold py-2.5 rounded-lg hover:bg-emerald-400 transition-colors duration-200 text-sm"
+                    >
+                        Ir al login
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError(null)
