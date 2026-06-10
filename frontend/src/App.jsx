@@ -8,12 +8,14 @@ import History from './pages/History'
 import Settings from './pages/Settings'
 import ResetPassword from './pages/ResetPassword'
 import LoadingSpinner from './components/LoadingSpinner'
+import Confirm from './pages/Confirm'
 
 const AppContent = () => {
   const { user, loading } = useAuth()
   const location = useLocation()
 
   const isResetPassword = location.pathname === '/reset-password'
+  const isConfirm = location.pathname === '/confirm'
 
   if (loading) {
     return (
@@ -25,7 +27,7 @@ const AppContent = () => {
 
   return (
     <>
-      {user && !isResetPassword && <Navbar />}
+      {user && !isResetPassword && !isConfirm && <Navbar />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -44,6 +46,7 @@ const AppContent = () => {
             <Settings />
           </ProtectedRoute>
         } />
+        <Route path="/confirm" element={<Confirm />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>
