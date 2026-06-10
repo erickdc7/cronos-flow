@@ -14,6 +14,7 @@ const Login = () => {
     const [isRegister, setIsRegister] = useState(false)
     const [error, setError] = useState(null)
     const [success, setSuccess] = useState(null)
+    const [justRegistered, setJustRegistered] = useState(false)
     const [submitting, setSubmitting] = useState(false)
     const [isForgotPassword, setIsForgotPassword] = useState(false)
     const [forgotEmail, setForgotEmail] = useState('')
@@ -28,7 +29,7 @@ const Login = () => {
         )
     }
 
-    if (user) return <Navigate to="/" replace />
+    if (user && !justRegistered) return <Navigate to="/" replace />
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -42,9 +43,16 @@ const Login = () => {
                     setSubmitting(false)
                     return
                 }
-                const { error } = await supabase.auth.signUp({ email, password })
+                const { error } = await supabase.auth.signUp({
+                    email,
+                    password,
+                    options: {
+                        emailRedirectTo: 'https://cronos-flow-notes.vercel.app/confirm'
+                    }
+                })
                 if (error) throw error
                 setSuccess('Cuenta creada. Revisa tu email para confirmar.')
+                setJustRegistered(true)
             } else {
                 const { error } = await supabase.auth.signInWithPassword({ email, password })
                 if (error) throw error
