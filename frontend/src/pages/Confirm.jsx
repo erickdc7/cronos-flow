@@ -11,10 +11,12 @@ const Confirm = () => {
     const shouldReduceMotion = useReducedMotion()
 
     useEffect(() => {
+        let redirected = false
+
         const { data: { subscription } } = supabase.auth.onAuthStateChange(
             async (event, session) => {
-                if (event === 'SIGNED_IN' && session) {
-                    // Cerrar sesión inmediatamente, el usuario debe hacer login conscientemente
+                if ((event === 'SIGNED_IN' || event === 'USER_UPDATED') && session && !redirected) {
+                    redirected = true
                     await supabase.auth.signOut()
                     setStatus('success')
                     setTimeout(() => navigate('/login'), 3000)
@@ -22,10 +24,20 @@ const Confirm = () => {
             }
         )
 
-        // Timeout por si el evento nunca llega
+        // Verificar si ya hay sesión activa al cargar
+        supabase.auth.getSession().then(async ({ data: { session } }) => {
+            if (session && !redirected) {
+                redirected = true
+                await supabase.auth.signOut()
+                setStatus('success')
+                setTimeout(() => navigate('/login'), 3000)
+            }
+        })
+
+        // Timeout más largo y solo si no hubo sesión
         const timeout = setTimeout(() => {
-            if (status === 'loading') setStatus('error')
-        }, 5000)
+            if (!redirected) setStatus('error')
+        }, 8000)
 
         return () => {
             subscription.unsubscribe()
