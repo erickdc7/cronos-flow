@@ -5,13 +5,18 @@ const supabase = require('../lib/supabase')
 // GET /api/history — traer lista de todos los días registrados
 router.get('/', async (req, res) => {
     const userId = req.user.id
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1)
+    const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 7, 1), 31)
+    const from = (page - 1) * limit
+    const to = from + limit - 1
 
     try {
-        const { data: logs, error } = await supabase
+        const { data: logs, error, count } = await supabase
             .from('daily_logs')
-            .select('*')
+            .select('*', { count: 'exact' })
             .eq('user_id', userId)
             .order('date', { ascending: false })
+            .range(from, to)
 
         if (error) throw error
 
@@ -30,7 +35,17 @@ router.get('/', async (req, res) => {
             })
         )
 
-        res.json(logsWithStats)
+        res.json({
+            logs: logsWithStats,
+            pagination: {
+                page,
+                limit,
+                total: count || 0,
+                totalPages: Math.ceil((count || 0) / limit),
+                hasPreviousPage: page > 1,
+                hasNextPage: to + 1 < (count || 0)
+            }
+        })
 
     } catch (error) {
         console.error(error)
