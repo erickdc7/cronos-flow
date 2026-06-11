@@ -63,7 +63,30 @@ router.get('/', async (req, res) => {
 
         if (entriesError) throw entriesError
 
-        res.json({ log, entries })
+        const activityIds = entries
+            .map(entry => entry.activity_id)
+            .filter(Boolean)
+
+        let activeActivityIds = new Set()
+
+        if (activityIds.length > 0) {
+            const { data: activeActivities, error: activeActivitiesError } = await supabase
+                .from('activities')
+                .select('id')
+                .eq('user_id', userId)
+                .eq('is_active', true)
+                .in('id', activityIds)
+
+            if (activeActivitiesError) throw activeActivitiesError
+
+            activeActivityIds = new Set(activeActivities.map(activity => activity.id))
+        }
+
+        const visibleEntries = entries.filter(entry =>
+            entry.is_temp || activeActivityIds.has(entry.activity_id)
+        )
+
+        res.json({ log, entries: visibleEntries })
 
     } catch (error) {
         console.error(error)

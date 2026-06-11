@@ -139,6 +139,37 @@ router.patch('/:id', async (req, res) => {
             }
         }
 
+        if (is_active === true) {
+            const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
+            const { data: todayLog } = await supabase
+                .from('daily_logs')
+                .select('id')
+                .eq('user_id', req.user.id)
+                .eq('date', today)
+                .single()
+
+            if (todayLog) {
+                const { data: existingEntry } = await supabase
+                    .from('log_entries')
+                    .select('id')
+                    .eq('log_id', todayLog.id)
+                    .eq('activity_id', id)
+                    .single()
+
+                if (!existingEntry) {
+                    await supabase
+                        .from('log_entries')
+                        .insert({
+                            log_id: todayLog.id,
+                            activity_id: data.id,
+                            title: data.title,
+                            done: false,
+                            is_temp: false
+                        })
+                }
+            }
+        }
+
         res.json(data)
 
     } catch (error) {
