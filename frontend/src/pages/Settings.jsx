@@ -5,6 +5,7 @@ import { getActivities, createActivity, updateActivity, deleteActivity, syncToda
 import PageTransition from '../components/PageTransition'
 import LoadingSpinner from '../components/LoadingSpinner'
 import EmptyState from '../components/EmptyState'
+import ConfirmDialog from '../components/ConfirmDialog'
 
 const Settings = () => {
     const [activities, setActivities] = useState([])
@@ -16,6 +17,7 @@ const Settings = () => {
     const [editingId, setEditingId] = useState(null)
     const [editTitle, setEditTitle] = useState('')
     const [editDescription, setEditDescription] = useState('')
+    const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, id: null })
     const shouldReduceMotion = useReducedMotion()
 
     const fetchActivities = async () => {
@@ -83,11 +85,15 @@ const Settings = () => {
         }
     }
 
-    const handleDelete = async (id) => {
-        if (!confirm('¿Estás seguro de eliminar esta actividad?')) return
+    const handleDeleteClick = (id) => {
+        setDeleteDialog({ isOpen: true, id })
+    }
+
+    const handleDeleteConfirm = async () => {
         try {
-            await deleteActivity(id)
-            setActivities(prev => prev.filter(a => a.id !== id))
+            await deleteActivity(deleteDialog.id)
+            setActivities(prev => prev.filter(a => a.id !== deleteDialog.id))
+            setDeleteDialog({ isOpen: false, id: null })
         } catch (err) {
             console.error('Error al eliminar:', err)
         }
@@ -266,7 +272,7 @@ const Settings = () => {
                                                     )}
                                                 </button>
                                                 <button
-                                                    onClick={() => handleDelete(activity.id)}
+                                                    onClick={() => handleDeleteClick(activity.id)}
                                                     className="p-1.5 text-zinc-700 hover:text-red-400 rounded-md hover:bg-red-400/10 transition-colors duration-200"
                                                     title="Eliminar"
                                                 >
@@ -279,6 +285,16 @@ const Settings = () => {
                             ))}
                         </div>
                     )}
+
+                    <ConfirmDialog
+                        isOpen={deleteDialog.isOpen}
+                        onClose={() => setDeleteDialog({ isOpen: false, id: null })}
+                        onConfirm={handleDeleteConfirm}
+                        title="¿Estás seguro de eliminar esta actividad?"
+                        message="Esta acción no se puede deshacer."
+                        confirmText="Eliminar"
+                        cancelText="Cancelar"
+                    />
 
                 </div>
             </PageTransition>

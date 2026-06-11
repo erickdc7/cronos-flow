@@ -2,11 +2,13 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 import { Check, FileText, X, Zap } from 'lucide-react'
 import { toggleEntry, updateNote, deleteTempEntry } from '../lib/api'
+import ConfirmDialog from './ConfirmDialog'
 
 const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
     const [isEditingNote, setIsEditingNote] = useState(false)
     const [note, setNote] = useState(entry.note || '')
     const [loading, setLoading] = useState(false)
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false)
     const shouldReduceMotion = useReducedMotion()
     const noteRef = useRef(null)
 
@@ -42,11 +44,15 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
         }
     }
 
-    const handleDelete = async () => {
-        if (!confirm('¿Eliminar esta actividad?')) return
+    const handleDeleteClick = () => {
+        setShowDeleteDialog(true)
+    }
+
+    const handleDeleteConfirm = async () => {
         try {
             await deleteTempEntry(entry.id)
             onDelete(entry.id)
+            setShowDeleteDialog(false)
         } catch (error) {
             console.error('Error al eliminar:', error)
         }
@@ -113,7 +119,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                 {/* Delete button for temp entries */}
                 {entry.is_temp && (
                     <button
-                        onClick={handleDelete}
+                        onClick={handleDeleteClick}
                         className="text-zinc-700 hover:text-red-400 transition-colors duration-200 p-1 rounded-md hover:bg-red-400/10"
                         title="Eliminar actividad"
                     >
@@ -194,6 +200,15 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
             }}
         >
             {content}
+            <ConfirmDialog
+                isOpen={showDeleteDialog}
+                onClose={() => setShowDeleteDialog(false)}
+                onConfirm={handleDeleteConfirm}
+                title="¿Eliminar esta actividad?"
+                message="Esta acción no se puede deshacer."
+                confirmText="Eliminar"
+                cancelText="Cancelar"
+            />
         </motion.div>
     )
 }
