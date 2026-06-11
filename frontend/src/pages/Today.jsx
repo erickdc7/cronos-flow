@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { LayoutGroup } from 'motion/react'
 import { Plus, ListChecks } from 'lucide-react'
 import { getToday, addTempEntry } from '../lib/api'
 import ActivityItem from '../components/ActivityItem'
@@ -140,17 +141,19 @@ const Today = () => {
                             description='Ve a "Actividades" para agregar tus rutinas diarias'
                         />
                     ) : (
-                        <div className="flex flex-col gap-2.5 mb-5">
-                            {entries.map((entry, index) => (
-                                <ActivityItem
-                                    key={entry.id}
-                                    entry={entry}
-                                    onUpdate={handleUpdate}
-                                    onDelete={handleDelete}
-                                    index={index}
-                                />
-                            ))}
-                        </div>
+                        <LayoutGroup>
+                            <div className="flex flex-col gap-2.5 mb-5">
+                                {entries.map((entry, index) => (
+                                    <ActivityItem
+                                        key={entry.id}
+                                        entry={entry}
+                                        onUpdate={handleUpdate}
+                                        onDelete={handleDelete}
+                                        index={index}
+                                    />
+                                ))}
+                            </div>
+                        </LayoutGroup>
                     )}
 
                     {/* Add temporary activity */}
