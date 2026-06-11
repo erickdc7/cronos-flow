@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { supabase } from '../lib/supabase'
 import { Navigate } from 'react-router-dom'
@@ -15,11 +15,21 @@ const Login = () => {
     const [error, setError] = useState(null)
     const [success, setSuccess] = useState(null)
     const [justRegistered, setJustRegistered] = useState(false)
+    const [emailConfirmed, setEmailConfirmed] = useState(false)
     const [submitting, setSubmitting] = useState(false)
     const [isForgotPassword, setIsForgotPassword] = useState(false)
     const [forgotEmail, setForgotEmail] = useState('')
     const [forgotSubmitting, setForgotSubmitting] = useState(false)
     const shouldReduceMotion = useReducedMotion()
+
+    useEffect(() => {
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+            if (event === 'SIGNED_IN' && justRegistered) {
+                setEmailConfirmed(true)
+            }
+        })
+        return () => subscription.unsubscribe()
+    }, [justRegistered])
 
     if (loading) {
         return (
@@ -29,9 +39,9 @@ const Login = () => {
         )
     }
 
-    if (user && !justRegistered) return <Navigate to="/" replace />
+    if (user && !justRegistered && !emailConfirmed) return <Navigate to="/" replace />
 
-    if (user && justRegistered) return (
+    if (emailConfirmed) return (
         <div className="min-h-[100dvh] bg-zinc-950 flex items-center justify-center px-4">
             <div className="w-full max-w-sm text-center">
                 <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 mx-auto">
@@ -45,7 +55,9 @@ const Login = () => {
                     <button
                         onClick={() => {
                             setJustRegistered(false)
+                            setEmailConfirmed(false)
                             setSuccess(null)
+                            supabase.auth.signOut()
                         }}
                         className="w-full bg-emerald-500 text-zinc-950 font-semibold py-2.5 rounded-lg hover:bg-emerald-400 transition-colors duration-200 text-sm"
                     >
@@ -114,6 +126,8 @@ const Login = () => {
         animate: { opacity: 1, y: 0 },
         transition: { duration: 0.4, delay, ease: [0.23, 1, 0.32, 1] }
     }
+
+
 
     return (
         <div className="min-h-[100dvh] bg-zinc-950 flex items-center justify-center px-4">
