@@ -119,6 +119,19 @@ const Login = () => {
         }
     }
 
+    const handleGuestLogin = async () => {
+        setError(null)
+        setSubmitting(true)
+        try {
+            const { error } = await supabase.auth.signInAnonymously()
+            if (error) throw error
+        } catch (err) {
+            setError(err.message)
+        } finally {
+            setSubmitting(false)
+        }
+    }
+
     const MotionDiv = shouldReduceMotion ? 'div' : motion.div
 
     const formItemProps = (delay) => shouldReduceMotion ? {} : {
@@ -310,6 +323,18 @@ const Login = () => {
                                     {isRegister ? 'Inicia sesión' : 'Regístrate'}
                                 </button>
                             </p>
+
+                            {!isRegister && (
+                                <div className="mt-5 pt-5 border-t border-zinc-800/60">
+                                    <button
+                                        onClick={handleGuestLogin}
+                                        disabled={submitting}
+                                        className="w-full text-zinc-500 hover:text-zinc-300 border border-zinc-800 hover:border-zinc-700 rounded-lg py-2.5 text-sm transition-colors duration-200 disabled:opacity-50"
+                                    >
+                                        Probar sin cuenta
+                                    </button>
+                                </div>
+                            )}
                         </>
                     )}
                 </MotionDiv>
