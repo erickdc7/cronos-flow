@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { LayoutGroup } from 'motion/react'
+import { LayoutGroup, useReducedMotion } from 'motion/react'
+import confetti from 'canvas-confetti'
 import { Plus, ListChecks } from 'lucide-react'
 import { getToday, addTempEntry } from '../lib/api'
 import ActivityItem from '../components/ActivityItem'
@@ -10,12 +11,29 @@ import EmptyState from '../components/EmptyState'
 
 const Today = () => {
     const [log, setLog] = useState(null)
+    const shouldReduceMotion = useReducedMotion()
     const [entries, setEntries] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [showTempForm, setShowTempForm] = useState(false)
     const [tempTitle, setTempTitle] = useState('')
     const [addingTemp, setAddingTemp] = useState(false)
+
+    // Stats
+    const completed = entries.filter(e => e.done).length
+    const total = entries.length
+    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0
+
+    const fireConfetti = () => {
+        if (shouldReduceMotion) return
+
+        confetti({
+            particleCount: 120,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#34d399', '#10b981', '#6ee7b7', '#a7f3d0']
+        })
+    }
 
     const fetchToday = async () => {
         try {
@@ -39,6 +57,19 @@ const Today = () => {
         fetchToday()
         // eslint-disable-next-line react-hooks/set-state-in-effect
     }, [])
+
+    useEffect(() => {
+        if (total === 0 || !log) return
+
+        const today = new Date().toLocaleDateString('en-CA')
+        const storageKey = `confetti_shown_${log.user_id}_${today}`
+        const alreadyShown = localStorage.getItem(storageKey) === 'true'
+
+        if (completed === total && !alreadyShown) {
+            localStorage.setItem(storageKey, 'true')
+            fireConfetti()
+        }
+    }, [completed, total, log])
 
     const handleUpdate = (updatedEntry) => {
         setEntries(prev => {
@@ -70,11 +101,6 @@ const Today = () => {
         }
     }
 
-    // Stats
-    const completed = entries.filter(e => e.done).length
-    const total = entries.length
-    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0
-
     // Formatted date
     const today = new Date()
     const dateLabel = today.toLocaleDateString('es-PE', {
@@ -99,6 +125,8 @@ const Today = () => {
             </div>
         )
     }
+
+
 
     return (
         <div className="min-h-[100dvh] bg-zinc-950 px-4 py-6">
