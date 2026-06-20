@@ -148,7 +148,7 @@ const ResetPassword = () => {
                         <button
                             type="submit"
                             disabled={submitting}
-                            className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                            className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] disabled:cursor-not-allowed text-sm"
                         >
                             {submitting ? 'Guardando...' : 'Actualizar contraseña'}
                         </button>

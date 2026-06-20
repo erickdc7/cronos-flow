@@ -147,7 +147,7 @@ const History = () => {
                                                         ease: [0.23, 1, 0.32, 1]
                                                     }}
                                                     className={`
-                                                        text-left rounded-[var(--radius-xl)] p-[var(--space-3-5)] transition-all duration-200 group
+                                                        text-left rounded-[var(--radius-xl)] p-[var(--space-3-5)] transition-colors duration-200 group
                                                         ${isSelected
                                                             ? 'bg-[var(--color-accent-selected-bg)] border border-[var(--color-accent-selected-border)] ring-1 ring-[var(--color-accent-selected-ring)]'
                                                             : 'bg-[var(--color-bg-elevated)] border border-[var(--color-border)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-bg-surface)]'
@@ -185,7 +185,7 @@ const History = () => {
                                             type="button"
                                             onClick={handlePreviousPage}
                                             disabled={!pagination.hasPreviousPage || loading}
-                                            className="w-9 h-9 rounded-lg border border-zinc-800/70 bg-zinc-900/40 text-zinc-500 flex items-center justify-center transition-all duration-200 hover:border-zinc-700 hover:text-zinc-300 hover:bg-zinc-900/70 disabled:opacity-40 disabled:hover:border-zinc-800/70 disabled:hover:text-zinc-500 disabled:hover:bg-zinc-900/40"
+                                            className="w-9 h-9 rounded-lg border border-zinc-800/70 bg-zinc-900/40 text-zinc-500 flex items-center justify-center transition-colors duration-200 hover:border-zinc-700 hover:text-zinc-300 hover:bg-zinc-900/70 disabled:opacity-40 disabled:hover:border-zinc-800/70 disabled:hover:text-zinc-500 disabled:hover:bg-zinc-900/40"
                                             aria-label="Ver d&iacute;as m&aacute;s recientes"
                                         >
                                             <ChevronLeft className="w-4 h-4" strokeWidth={2} />
@@ -205,7 +205,7 @@ const History = () => {
                                             type="button"
                                             onClick={handleNextPage}
                                             disabled={!pagination.hasNextPage || loading}
-                                            className="w-9 h-9 rounded-lg border border-zinc-800/70 bg-zinc-900/40 text-zinc-500 flex items-center justify-center transition-all duration-200 hover:border-zinc-700 hover:text-zinc-300 hover:bg-zinc-900/70 disabled:opacity-40 disabled:hover:border-zinc-800/70 disabled:hover:text-zinc-500 disabled:hover:bg-zinc-900/40"
+                                            className="w-9 h-9 rounded-lg border border-zinc-800/70 bg-zinc-900/40 text-zinc-500 flex items-center justify-center transition-colors duration-200 hover:border-zinc-700 hover:text-zinc-300 hover:bg-zinc-900/70 disabled:opacity-40 disabled:hover:border-zinc-800/70 disabled:hover:text-zinc-500 disabled:hover:bg-zinc-900/40"
                                             aria-label="Ver d&iacute;as anteriores"
                                         >
                                             <ChevronRight className="w-4 h-4" strokeWidth={2} />

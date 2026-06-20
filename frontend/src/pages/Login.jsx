@@ -206,7 +206,7 @@ const Login = () => {
                                 <button
                                     type="submit"
                                     disabled={forgotSubmitting}
-                                    className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:opacity-50 text-sm"
+                                    className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] text-sm"
                                 >
                                     {forgotSubmitting ? 'Enviando...' : 'Enviar enlace'}
                                 </button>
@@ -288,7 +288,7 @@ const Login = () => {
                                     <button
                                         type="submit"
                                         disabled={submitting}
-                                        className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                                        className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] disabled:cursor-not-allowed text-sm"
                                     >
                                         {submitting ? 'Cargando...' : isRegister ? 'Crear cuenta' : 'Entrar'}
                                     </button>
@@ -329,7 +329,7 @@ const Login = () => {
                                     <button
                                         onClick={handleGuestLogin}
                                         disabled={submitting}
-                                        className="w-full text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] border border-[var(--color-zinc-800)] hover:border-[var(--color-border-hover)] rounded-[var(--radius-lg)] py-[var(--space-2-5)] text-sm transition-colors duration-[var(--transition-base)] disabled:opacity-50"
+                                        className="w-full text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] border border-[var(--color-zinc-800)] hover:border-[var(--color-border-hover)] rounded-[var(--radius-lg)] py-[var(--space-2-5)] text-sm transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] disabled:border-[var(--color-zinc-800)]"
                                     >
                                         Probar sin cuenta
                                     </button>

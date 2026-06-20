@@ -164,7 +164,7 @@ const Settings = () => {
                                     <button
                                         type="submit"
                                         disabled={adding}
-                                        className="text-sm bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:opacity-50"
+                                        className="text-sm bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)]"
                                     >
                                         {adding ? 'Guardando...' : 'Guardar'}
                                     </button>

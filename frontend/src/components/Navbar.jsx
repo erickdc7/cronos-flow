@@ -126,7 +126,7 @@ const Navbar = () => {
                         <div className="flex flex-col gap-2">
                             <button
                                 onClick={handleConfirmExit}
-                                className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] text-sm"
+                                className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] text-sm"
                             >
                                 Salir de todas formas
                             </button>

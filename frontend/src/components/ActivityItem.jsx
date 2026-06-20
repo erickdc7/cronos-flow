@@ -67,7 +67,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
     
     const content = (
         <div className={`
-            group rounded-[var(--radius-xl)] border p-[var(--space-4)] transition-all duration-[var(--transition-base)]
+            group rounded-[var(--radius-xl)] border p-[var(--space-4)] transition-colors duration-[var(--transition-base)]
             ${entry.done
                 ? 'bg-emerald-950/20 border-emerald-900/40'
                 : 'bg-[var(--color-bg-surface)] border-[var(--color-border)] hover:border-[var(--color-border-hover)]'
@@ -80,7 +80,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                     disabled={loading}
                     className={`
                         w-[22px] h-[22px] rounded-[var(--radius-full)] border-2 flex items-center justify-center
-                        transition-all duration-[var(--transition-base)] flex-shrink-0
+                        transition-colors duration-[var(--transition-base)] flex-shrink-0
                         ${entry.done
                             ? 'bg-[var(--color-accent)] border-[var(--color-accent)]'
                             : 'border-[var(--color-text-disabled)] hover:border-[var(--color-accent-subtle)]'
@@ -95,7 +95,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                 </button>
 
                 <span className={`
-                    flex-1 text-sm font-medium transition-all duration-[var(--transition-base)]
+                    flex-1 text-sm font-medium transition-colors duration-[var(--transition-base)]
                     ${entry.done ? 'line-through text-[var(--color-text-disabled)]' : 'text-[var(--color-text-secondary)]'}
                 `}>
                     {entry.title}

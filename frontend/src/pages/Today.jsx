@@ -144,7 +144,7 @@ const Today = () => {
                                 <div className="flex items-center gap-[var(--space-3)] mt-[var(--space-4)]">
                                     <div className="flex-1 bg-[var(--color-zinc-800-80)] rounded-[var(--radius-full)] h-1.5 overflow-hidden">
                                         <div
-                                            className="bg-[var(--color-accent)] h-1.5 rounded-[var(--radius-full)] transition-all duration-[var(--transition-slowest)] ease-out"
+                                            className="bg-[var(--color-accent)] h-1.5 rounded-[var(--radius-full)] transition-width duration-[var(--transition-slowest)] ease-out"
                                             style={{ width: `${percentage}%` }}
                                         />
                                     </div>
@@ -202,7 +202,7 @@ const Today = () => {
                                 <button
                                     type="submit"
                                     disabled={addingTemp}
-                                    className="text-sm bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:opacity-50"
+                                    className="text-sm bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)]"
                                 >
                                     Agregar
                                 </button>
@@ -221,7 +221,7 @@ const Today = () => {
                     ) : (
                         <button
                             onClick={() => setShowTempForm(true)}
-                            className="w-full flex items-center justify-center gap-[var(--space-2)] border border-dashed border-[var(--color-zinc-800)] hover:border-[var(--color-border-hover)] text-[var(--color-text-disabled)] hover:text-[var(--color-text-muted)] rounded-[var(--radius-xl)] py-[var(--space-3)] text-sm transition-all duration-[var(--transition-base)] hover:bg-[var(--color-bg-elevated)]"
+                            className="w-full flex items-center justify-center gap-[var(--space-2)] border border-dashed border-[var(--color-zinc-800)] hover:border-[var(--color-border-hover)] text-[var(--color-text-disabled)] hover:text-[var(--color-text-muted)] rounded-[var(--radius-xl)] py-[var(--space-3)] text-sm transition-colors duration-[var(--transition-base)] hover:bg-[var(--color-bg-elevated)]"
                         >
                             <Plus className="w-4 h-4" strokeWidth={2} />
                             Agregar actividad solo para hoy

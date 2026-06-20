@@ -128,6 +128,7 @@
   --color-text-muted: var(--color-zinc-400);
   --color-text-disabled: var(--color-zinc-500);
   --color-text-placeholder: var(--color-zinc-600);
+  --color-text-disabled-on-bg: var(--color-zinc-400);
   
   /* Borders */
   --color-border: var(--color-zinc-800-60);
