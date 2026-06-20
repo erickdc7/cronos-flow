@@ -67,7 +67,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
     
     const content = (
         <div className={`
-            group rounded-[var(--radius-xl)] border p-[var(--space-4)] transition-colors duration-[var(--transition-base)]
+            group rounded-[var(--radius-xl)] border p-[var(--space-4)] transition-colors duration-200
             ${entry.done
                 ? 'bg-emerald-950/20 border-emerald-900/40'
                 : 'bg-[var(--color-bg-surface)] border-[var(--color-border)] hover:border-[var(--color-border-hover)]'
@@ -80,7 +80,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                     disabled={loading}
                     className={`
                         w-[22px] h-[22px] rounded-[var(--radius-full)] border-2 flex items-center justify-center
-                        transition-colors duration-[var(--transition-base)] flex-shrink-0
+                        transition-colors duration-200 flex-shrink-0
                         ${entry.done
                             ? 'bg-[var(--color-accent)] border-[var(--color-accent)]'
                             : 'border-[var(--color-text-disabled)] hover:border-[var(--color-accent-subtle)]'
@@ -110,7 +110,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
 
                 <button
                     onClick={() => setIsEditingNote(!isEditingNote)}
-                    className="text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] transition-colors duration-[var(--transition-base)] p-1 rounded-[var(--radius-md)] hover:bg-[var(--color-bg-surface)]"
+                    className="text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] transition-colors duration-200 p-1 rounded-[var(--radius-md)] hover:bg-[var(--color-bg-surface)]"
                     title={entry.note ? 'Editar nota' : 'Agregar nota'}
                 >
                     <FileText className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -120,7 +120,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                 {entry.is_temp && (
                     <button
                         onClick={handleDeleteClick}
-                        className="text-[var(--color-text-disabled)] hover:text-[var(--color-error)] transition-colors duration-[var(--transition-base)] p-1 rounded-[var(--radius-md)] hover:bg-[var(--color-error-bg)]"
+                        className="text-[var(--color-text-disabled)] hover:text-[var(--color-error)] transition-colors duration-200 p-1 rounded-[var(--radius-md)] hover:bg-[var(--color-error-bg)]"
                         title="Eliminar actividad"
                     >
                         <X className="w-3.5 h-3.5" strokeWidth={2} />
@@ -146,12 +146,12 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                                 onChange={(e) => setNote(e.target.value)}
                                 placeholder="Escribe una anotación..."
                                 rows={2}
-                                className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-secondary)] text-sm rounded-[var(--radius-lg)] px-[var(--space-3)] py-[var(--space-2)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] resize-none transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
+                                className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-secondary)] text-sm rounded-[var(--radius-lg)] px-[var(--space-3)] py-[var(--space-2)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] resize-none transition-colors duration-200 placeholder:text-[var(--color-text-placeholder)]"
                             />
                             <div className="flex gap-[var(--space-2)] mt-[var(--space-2)]">
                                 <button
                                     onClick={handleSaveNote}
-                                    className="text-xs bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-[var(--color-zinc-950)] font-medium px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] transition-colors duration-[var(--transition-base)]"
+                                    className="text-xs bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-[var(--color-zinc-950)] font-medium px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] transition-colors duration-200"
                                 >
                                     Guardar
                                 </button>
@@ -160,7 +160,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                                         setNote(entry.note || '')
                                         setIsEditingNote(false)
                                     }}
-                                    className="text-xs text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] transition-colors duration-[var(--transition-base)]"
+                                    className="text-xs text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] transition-colors duration-200"
                                 >
                                     Cancelar
                                 </button>
