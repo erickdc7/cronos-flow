@@ -144,7 +144,7 @@ const Today = () => {
                                 <div className="flex items-center gap-[var(--space-3)] mt-[var(--space-4)]">
                                     <div className="flex-1 bg-[var(--color-zinc-800-80)] rounded-[var(--radius-full)] h-1.5 overflow-hidden">
                                         <div
-                                            className="bg-[var(--color-accent)] h-1.5 rounded-[var(--radius-full)] transition-width duration-[var(--transition-slowest)] ease-out"
+                                            className="bg-[var(--color-accent)] h-1.5 rounded-[var(--radius-full)] transition-width duration-1000 ease-in-out"
                                             style={{ width: `${percentage}%` }}
                                         />
                                     </div>
