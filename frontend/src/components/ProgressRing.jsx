@@ -41,7 +41,7 @@ const ProgressRing = ({ percentage = 0, size = 80, strokeWidth = 6 }) => {
                     strokeLinecap="round"
                     strokeDasharray={circumference}
                     strokeDashoffset={offset}
-                    className="transition-all duration-1000 ease-in-out"
+                    className="transition-all-slowest ease-in-out"
                 />
             </svg>
             {/* Center text */}

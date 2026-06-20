@@ -120,7 +120,7 @@ const Confirm = () => {
                             </div>
                             <button
                                 onClick={() => navigate('/login')}
-                                className="text-[var(--color-accent-text)] hover:text-[var(--color-accent-text-hover)] text-sm transition-colors duration-[var(--transition-base)]"
+                                className="text-[var(--color-accent-text)] hover:text-[var(--color-accent-text-hover)] text-sm transition-colors-base"
                             >
                                 Volver al login
                             </button>

@@ -48,7 +48,7 @@ const Navbar = () => {
 
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2 group">
-                        <div className="w-8 h-8 rounded-[var(--radius-lg)] bg-[var(--color-accent-bg)] border border-[var(--color-accent-border)] flex items-center justify-center transition-colors duration-[var(--transition-base)] group-hover:bg-[var(--color-accent-bg-hover)]">
+                        <div className="w-8 h-8 rounded-[var(--radius-lg)] bg-[var(--color-accent-bg)] border border-[var(--color-accent-border)] flex items-center justify-center transition-colors-base group-hover:bg-[var(--color-accent-bg-hover)]">
                             <Timer className="w-4 h-4 text-[var(--color-accent-text)]" strokeWidth={2} />
                         </div>
                         <span className="text-[var(--color-text-primary)] font-semibold text-sm tracking-tight hidden sm:block">
@@ -90,7 +90,7 @@ const Navbar = () => {
                         )}
                         <button
                             onClick={handleLogoutClick}
-                            className="flex items-center gap-[var(--space-1-5)] text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] transition-colors duration-[var(--transition-base)] text-sm px-[var(--space-2)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-zinc-900-40)]"
+                            className="flex items-center gap-[var(--space-1-5)] text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] transition-colors-base text-sm px-[var(--space-2)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-zinc-900-40)]"
                             title="Cerrar sesión"
                         >
                             <LogOut className="w-4 h-4" strokeWidth={1.5} />
@@ -107,7 +107,7 @@ const Navbar = () => {
                     <div className="bg-[var(--color-zinc-900)] border border-[var(--color-zinc-800)] rounded-[var(--radius-xl)] p-[var(--space-6)] max-w-sm w-full relative">
                         <button
                             onClick={() => setShowGuestModal(false)}
-                            className="absolute top-4 right-4 text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] transition-colors duration-[var(--transition-base)]"
+                            className="absolute top-4 right-4 text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] transition-colors-base"
                         >
                             <X className="w-4 h-4" strokeWidth={2} />
                         </button>
@@ -126,7 +126,7 @@ const Navbar = () => {
                         <div className="flex flex-col gap-2">
                             <button
                                 onClick={handleConfirmExit}
-                                className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] text-sm"
+                                className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors-base disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] text-sm"
                             >
                                 Salir de todas formas
                             </button>

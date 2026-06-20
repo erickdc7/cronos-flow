@@ -55,13 +55,13 @@ const ConfirmDialog = ({
                             <div className="flex gap-3">
                                 <button
                                     onClick={onClose}
-                                    className="flex-1 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] text-sm font-medium px-[var(--space-4)] py-[var(--space-2-5)] rounded-[var(--radius-lg)] border border-[var(--color-border)] hover:bg-[var(--color-bg-surface)] transition-colors duration-[var(--transition-base)]"
+                                    className="flex-1 text-[var(--color-text-muted)] hover:text-[var(--color-text-secondary)] text-sm font-medium px-[var(--space-4)] py-[var(--space-2-5)] rounded-[var(--radius-lg)] border border-[var(--color-border)] hover:bg-[var(--color-bg-surface)] transition-colors-base"
                                 >
                                     {cancelText}
                                 </button>
                                 <button
                                     onClick={onConfirm}
-                                    className="flex-1 bg-[var(--color-red-500)] hover:bg-[var(--color-error-hover)] text-[var(--color-zinc-950)] text-sm font-medium px-[var(--space-4)] py-[var(--space-2-5)] rounded-[var(--radius-lg)] transition-colors duration-[var(--transition-base)]"
+                                    className="flex-1 bg-[var(--color-red-500)] hover:bg-[var(--color-error-hover)] text-[var(--color-zinc-950)] text-sm font-medium px-[var(--space-4)] py-[var(--space-2-5)] rounded-[var(--radius-lg)] transition-colors-base"
                                 >
                                     {confirmText}
                                 </button>

@@ -121,7 +121,7 @@ const Settings = () => {
                         </div>
                         <button
                             onClick={() => setShowForm(true)}
-                            className="flex items-center gap-[var(--space-1-5)] bg-[var(--color-accent)] text-[var(--color-zinc-950)] text-sm font-medium px-[var(--space-3-5)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)]"
+                            className="flex items-center gap-[var(--space-1-5)] bg-[var(--color-accent)] text-[var(--color-zinc-950)] text-sm font-medium px-[var(--space-3-5)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors-base"
                         >
                             <Plus className="w-4 h-4" strokeWidth={2.5} />
                             Nueva
@@ -147,7 +147,7 @@ const Settings = () => {
                                         onChange={(e) => setNewTitle(e.target.value)}
                                         placeholder="Nombre de la actividad"
                                         autoFocus
-                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
+                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </div>
                                 <div>
@@ -157,14 +157,14 @@ const Settings = () => {
                                         value={newDescription}
                                         onChange={(e) => setNewDescription(e.target.value)}
                                         placeholder="Descripción opcional"
-                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
+                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </div>
                                 <div className="flex gap-[var(--space-2)] pt-[var(--space-1)]">
                                     <button
                                         type="submit"
                                         disabled={adding}
-                                        className="text-sm bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)]"
+                                        className="text-sm bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors-base disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)]"
                                     >
                                         {adding ? 'Guardando...' : 'Guardar'}
                                     </button>
@@ -175,7 +175,7 @@ const Settings = () => {
                                             setNewTitle('')
                                             setNewDescription('')
                                         }}
-                                        className="text-sm text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] transition-colors duration-[var(--transition-base)]"
+                                        className="text-sm text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] transition-colors-base"
                                     >
                                         Cancelar
                                     </button>
@@ -204,7 +204,7 @@ const Settings = () => {
                                         ease: [0.23, 1, 0.32, 1]
                                     }}
                                     className={`
-                                        bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-4)] transition-opacity duration-[var(--transition-base)]
+                                        bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-4)] transition-opacity-base
                                         ${!activity.is_active ? 'opacity-45' : ''}
                                     `}
                                 >
@@ -216,25 +216,25 @@ const Settings = () => {
                                                 value={editTitle}
                                                 onChange={(e) => setEditTitle(e.target.value)}
                                                 autoFocus
-                                                className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)]"
+                                                className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base"
                                             />
                                             <input
                                                 type="text"
                                                 value={editDescription}
                                                 onChange={(e) => setEditDescription(e.target.value)}
                                                 placeholder="Descripción opcional"
-                                                className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
+                                                className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                             />
                                             <div className="flex gap-[var(--space-2)]">
                                                 <button
                                                     onClick={() => handleSaveEdit(activity.id)}
-                                                    className="text-xs bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)]"
+                                                    className="text-xs bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors-base"
                                                 >
                                                     Guardar
                                                 </button>
                                                 <button
                                                     onClick={() => setEditingId(null)}
-                                                    className="text-xs text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] transition-colors duration-[var(--transition-base)]"
+                                                    className="text-xs text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] transition-colors-base"
                                                 >
                                                     Cancelar
                                                 </button>
@@ -252,14 +252,14 @@ const Settings = () => {
                                             <div className="flex items-center gap-[var(--space-1-5)] flex-shrink-0">
                                                 <button
                                                     onClick={() => handleStartEdit(activity)}
-                                                    className="p-[var(--space-1-5)] text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] rounded-md hover:bg-[var(--color-bg-surface)] transition-colors duration-[var(--transition-base)]"
+                                                    className="p-[var(--space-1-5)] text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] rounded-md hover:bg-[var(--color-bg-surface)] transition-colors-base"
                                                     title="Editar"
                                                 >
                                                     <Pencil className="w-3.5 h-3.5" strokeWidth={1.5} />
                                                 </button>
                                                 <button
                                                     onClick={() => handleToggleActive(activity)}
-                                                    className={`p-[var(--space-1-5)] rounded-md transition-colors duration-[var(--transition-base)] ${activity.is_active
+                                                    className={`p-[var(--space-1-5)] rounded-md transition-colors-base ${activity.is_active
                                                         ? 'text-[var(--color-accent-subtle)] hover:bg-[var(--color-accent-bg)]'
                                                         : 'text-[var(--color-text-disabled)] hover:bg-[var(--color-bg-surface)] hover:text-[var(--color-text-muted)]'
                                                     }`}
@@ -273,7 +273,7 @@ const Settings = () => {
                                                 </button>
                                                 <button
                                                     onClick={() => handleDeleteClick(activity.id)}
-                                                    className="p-[var(--space-1-5)] text-[var(--color-zinc-700)] hover:text-[var(--color-error)] rounded-md hover:bg-[var(--color-error-bg)] transition-colors duration-[var(--transition-base)]"
+                                                    className="p-[var(--space-1-5)] text-[var(--color-zinc-700)] hover:text-[var(--color-error)] rounded-md hover:bg-[var(--color-error-bg)] transition-colors-base"
                                                     title="Eliminar"
                                                 >
                                                     <Trash2 className="w-3.5 h-3.5" strokeWidth={1.5} />

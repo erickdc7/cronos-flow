@@ -130,7 +130,7 @@ const History = () => {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={shouldReduceMotion ? undefined : { opacity: 0, y: -6 }}
                                         transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-                                        className={`flex flex-col gap-[var(--space-2)] transition-opacity duration-[var(--transition-base)] ${loading ? 'opacity-60 pointer-events-none' : ''}`}
+                                        className={`flex flex-col gap-[var(--space-2)] transition-opacity-base ${loading ? 'opacity-60 pointer-events-none' : ''}`}
                                     >
                                         {logs.map((log, index) => {
                                             const isSelected = selectedLog?.date === log.date
@@ -147,7 +147,7 @@ const History = () => {
                                                         ease: [0.23, 1, 0.32, 1]
                                                     }}
                                                     className={`
-                                                        text-left rounded-[var(--radius-xl)] p-[var(--space-3-5)] transition-colors duration-200 group
+                                                        text-left rounded-[var(--radius-xl)] p-[var(--space-3-5)] transition-colors-base group
                                                         ${isSelected
                                                             ? 'bg-[var(--color-accent-selected-bg)] border border-[var(--color-accent-selected-border)] ring-1 ring-[var(--color-accent-selected-ring)]'
                                                             : 'bg-[var(--color-bg-elevated)] border border-[var(--color-border)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-bg-surface)]'
@@ -162,14 +162,14 @@ const History = () => {
                                                             <span className="font-mono text-xs text-[var(--color-text-disabled)] tabular-nums">
                                                                 {log.completed}/{log.total}
                                                             </span>
-                                                            <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-[var(--transition-base)] ${isSelected ? 'text-[var(--color-accent-subtle)] translate-x-0.5' : 'text-[var(--color-zinc-700)] group-hover:text-[var(--color-text-disabled)]'}`} strokeWidth={2} />
+                                                            <ChevronRight className={`w-3.5 h-3.5 transition-transform-base ${isSelected ? 'text-[var(--color-accent-subtle)] translate-x-0.5' : 'text-[var(--color-zinc-700)] group-hover:text-[var(--color-text-disabled)]'}`} strokeWidth={2} />
                                                         </div>
                                                     </div>
 
                                                     {/* Progress bar */}
                                                     <div className="bg-[var(--color-zinc-800-80)] rounded-[var(--radius-full)] h-1 overflow-hidden">
                                                         <div
-                                                            className={`h-1 rounded-[var(--radius-full)] transition-all duration-[var(--transition-slower)] ${isSelected ? 'bg-[var(--color-accent-selected)]' : 'bg-[var(--color-accent)]'}`}
+                                                            className={`h-1 rounded-[var(--radius-full)] transition-all-slower ${isSelected ? 'bg-[var(--color-accent-selected)]' : 'bg-[var(--color-accent)]'}`}
                                                             style={{ width: `${pct}%` }}
                                                         />
                                                     </div>
@@ -266,7 +266,7 @@ const History = () => {
                                                     )}
                                                     <Link
                                                         to="/settings"
-                                                        className="text-[var(--color-accent-text)] hover:text-[var(--color-accent-text-hover)] text-xs font-medium transition-colors duration-[var(--transition-base)] bg-[var(--color-success-bg)] border border-[var(--color-success-border)] px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)]"
+                                                        className="text-[var(--color-accent-text)] hover:text-[var(--color-accent-text-hover)] text-xs font-medium transition-colors-base bg-[var(--color-success-bg)] border border-[var(--color-success-border)] px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)]"
                                                     >
                                                         Ir a Actividades
                                                     </Link>

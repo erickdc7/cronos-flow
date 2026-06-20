@@ -59,7 +59,7 @@ const Login = () => {
                             setSuccess(null)
                             supabase.auth.signOut()
                         }}
-                        className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] text-sm"
+                        className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors-base text-sm"
                     >
                         Ir al login
                     </button>
@@ -185,7 +185,7 @@ const Login = () => {
                                         required
                                         placeholder="tu@email.com"
                                         autoFocus
-                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
+                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </div>
 
@@ -206,7 +206,7 @@ const Login = () => {
                                 <button
                                     type="submit"
                                     disabled={forgotSubmitting}
-                                    className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] text-sm"
+                                    className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors-base disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] text-sm"
                                 >
                                     {forgotSubmitting ? 'Enviando...' : 'Enviar enlace'}
                                 </button>
@@ -218,7 +218,7 @@ const Login = () => {
                                         setError(null)
                                         setSuccess(null)
                                     }}
-                                    className="text-[var(--color-text-disabled)] hover:text-[var(--color-text-muted)] text-xs transition-colors duration-[var(--transition-base)] text-center"
+                                    className="text-[var(--color-text-disabled)] hover:text-[var(--color-text-muted)] text-xs transition-colors-base text-center"
                                 >
                                     Volver al login
                                 </button>
@@ -240,7 +240,7 @@ const Login = () => {
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                         placeholder="tu@email.com"
-                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
+                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </MotionDiv>
 
@@ -252,7 +252,7 @@ const Login = () => {
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
                                         placeholder="••••••••"
-                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
+                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </MotionDiv>
 
@@ -265,7 +265,7 @@ const Login = () => {
                                             onChange={(e) => setConfirmPassword(e.target.value)}
                                             required={isRegister}
                                             placeholder="••••••••"
-                                            className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
+                                            className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                         />
                                     </MotionDiv>
                                 )}
@@ -288,7 +288,7 @@ const Login = () => {
                                     <button
                                         type="submit"
                                         disabled={submitting}
-                                        className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] disabled:cursor-not-allowed text-sm"
+                                        className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors-base disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] disabled:cursor-not-allowed text-sm"
                                     >
                                         {submitting ? 'Cargando...' : isRegister ? 'Crear cuenta' : 'Entrar'}
                                     </button>
@@ -303,7 +303,7 @@ const Login = () => {
                                             setError(null)
                                             setSuccess(null)
                                         }}
-                                        className="text-[var(--color-text-disabled)] hover:text-[var(--color-text-muted)] text-xs transition-colors duration-[var(--transition-base)]"
+                                        className="text-[var(--color-text-disabled)] hover:text-[var(--color-text-muted)] text-xs transition-colors-base"
                                     >
                                         ¿Olvidaste tu contraseña?
                                     </button>
@@ -318,7 +318,7 @@ const Login = () => {
                                         setError(null)
                                         setSuccess(null)
                                     }}
-                                    className="text-[var(--color-text-tertiary)] hover:text-[var(--color-accent-subtle)] transition-colors duration-[var(--transition-base)] font-medium"
+                                    className="text-[var(--color-text-tertiary)] hover:text-[var(--color-accent-subtle)] transition-colors-base font-medium"
                                 >
                                     {isRegister ? 'Inicia sesión' : 'Regístrate'}
                                 </button>
@@ -329,7 +329,7 @@ const Login = () => {
                                     <button
                                         onClick={handleGuestLogin}
                                         disabled={submitting}
-                                        className="w-full text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] border border-[var(--color-zinc-800)] hover:border-[var(--color-border-hover)] rounded-[var(--radius-lg)] py-[var(--space-2-5)] text-sm transition-colors duration-[var(--transition-base)] disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] disabled:border-[var(--color-zinc-800)]"
+                                        className="w-full text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] border border-[var(--color-zinc-800)] hover:border-[var(--color-border-hover)] rounded-[var(--radius-lg)] py-[var(--space-2-5)] text-sm transition-colors-base disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)] disabled:border-[var(--color-zinc-800)]"
                                     >
                                         Probar sin cuenta
                                     </button>
