@@ -101,27 +101,27 @@ const Settings = () => {
 
     if (loading) {
         return (
-            <div className="min-h-[100dvh] flex items-center justify-center bg-zinc-950">
+            <div className="min-h-[100dvh] flex items-center justify-center bg-[var(--color-bg)]">
                 <LoadingSpinner message="Cargando actividades..." />
             </div>
         )
     }
 
     return (
-        <div className="min-h-[100dvh] bg-zinc-950 px-4 py-6">
+        <div className="min-h-[100dvh] bg-[var(--color-bg)] px-[var(--space-4)] py-[var(--space-6)]">
             <PageTransition>
                 <div className="max-w-2xl mx-auto">
 
-                    <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center justify-between mb-[var(--space-6)]">
                         <div>
-                            <h1 className="text-zinc-100 text-2xl font-semibold tracking-tight">Actividades</h1>
-                            <p className="text-zinc-600 text-xs mt-1">
+                            <h1 className="text-[var(--color-text-primary)] text-2xl font-semibold tracking-tight">Actividades</h1>
+                            <p className="text-[var(--color-text-disabled)] text-xs mt-[var(--space-1)]">
                                 Estas actividades aparecerán todos los días
                             </p>
                         </div>
                         <button
                             onClick={() => setShowForm(true)}
-                            className="flex items-center gap-1.5 bg-emerald-500 text-zinc-950 text-sm font-medium px-3.5 py-2 rounded-lg hover:bg-emerald-400 transition-colors duration-200"
+                            className="flex items-center gap-[var(--space-1-5)] bg-[var(--color-accent)] text-[var(--color-zinc-950)] text-sm font-medium px-[var(--space-3-5)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)]"
                         >
                             <Plus className="w-4 h-4" strokeWidth={2.5} />
                             Nueva
@@ -135,36 +135,36 @@ const Settings = () => {
                             initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-                            className="bg-zinc-900/60 border border-zinc-700/50 rounded-xl p-5 mb-5"
+                            className="bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-5)] mb-[var(--space-5)]"
                         >
-                            <h2 className="text-zinc-200 font-medium text-sm mb-4">Nueva actividad permanente</h2>
-                            <div className="flex flex-col gap-3">
+                            <h2 className="text-[var(--color-text-secondary)] font-medium text-sm mb-[var(--space-4)]">Nueva actividad permanente</h2>
+                            <div className="flex flex-col gap-[var(--space-3)]">
                                 <div>
-                                    <label className="text-zinc-400 text-xs font-medium mb-1.5 block">Nombre *</label>
+                                    <label className="text-[var(--color-text-muted)] text-xs font-medium mb-[var(--space-1-5)] block">Nombre *</label>
                                     <input
                                         type="text"
                                         value={newTitle}
                                         onChange={(e) => setNewTitle(e.target.value)}
                                         placeholder="Nombre de la actividad"
                                         autoFocus
-                                        className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200 placeholder:text-zinc-600"
+                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-zinc-400 text-xs font-medium mb-1.5 block">Descripción</label>
+                                    <label className="text-[var(--color-text-muted)] text-xs font-medium mb-[var(--space-1-5)] block">Descripción</label>
                                     <input
                                         type="text"
                                         value={newDescription}
                                         onChange={(e) => setNewDescription(e.target.value)}
                                         placeholder="Descripción opcional"
-                                        className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200 placeholder:text-zinc-600"
+                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </div>
-                                <div className="flex gap-2 pt-1">
+                                <div className="flex gap-[var(--space-2)] pt-[var(--space-1)]">
                                     <button
                                         type="submit"
                                         disabled={adding}
-                                        className="text-sm bg-emerald-500 text-zinc-950 font-medium px-4 py-2 rounded-lg hover:bg-emerald-400 transition-colors duration-200 disabled:opacity-50"
+                                        className="text-sm bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:opacity-50"
                                     >
                                         {adding ? 'Guardando...' : 'Guardar'}
                                     </button>
@@ -175,7 +175,7 @@ const Settings = () => {
                                             setNewTitle('')
                                             setNewDescription('')
                                         }}
-                                        className="text-sm text-zinc-500 hover:text-zinc-300 px-4 py-2 rounded-lg transition-colors duration-200"
+                                        className="text-sm text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] transition-colors duration-[var(--transition-base)]"
                                     >
                                         Cancelar
                                     </button>
@@ -192,7 +192,7 @@ const Settings = () => {
                             description='Agrega tus rutinas diarias con el botón "Nueva"'
                         />
                     ) : (
-                        <div className="flex flex-col gap-2.5">
+                        <div className="flex flex-col gap-[var(--space-2-5)]">
                             {activities.map((activity, index) => (
                                 <motion.div
                                     key={activity.id}
@@ -204,37 +204,37 @@ const Settings = () => {
                                         ease: [0.23, 1, 0.32, 1]
                                     }}
                                     className={`
-                                        bg-zinc-900/40 border border-zinc-800/50 rounded-xl p-4 transition-opacity duration-200
+                                        bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-4)] transition-opacity duration-[var(--transition-base)]
                                         ${!activity.is_active ? 'opacity-45' : ''}
                                     `}
                                 >
                                     {/* Edit mode */}
                                     {editingId === activity.id ? (
-                                        <div className="flex flex-col gap-3">
+                                        <div className="flex flex-col gap-[var(--space-3)]">
                                             <input
                                                 type="text"
                                                 value={editTitle}
                                                 onChange={(e) => setEditTitle(e.target.value)}
                                                 autoFocus
-                                                className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200"
+                                                className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)]"
                                             />
                                             <input
                                                 type="text"
                                                 value={editDescription}
                                                 onChange={(e) => setEditDescription(e.target.value)}
                                                 placeholder="Descripción opcional"
-                                                className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200 placeholder:text-zinc-600"
+                                                className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
                                             />
-                                            <div className="flex gap-2">
+                                            <div className="flex gap-[var(--space-2)]">
                                                 <button
                                                     onClick={() => handleSaveEdit(activity.id)}
-                                                    className="text-xs bg-emerald-500 text-zinc-950 font-medium px-3 py-1.5 rounded-lg hover:bg-emerald-400 transition-colors duration-200"
+                                                    className="text-xs bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)]"
                                                 >
                                                     Guardar
                                                 </button>
                                                 <button
                                                     onClick={() => setEditingId(null)}
-                                                    className="text-xs text-zinc-500 hover:text-zinc-300 px-3 py-1.5 rounded-lg transition-colors duration-200"
+                                                    className="text-xs text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] transition-colors duration-[var(--transition-base)]"
                                                 >
                                                     Cancelar
                                                 </button>
@@ -242,26 +242,26 @@ const Settings = () => {
                                         </div>
                                     ) : (
                                         /* View mode */
-                                        <div className="flex items-center gap-3">
+                                        <div className="flex items-center gap-[var(--space-3)]">
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-zinc-200 text-sm font-medium truncate">{activity.title}</p>
+                                                <p className="text-[var(--color-text-secondary)] text-sm font-medium truncate">{activity.title}</p>
                                                 {activity.description && (
-                                                    <p className="text-zinc-600 text-xs mt-0.5 truncate">{activity.description}</p>
+                                                    <p className="text-[var(--color-text-disabled)] text-xs mt-[var(--space-0-5)] truncate">{activity.description}</p>
                                                 )}
                                             </div>
-                                            <div className="flex items-center gap-1.5 flex-shrink-0">
+                                            <div className="flex items-center gap-[var(--space-1-5)] flex-shrink-0">
                                                 <button
                                                     onClick={() => handleStartEdit(activity)}
-                                                    className="p-1.5 text-zinc-600 hover:text-zinc-300 rounded-md hover:bg-zinc-800/60 transition-colors duration-200"
+                                                    className="p-[var(--space-1-5)] text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] rounded-md hover:bg-[var(--color-bg-surface)] transition-colors duration-[var(--transition-base)]"
                                                     title="Editar"
                                                 >
                                                     <Pencil className="w-3.5 h-3.5" strokeWidth={1.5} />
                                                 </button>
                                                 <button
                                                     onClick={() => handleToggleActive(activity)}
-                                                    className={`p-1.5 rounded-md transition-colors duration-200 ${activity.is_active
-                                                        ? 'text-emerald-400 hover:bg-emerald-400/10'
-                                                        : 'text-zinc-600 hover:bg-zinc-800/60 hover:text-zinc-400'
+                                                    className={`p-[var(--space-1-5)] rounded-md transition-colors duration-[var(--transition-base)] ${activity.is_active
+                                                        ? 'text-[var(--color-accent-subtle)] hover:bg-[var(--color-accent-bg)]'
+                                                        : 'text-[var(--color-text-disabled)] hover:bg-[var(--color-bg-surface)] hover:text-[var(--color-text-muted)]'
                                                     }`}
                                                     title={activity.is_active ? 'Desactivar' : 'Activar'}
                                                 >
@@ -273,7 +273,7 @@ const Settings = () => {
                                                 </button>
                                                 <button
                                                     onClick={() => handleDeleteClick(activity.id)}
-                                                    className="p-1.5 text-zinc-700 hover:text-red-400 rounded-md hover:bg-red-400/10 transition-colors duration-200"
+                                                    className="p-[var(--space-1-5)] text-[var(--color-zinc-700)] hover:text-[var(--color-error)] rounded-md hover:bg-[var(--color-error-bg)] transition-colors duration-[var(--transition-base)]"
                                                     title="Eliminar"
                                                 >
                                                     <Trash2 className="w-3.5 h-3.5" strokeWidth={1.5} />

@@ -47,20 +47,177 @@
 
 /* --- Design Tokens --- */
 :root {
-  /* Easing */
-  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  /* === Raw Color Scale (Base Colors) === */
+  
+  /* Zinc (Neutral) Scale */
+  --color-zinc-950: #09090b;
+  --color-zinc-900: #18181b;
+  --color-zinc-800: #27272a;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-600: #52525b;
+  --color-zinc-500: #71717a;
+  --color-zinc-400: #a1a1aa;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-100: #f4f4f5;
+  
+  /* Emerald (Accent) Scale */
+  --color-emerald-950: #022c22;
+  --color-emerald-500: #10b981;
+  --color-emerald-400: #34d399;
+  --color-emerald-300: #6ee7b7;
+  --color-emerald-200: #a7f3d0;
+  --color-emerald-50: #ecfdf5;
+  
+  /* Semantic Raw Colors */
+  --color-amber-400: #fbbf24;
+  --color-red-500: #ef4444;
+  --color-red-400: #f87171;
 
-  /* Radius scale */
+  /* === Resolved RGBA Color Variants === */
+  
+  /* Emerald variants */
+  --color-emerald-500-8: rgba(16, 185, 129, 0.08);
+  --color-emerald-500-10: rgba(16, 185, 129, 0.1);
+  --color-emerald-500-20: rgba(16, 185, 129, 0.2);
+  --color-emerald-500-25: rgba(16, 185, 129, 0.25);
+  --color-emerald-500-50: rgba(16, 185, 129, 0.5);
+  --color-emerald-400-8: rgba(52, 211, 153, 0.08);
+  --color-emerald-400-10: rgba(52, 211, 153, 0.1);
+  --color-emerald-400-15: rgba(52, 211, 153, 0.15);
+  --color-emerald-400-25: rgba(52, 211, 153, 0.25);
+  --color-emerald-950-20: rgba(2, 44, 34, 0.2);
+  --color-emerald-900-40: rgba(6, 78, 59, 0.4);
+  
+  /* Amber variants */
+  --color-amber-400-8: rgba(251, 191, 36, 0.08);
+  --color-amber-400-10: rgba(251, 191, 36, 0.1);
+  --color-amber-400-15: rgba(251, 191, 36, 0.15);
+  
+  /* Red variants */
+  --color-red-400-8: rgba(248, 113, 113, 0.08);
+  --color-red-400-10: rgba(248, 113, 113, 0.1);
+  --color-red-400-15: rgba(248, 113, 113, 0.15);
+  --color-red-500-10: rgba(239, 68, 68, 0.1);
+  --color-red-500-20: rgba(239, 68, 68, 0.2);
+  
+  /* Zinc variants */
+  --color-zinc-800-60: rgba(39, 39, 42, 0.6);
+  --color-zinc-800-80: rgba(39, 39, 42, 0.8);
+  --color-zinc-900-40: rgba(24, 24, 27, 0.4);
+  --color-zinc-900-60: rgba(24, 24, 27, 0.6);
+  --color-zinc-900-90: rgba(24, 24, 27, 0.9);
+  --color-zinc-950-20: rgba(9, 9, 11, 0.2);
+  --color-zinc-950-25: rgba(9, 9, 11, 0.25);
+  --color-zinc-950-80: rgba(9, 9, 11, 0.8);
+
+  /* === Semantic Aliases === */
+  
+  /* Backgrounds */
+  --color-bg: var(--color-zinc-950);
+  --color-bg-surface: var(--color-zinc-900-60);
+  --color-bg-elevated: var(--color-zinc-900-40);
+  --color-bg-card: var(--color-zinc-900-40);
+  --color-bg-input: var(--color-zinc-800-60);
+  --color-bg-nav-active: var(--color-zinc-800-60);
+  
+  /* Text */
+  --color-text-primary: var(--color-zinc-100);
+  --color-text-secondary: var(--color-zinc-200);
+  --color-text-tertiary: var(--color-zinc-300);
+  --color-text-muted: var(--color-zinc-400);
+  --color-text-disabled: var(--color-zinc-500);
+  --color-text-placeholder: var(--color-zinc-600);
+  
+  /* Borders */
+  --color-border: var(--color-zinc-800-60);
+  --color-border-subtle: var(--color-zinc-800-60);
+  --color-border-hover: var(--color-zinc-700);
+  --color-border-focus: var(--color-emerald-500-50);
+  
+  /* Accent (Emerald-based) */
+  --color-accent: var(--color-emerald-500);
+  --color-accent-hover: var(--color-emerald-400);
+  --color-accent-subtle: var(--color-emerald-400);
+  --color-accent-bg: var(--color-emerald-500-10);
+  --color-accent-bg-hover: var(--color-emerald-500-20);
+  --color-accent-border: var(--color-emerald-500-20);
+  --color-accent-border-hover: var(--color-emerald-500-25);
+  --color-accent-ring: var(--color-emerald-500-20);
+  --color-accent-text: var(--color-emerald-400);
+  --color-accent-text-hover: var(--color-emerald-300);
+  --color-accent-selected: var(--color-emerald-400);
+  --color-accent-selected-bg: var(--color-emerald-500-8);
+  --color-accent-selected-border: var(--color-emerald-500-25);
+  --color-accent-selected-ring: var(--color-emerald-500-10);
+  --color-accent-dark: var(--color-emerald-950);
+  --color-accent-dark-bg: var(--color-emerald-950-25);
+  --color-accent-dark-bg-subtle: var(--color-emerald-950-20);
+  --color-accent-dark-border: var(--color-emerald-900-40);
+  --color-accent-light: var(--color-emerald-50);
+  
+  /* Status Colors */
+  --color-success: var(--color-emerald-400);
+  --color-success-bg: var(--color-emerald-400-8);
+  --color-success-border: var(--color-emerald-400-15);
+  --color-warning: var(--color-amber-400);
+  --color-warning-bg: var(--color-amber-400-10);
+  --color-warning-border: var(--color-amber-400-15);
+  --color-warning-text: var(--color-amber-400);
+  --color-error: var(--color-red-400);
+  --color-error-bg: var(--color-red-400-8);
+  --color-error-border: var(--color-red-400-15);
+  --color-error-hover: var(--color-red-400);
+  --color-error-bg-hover: var(--color-red-400-10);
+  
+  /* Focus Ring */
+  --color-focus: var(--color-emerald-400);
+  
+  /* Selection */
+  --color-selection-bg: var(--color-emerald-400-25);
+  --color-selection-text: var(--color-emerald-50);
+  
+  /* Scrollbar */
+  --color-scrollbar-thumb: var(--color-zinc-800);
+  --color-scrollbar-thumb-hover: var(--color-zinc-700);
+
+  /* === Spacing Scale === */
+  --space-0: 0;
+  --space-0-5: 0.125rem;  /* 2px */
+  --space-1: 0.25rem;     /* 4px */
+  --space-1-5: 0.375rem;  /* 6px */
+  --space-2: 0.5rem;      /* 8px */
+  --space-2-5: 0.625rem;  /* 10px */
+  --space-3: 0.75rem;     /* 12px */
+  --space-3-5: 0.875rem;  /* 14px */
+  --space-4: 1rem;        /* 16px */
+  --space-5: 1.25rem;     /* 20px */
+  --space-6: 1.5rem;      /* 24px */
+  --space-8: 2rem;        /* 32px */
+  --space-12: 3rem;       /* 48px */
+  --space-16: 4rem;       /* 64px */
+  
+  /* === Border Radius Scale === */
   --radius-sm: 6px;
   --radius-md: 8px;
   --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
   --radius-full: 9999px;
-
-  /* Transitions */
+  
+  /* === Shadows === */
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  
+  /* === Transitions === */
   --transition-fast: 120ms var(--ease-out);
   --transition-base: 200ms var(--ease-out);
   --transition-slow: 350ms var(--ease-out);
+  --transition-slower: 500ms var(--ease-out);
+  --transition-slowest: 700ms var(--ease-out);
+  
+  /* === Easing === */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 /* --- Base Styles --- */
@@ -78,15 +235,15 @@ html {
 
 body {
   font-family: 'Geist', system-ui, -apple-system, sans-serif;
-  background-color: #09090b; /* zinc-950 */
-  color: #a1a1aa; /* zinc-400 */
+  background-color: var(--color-bg);
+  color: var(--color-text-muted);
   line-height: 1.6;
   margin: 0;
 }
 
 /* --- Focus Styles --- */
 :focus-visible {
-  outline: 2px solid #34d399; /* emerald-400 */
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
@@ -122,7 +279,7 @@ select {
 
 input::placeholder,
 textarea::placeholder {
-  color: #52525b; /* zinc-600 */
+  color: var(--color-text-placeholder);
 }
 
 /* --- Scrollbar (subtle) --- */
@@ -135,18 +292,18 @@ textarea::placeholder {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a; /* zinc-800 */
+  background: var(--color-scrollbar-thumb);
   border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46; /* zinc-700 */
+  background: var(--color-scrollbar-thumb-hover);
 }
 
 /* --- Selection --- */
 ::selection {
-  background: #34d39940; /* emerald-400/25 */
-  color: #ecfdf5; /* emerald-50 */
+  background: var(--color-selection-bg);
+  color: var(--color-selection-text);
 }
 
 /* --- Reduced Motion --- */

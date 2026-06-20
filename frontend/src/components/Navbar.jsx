@@ -43,15 +43,15 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="sticky top-0 z-40 bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/60">
-                <div className="max-w-4xl mx-auto flex items-center justify-between px-4 sm:px-6 h-16">
+            <nav className="sticky top-0 z-40 bg-[var(--color-zinc-950-80)] backdrop-blur-xl border-b border-[var(--color-border)]">
+                <div className="max-w-4xl mx-auto flex items-center justify-between px-[var(--space-4)] sm:px-[var(--space-6)] h-16">
 
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2 group">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center transition-colors duration-200 group-hover:bg-emerald-500/15">
-                            <Timer className="w-4 h-4 text-emerald-400" strokeWidth={2} />
+                        <div className="w-8 h-8 rounded-[var(--radius-lg)] bg-[var(--color-accent-bg)] border border-[var(--color-accent-border)] flex items-center justify-center transition-colors duration-[var(--transition-base)] group-hover:bg-[var(--color-accent-bg-hover)]">
+                            <Timer className="w-4 h-4 text-[var(--color-accent-text)]" strokeWidth={2} />
                         </div>
-                        <span className="text-zinc-100 font-semibold text-sm tracking-tight hidden sm:block">
+                        <span className="text-[var(--color-text-primary)] font-semibold text-sm tracking-tight hidden sm:block">
                             Cronos Flow
                         </span>
                     </Link>
@@ -63,11 +63,11 @@ const Navbar = () => {
                                 key={to}
                                 to={to}
                                 className={`
-                                    relative flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium
+                                    relative flex items-center gap-[var(--space-1-5)] px-[var(--space-3)] py-[var(--space-2)] rounded-[var(--radius-lg)] text-sm font-medium
                                     transition-colors duration-200
                                     ${isActive(to)
-                                        ? 'text-zinc-100 bg-zinc-800/60'
-                                        : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/30'
+                                        ? 'text-[var(--color-text-primary)] bg-[var(--color-bg-nav-active)]'
+                                        : 'text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] hover:bg-[var(--color-zinc-900-40)]'
                                     }
                                 `}
                             >
@@ -80,17 +80,17 @@ const Navbar = () => {
                     {/* User & Logout */}
                     <div className="flex items-center gap-3">
                         {isGuest ? (
-                            <span className="text-amber-400/80 text-xs hidden md:flex items-center gap-1 bg-amber-400/8 border border-amber-400/15 px-2 py-1 rounded-full font-medium">
+                            <span className="text-[var(--color-warning-text)] text-xs hidden md:flex items-center gap-1 bg-[var(--color-warning-bg)] border border-[var(--color-warning-border)] px-[var(--space-2)] py-[var(--space-1)] rounded-[var(--radius-full)] font-medium">
                                 Invitado
                             </span>
                         ) : (
-                            <span className="text-zinc-600 text-xs hidden md:block truncate max-w-[160px]">
+                            <span className="text-[var(--color-text-disabled)] text-xs hidden md:block truncate max-w-[160px]">
                                 {user?.email}
                             </span>
                         )}
                         <button
                             onClick={handleLogoutClick}
-                            className="flex items-center gap-1.5 text-zinc-600 hover:text-zinc-300 transition-colors duration-200 text-sm px-2 py-1.5 rounded-lg hover:bg-zinc-800/40"
+                            className="flex items-center gap-[var(--space-1-5)] text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] transition-colors duration-[var(--transition-base)] text-sm px-[var(--space-2)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-zinc-900-40)]"
                             title="Cerrar sesión"
                         >
                             <LogOut className="w-4 h-4" strokeWidth={1.5} />
@@ -103,30 +103,30 @@ const Navbar = () => {
 
             {/* Guest exit warning modal */}
             {showGuestModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-                    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 max-w-sm w-full relative">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-[var(--space-4)]">
+                    <div className="bg-[var(--color-zinc-900)] border border-[var(--color-zinc-800)] rounded-[var(--radius-xl)] p-[var(--space-6)] max-w-sm w-full relative">
                         <button
                             onClick={() => setShowGuestModal(false)}
-                            className="absolute top-4 right-4 text-zinc-600 hover:text-zinc-300 transition-colors duration-200"
+                            className="absolute top-4 right-4 text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] transition-colors duration-[var(--transition-base)]"
                         >
                             <X className="w-4 h-4" strokeWidth={2} />
                         </button>
 
-                        <div className="w-12 h-12 rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center mb-4">
-                            <AlertTriangle className="w-6 h-6 text-amber-400" strokeWidth={1.5} />
+                        <div className="w-12 h-12 rounded-[var(--radius-full)] bg-[var(--color-warning-bg)] border border-[var(--color-warning-border)] flex items-center justify-center mb-[var(--space-4)]">
+                            <AlertTriangle className="w-6 h-6 text-[var(--color-warning-text)]" strokeWidth={1.5} />
                         </div>
 
-                        <h2 className="text-zinc-100 font-semibold text-base mb-2">
+                        <h2 className="text-[var(--color-text-primary)] font-semibold text-base mb-[var(--space-2)]">
                             Perderás tus datos
                         </h2>
-                        <p className="text-zinc-500 text-sm mb-5 leading-relaxed">
+                        <p className="text-[var(--color-text-disabled)] text-sm mb-[var(--space-5)] leading-relaxed">
                             Estás usando una cuenta de invitado. Si salís ahora, todas tus actividades y registros de prueba se perderán para siempre.
                         </p>
 
                         <div className="flex flex-col gap-2">
                             <button
                                 onClick={handleConfirmExit}
-                                className="w-full bg-emerald-500 text-zinc-950 font-semibold py-2.5 rounded-lg hover:bg-emerald-400 transition-colors duration-200 text-sm"
+                                className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] text-sm"
                             >
                                 Salir de todas formas
                             </button>

@@ -48,27 +48,27 @@ const Confirm = () => {
     const MotionDiv = shouldReduceMotion ? 'div' : motion.div
 
     return (
-        <div className="min-h-[100dvh] bg-zinc-950 flex items-center justify-center px-4">
+        <div className="min-h-[100dvh] bg-[var(--color-bg)] flex items-center justify-center px-[var(--space-4)]">
             <div className="w-full max-w-sm">
 
                 {/* Brand Mark */}
                 <MotionDiv
-                    className="flex flex-col items-center mb-8"
+                    className="flex flex-col items-center mb-[var(--space-8)]"
                     {...(shouldReduceMotion ? {} : {
                         initial: { opacity: 0, y: -8 },
                         animate: { opacity: 1, y: 0 },
                         transition: { duration: 0.5, ease: [0.23, 1, 0.32, 1] }
                     })}
                 >
-                    <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
-                        <Timer className="w-7 h-7 text-emerald-400" strokeWidth={1.5} />
+                    <div className="w-14 h-14 rounded-[var(--radius-2xl)] bg-[var(--color-accent-bg)] border border-[var(--color-accent-border)] flex items-center justify-center mb-[var(--space-4)]">
+                        <Timer className="w-7 h-7 text-[var(--color-accent-text)]" strokeWidth={1.5} />
                     </div>
-                    <h1 className="text-xl font-semibold text-zinc-100 tracking-tight">Cronos Flow</h1>
+                    <h1 className="text-xl font-semibold text-[var(--color-text-primary)] tracking-tight">Cronos Flow</h1>
                 </MotionDiv>
 
                 {/* Status Card */}
                 <MotionDiv
-                    className="bg-zinc-900/60 border border-zinc-800/60 rounded-xl p-8 text-center"
+                    className="bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-8)] text-center"
                     {...(shouldReduceMotion ? {} : {
                         initial: { opacity: 0, y: 16 },
                         animate: { opacity: 1, y: 0 },
@@ -83,20 +83,20 @@ const Confirm = () => {
 
                     {status === 'success' && (
                         <div className="flex flex-col items-center gap-4">
-                            <div className="w-14 h-14 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                                <CheckCircle2 className="w-7 h-7 text-emerald-400" strokeWidth={1.5} />
+                            <div className="w-14 h-14 rounded-[var(--radius-full)] bg-[var(--color-accent-bg)] border border-[var(--color-accent-border)] flex items-center justify-center">
+                                <CheckCircle2 className="w-7 h-7 text-[var(--color-accent-text)]" strokeWidth={1.5} />
                             </div>
                             <div>
-                                <h2 className="text-zinc-100 font-semibold text-lg mb-2">
+                                <h2 className="text-[var(--color-text-primary)] font-semibold text-lg mb-[var(--space-2)]">
                                     ¡Email confirmado!
                                 </h2>
-                                <p className="text-zinc-500 text-sm">
+                                <p className="text-[var(--color-text-disabled)] text-sm">
                                     Tu cuenta está lista. Redirigiendo al login...
                                 </p>
                             </div>
-                            <div className="w-full bg-zinc-800/80 rounded-full h-1 overflow-hidden mt-2">
+                            <div className="w-full bg-[var(--color-zinc-800-80)] rounded-[var(--radius-full)] h-1 overflow-hidden mt-[var(--space-2)]">
                                 <motion.div
-                                    className="bg-emerald-500 h-1 rounded-full"
+                                    className="bg-[var(--color-accent)] h-1 rounded-[var(--radius-full)]"
                                     initial={{ width: '0%' }}
                                     animate={{ width: '100%' }}
                                     transition={{ duration: 3, ease: 'linear' }}
@@ -107,20 +107,20 @@ const Confirm = () => {
 
                     {status === 'error' && (
                         <div className="flex flex-col items-center gap-4">
-                            <div className="w-14 h-14 rounded-full bg-red-500/10 border border-red-500/20 flex items-center justify-center">
-                                <XCircle className="w-7 h-7 text-red-400" strokeWidth={1.5} />
+                            <div className="w-14 h-14 rounded-[var(--radius-full)] bg-[var(--color-red-500-10)] border border-[var(--color-red-500-20)] flex items-center justify-center">
+                                <XCircle className="w-7 h-7 text-[var(--color-error)]" strokeWidth={1.5} />
                             </div>
                             <div>
-                                <h2 className="text-zinc-100 font-semibold text-lg mb-2">
+                                <h2 className="text-[var(--color-text-primary)] font-semibold text-lg mb-[var(--space-2)]">
                                     Enlace inválido
                                 </h2>
-                                <p className="text-zinc-500 text-sm mb-4">
+                                <p className="text-[var(--color-text-disabled)] text-sm mb-[var(--space-4)]">
                                     El enlace expiró o ya fue usado.
                                 </p>
                             </div>
                             <button
                                 onClick={() => navigate('/login')}
-                                className="text-emerald-400 hover:text-emerald-300 text-sm transition-colors duration-200"
+                                className="text-[var(--color-accent-text)] hover:text-[var(--color-accent-text-hover)] text-sm transition-colors duration-[var(--transition-base)]"
                             >
                                 Volver al login
                             </button>

@@ -19,7 +19,7 @@ const AppContent = () => {
 
   if (loading) {
     return (
-      <div className="min-h-[100dvh] bg-zinc-950 flex items-center justify-center">
+      <div className="min-h-[100dvh] bg-[var(--color-bg)] flex items-center justify-center">
         <LoadingSpinner message="Cargando..." size="large" />
       </div>
     )

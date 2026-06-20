@@ -8,13 +8,13 @@ const LoadingSpinner = ({ message = 'Cargando...', size = 'default' }) => {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center gap-3 py-8">
+        <div className="flex flex-col items-center justify-center gap-[var(--space-3)] py-[var(--space-8)]">
             <Loader2
-                className={`${sizeClasses[size]} text-emerald-400 animate-spin-smooth`}
+                className={`${sizeClasses[size]} text-[var(--color-accent-subtle)] animate-spin-smooth`}
                 strokeWidth={2}
             />
             {message && (
-                <p className="text-zinc-500 text-sm">{message}</p>
+                <p className="text-[var(--color-text-disabled)] text-sm">{message}</p>
             )}
         </div>
     )

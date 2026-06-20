@@ -7,7 +7,7 @@ const ProtectedRoute = ({ children }) => {
 
     if (loading) {
         return (
-            <div className="min-h-[100dvh] flex items-center justify-center bg-zinc-950">
+            <div className="min-h-[100dvh] flex items-center justify-center bg-[var(--color-bg)]">
                 <LoadingSpinner message="Cargando..." />
             </div>
         )

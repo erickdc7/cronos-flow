@@ -67,10 +67,10 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
     
     const content = (
         <div className={`
-            group rounded-xl border p-4 transition-all duration-200
+            group rounded-[var(--radius-xl)] border p-[var(--space-4)] transition-all duration-[var(--transition-base)]
             ${entry.done
                 ? 'bg-emerald-950/20 border-emerald-900/40'
-                : 'bg-zinc-900/60 border-zinc-800/60 hover:border-zinc-700/60'
+                : 'bg-[var(--color-bg-surface)] border-[var(--color-border)] hover:border-[var(--color-border-hover)]'
             }
         `}>
             {/* Main row */}
@@ -79,11 +79,11 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                     onClick={handleToggle}
                     disabled={loading}
                     className={`
-                        w-[22px] h-[22px] rounded-full border-2 flex items-center justify-center
-                        transition-all duration-200 flex-shrink-0
+                        w-[22px] h-[22px] rounded-[var(--radius-full)] border-2 flex items-center justify-center
+                        transition-all duration-[var(--transition-base)] flex-shrink-0
                         ${entry.done
-                            ? 'bg-emerald-500 border-emerald-500'
-                            : 'border-zinc-600 hover:border-emerald-400'
+                            ? 'bg-[var(--color-accent)] border-[var(--color-accent)]'
+                            : 'border-[var(--color-text-disabled)] hover:border-[var(--color-accent-subtle)]'
                         }
                         ${loading ? 'opacity-50' : ''}
                     `}
@@ -95,14 +95,14 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                 </button>
 
                 <span className={`
-                    flex-1 text-sm font-medium transition-all duration-200
-                    ${entry.done ? 'line-through text-zinc-600' : 'text-zinc-200'}
+                    flex-1 text-sm font-medium transition-all duration-[var(--transition-base)]
+                    ${entry.done ? 'line-through text-[var(--color-text-disabled)]' : 'text-[var(--color-text-secondary)]'}
                 `}>
                     {entry.title}
                 </span>
 
                 {entry.is_temp && (
-                    <span className="flex items-center gap-1 text-[11px] text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full font-medium">
+                    <span className="flex items-center gap-1 text-[11px] text-[var(--color-warning-text)] bg-[var(--color-warning-bg)] px-[var(--space-2)] py-[var(--space-0-5)] rounded-[var(--radius-full)] font-medium">
                         <Zap className="w-3 h-3" strokeWidth={2} />
                         Solo hoy
                     </span>
@@ -110,7 +110,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
 
                 <button
                     onClick={() => setIsEditingNote(!isEditingNote)}
-                    className="text-zinc-600 hover:text-zinc-300 transition-colors duration-200 p-1 rounded-md hover:bg-zinc-800/60"
+                    className="text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] transition-colors duration-[var(--transition-base)] p-1 rounded-[var(--radius-md)] hover:bg-[var(--color-bg-surface)]"
                     title={entry.note ? 'Editar nota' : 'Agregar nota'}
                 >
                     <FileText className="w-3.5 h-3.5" strokeWidth={1.5} />
@@ -120,7 +120,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                 {entry.is_temp && (
                     <button
                         onClick={handleDeleteClick}
-                        className="text-zinc-700 hover:text-red-400 transition-colors duration-200 p-1 rounded-md hover:bg-red-400/10"
+                        className="text-[var(--color-text-disabled)] hover:text-[var(--color-error)] transition-colors duration-[var(--transition-base)] p-1 rounded-[var(--radius-md)] hover:bg-[var(--color-error-bg)]"
                         title="Eliminar actividad"
                     >
                         <X className="w-3.5 h-3.5" strokeWidth={2} />
@@ -138,7 +138,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                         transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
                         className="overflow-hidden"
                     >
-                        <div className="mt-3 pl-[34px]">
+                        <div className="mt-[var(--space-3)] pl-[34px]">
                             <textarea
                                 ref={noteRef}
                                 onKeyDown={handleKeyDown}
@@ -146,12 +146,12 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                                 onChange={(e) => setNote(e.target.value)}
                                 placeholder="Escribe una anotación..."
                                 rows={2}
-                                className="w-full bg-zinc-800/60 text-zinc-200 text-sm rounded-lg px-3 py-2 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 resize-none transition-colors duration-200 placeholder:text-zinc-600"
+                                className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-secondary)] text-sm rounded-[var(--radius-lg)] px-[var(--space-3)] py-[var(--space-2)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] resize-none transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
                             />
-                            <div className="flex gap-2 mt-2">
+                            <div className="flex gap-[var(--space-2)] mt-[var(--space-2)]">
                                 <button
                                     onClick={handleSaveNote}
-                                    className="text-xs bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-medium px-3 py-1.5 rounded-lg transition-colors duration-200"
+                                    className="text-xs bg-[var(--color-accent)] hover:bg-[var(--color-accent-hover)] text-[var(--color-zinc-950)] font-medium px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] transition-colors duration-[var(--transition-base)]"
                                 >
                                     Guardar
                                 </button>
@@ -160,7 +160,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                                         setNote(entry.note || '')
                                         setIsEditingNote(false)
                                     }}
-                                    className="text-xs text-zinc-500 hover:text-zinc-300 px-3 py-1.5 rounded-lg transition-colors duration-200"
+                                    className="text-xs text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)] transition-colors duration-[var(--transition-base)]"
                                 >
                                     Cancelar
                                 </button>
@@ -172,7 +172,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
 
             {/* Saved note display */}
             {!isEditingNote && entry.note && (
-                <p className="mt-2 pl-[34px] text-xs text-zinc-500 italic leading-relaxed">
+                <p className="mt-[var(--space-2)] pl-[34px] text-xs text-[var(--color-text-disabled)] italic leading-relaxed">
                     {entry.note}
                 </p>
             )}

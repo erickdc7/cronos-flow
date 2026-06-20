@@ -27,7 +27,7 @@ const ProgressRing = ({ percentage = 0, size = 80, strokeWidth = 6 }) => {
                     cy={size / 2}
                     r={radius}
                     fill="none"
-                    stroke="#27272a"
+                    stroke="var(--color-zinc-800)"
                     strokeWidth={strokeWidth}
                 />
                 {/* Progress circle */}
@@ -36,7 +36,7 @@ const ProgressRing = ({ percentage = 0, size = 80, strokeWidth = 6 }) => {
                     cy={size / 2}
                     r={radius}
                     fill="none"
-                    stroke="#34d399"
+                    stroke="var(--color-accent-subtle)"
                     strokeWidth={strokeWidth}
                     strokeLinecap="round"
                     strokeDasharray={circumference}
@@ -46,7 +46,7 @@ const ProgressRing = ({ percentage = 0, size = 80, strokeWidth = 6 }) => {
             </svg>
             {/* Center text */}
             <div className="absolute inset-0 flex items-center justify-center">
-                <span className="font-mono text-sm font-medium text-zinc-200 tabular-nums">
+                <span className="font-mono text-sm font-medium text-[var(--color-text-secondary)] tabular-nums">
                     {percentage}%
                 </span>
             </div>

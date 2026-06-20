@@ -99,18 +99,18 @@ const History = () => {
 
     if (loading && logs.length === 0) {
         return (
-            <div className="min-h-[100dvh] flex items-center justify-center bg-zinc-950">
+            <div className="min-h-[100dvh] flex items-center justify-center bg-[var(--color-bg)]">
                 <LoadingSpinner message="Cargando historial..." />
             </div>
         )
     }
 
     return (
-        <div className="min-h-[100dvh] bg-zinc-950 px-4 py-6">
+        <div className="min-h-[100dvh] bg-[var(--color-bg)] px-[var(--space-4)] py-[var(--space-6)]">
             <PageTransition>
                 <div className="max-w-4xl mx-auto">
 
-                    <h1 className="text-zinc-100 text-2xl font-semibold tracking-tight mb-6">Historial</h1>
+                    <h1 className="text-[var(--color-text-primary)] text-2xl font-semibold tracking-tight mb-[var(--space-6)]">Historial</h1>
 
                     {logs.length === 0 ? (
                         <EmptyState
@@ -119,7 +119,7 @@ const History = () => {
                             description="Cuando completes tu primer día, aparecerá aquí"
                         />
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-5">
+                        <div className="grid grid-cols-1 md:grid-cols-[1fr_1.2fr] gap-[var(--space-5)]">
 
                             {/* Day list */}
                             <div>
@@ -130,7 +130,7 @@ const History = () => {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={shouldReduceMotion ? undefined : { opacity: 0, y: -6 }}
                                         transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-                                        className={`flex flex-col gap-2 transition-opacity duration-200 ${loading ? 'opacity-60 pointer-events-none' : ''}`}
+                                        className={`flex flex-col gap-[var(--space-2)] transition-opacity duration-[var(--transition-base)] ${loading ? 'opacity-60 pointer-events-none' : ''}`}
                                     >
                                         {logs.map((log, index) => {
                                             const isSelected = selectedLog?.date === log.date
@@ -147,29 +147,29 @@ const History = () => {
                                                         ease: [0.23, 1, 0.32, 1]
                                                     }}
                                                     className={`
-                                                        text-left rounded-xl p-3.5 transition-all duration-200 group
+                                                        text-left rounded-[var(--radius-xl)] p-[var(--space-3-5)] transition-all duration-200 group
                                                         ${isSelected
-                                                            ? 'bg-emerald-500/8 border border-emerald-500/25 ring-1 ring-emerald-500/10'
-                                                            : 'bg-zinc-900/40 border border-zinc-800/50 hover:border-zinc-700/60 hover:bg-zinc-900/60'
+                                                            ? 'bg-[var(--color-accent-selected-bg)] border border-[var(--color-accent-selected-border)] ring-1 ring-[var(--color-accent-selected-ring)]'
+                                                            : 'bg-[var(--color-bg-elevated)] border border-[var(--color-border)] hover:border-[var(--color-border-hover)] hover:bg-[var(--color-bg-surface)]'
                                                         }
                                                     `}
                                                 >
-                                                    <div className="flex items-center justify-between mb-2">
-                                                        <p className={`text-sm font-medium capitalize ${isSelected ? 'text-emerald-300' : 'text-zinc-300'}`}>
+                                                    <div className="flex items-center justify-between mb-[var(--space-2)]">
+                                                        <p className={`text-sm font-medium capitalize ${isSelected ? 'text-[var(--color-accent-text-hover)]' : 'text-[var(--color-text-tertiary)'}`}>
                                                             {formatDateShort(log.date)}
                                                         </p>
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="font-mono text-xs text-zinc-500 tabular-nums">
+                                                        <div className="flex items-center gap-[var(--space-2)]">
+                                                            <span className="font-mono text-xs text-[var(--color-text-disabled)] tabular-nums">
                                                                 {log.completed}/{log.total}
                                                             </span>
-                                                            <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-200 ${isSelected ? 'text-emerald-400 translate-x-0.5' : 'text-zinc-700 group-hover:text-zinc-500'}`} strokeWidth={2} />
+                                                            <ChevronRight className={`w-3.5 h-3.5 transition-transform duration-[var(--transition-base)] ${isSelected ? 'text-[var(--color-accent-subtle)] translate-x-0.5' : 'text-[var(--color-zinc-700)] group-hover:text-[var(--color-text-disabled)]'}`} strokeWidth={2} />
                                                         </div>
                                                     </div>
 
                                                     {/* Progress bar */}
-                                                    <div className="bg-zinc-800/80 rounded-full h-1 overflow-hidden">
+                                                    <div className="bg-[var(--color-zinc-800-80)] rounded-[var(--radius-full)] h-1 overflow-hidden">
                                                         <div
-                                                            className={`h-1 rounded-full transition-all duration-500 ${isSelected ? 'bg-emerald-400' : 'bg-emerald-500/60'}`}
+                                                            className={`h-1 rounded-[var(--radius-full)] transition-all duration-[var(--transition-slower)] ${isSelected ? 'bg-[var(--color-accent-selected)]' : 'bg-[var(--color-accent)]'}`}
                                                             style={{ width: `${pct}%` }}
                                                         />
                                                     </div>
@@ -180,7 +180,7 @@ const History = () => {
                                 </AnimatePresence>
 
                                 {pagination.totalPages > 1 && (
-                                    <div className="flex items-center justify-between gap-3 mt-3">
+                                    <div className="flex items-center justify-between gap-[var(--space-3)] mt-[var(--space-3)]">
                                         <button
                                             type="button"
                                             onClick={handlePreviousPage}
@@ -191,12 +191,12 @@ const History = () => {
                                             <ChevronLeft className="w-4 h-4" strokeWidth={2} />
                                         </button>
 
-                                        <div className="flex items-center gap-2 min-w-0">
-                                            <span className="font-mono text-xs text-zinc-500 tabular-nums whitespace-nowrap">
+                                        <div className="flex items-center gap-[var(--space-2)] min-w-0">
+                                            <span className="font-mono text-xs text-[var(--color-text-disabled)] tabular-nums whitespace-nowrap">
                                                 {pagination.page}/{pagination.totalPages}
                                             </span>
-                                            <span className="text-xs text-zinc-700">/</span>
-                                            <span className="text-xs text-zinc-600 whitespace-nowrap">
+                                            <span className="text-xs text-[var(--color-zinc-700)]">/</span>
+                                            <span className="text-xs text-[var(--color-text-disabled)] whitespace-nowrap">
                                                 {pagination.total} d&iacute;as
                                             </span>
                                         </div>
@@ -223,7 +223,7 @@ const History = () => {
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
                                             exit={{ opacity: 0 }}
-                                            className="bg-zinc-900/40 border border-zinc-800/50 rounded-xl p-5 flex items-center justify-center h-48"
+                                            className="bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-5)] flex items-center justify-center h-48"
                                         >
                                             <LoadingSpinner message="" size="small" />
                                         </motion.div>
@@ -234,71 +234,71 @@ const History = () => {
                                             animate={{ opacity: 1, x: 0 }}
                                             exit={{ opacity: 0, x: -8 }}
                                             transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-                                            className="bg-zinc-900/40 border border-zinc-800/50 rounded-xl p-5 sticky top-20"
+                                            className="bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-5)] sticky top-20"
                                         >
-                                            <h2 className="text-zinc-200 font-medium text-sm mb-4 capitalize">
+                                            <h2 className="text-[var(--color-text-secondary)] font-medium text-sm mb-[var(--space-4)] capitalize">
                                                 {formatDate(selectedLog.date)}
                                             </h2>
 
                                             {selectedEntries.length === 0 ? (
-                                                <div className="flex flex-col items-center text-center py-6">
-                                                    <div className="w-11 h-11 rounded-full bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center mb-3">
-                                                        <ListPlus className="w-5 h-5 text-zinc-500" strokeWidth={1.5} />
+                                                <div className="flex flex-col items-center text-center py-[var(--space-6)]">
+                                                    <div className="w-11 h-11 rounded-[var(--radius-full)] bg-[var(--color-zinc-800-60)] border border-[var(--color-zinc-700-50)] flex items-center justify-center mb-[var(--space-3)]">
+                                                        <ListPlus className="w-5 h-5 text-[var(--color-text-disabled)]" strokeWidth={1.5} />
                                                     </div>
                                                     {isToday(selectedLog.date) ? (
                                                         <>
-                                                            <p className="text-zinc-300 text-sm font-medium mb-1">
+                                                            <p className="text-[var(--color-text-tertiary)] text-sm font-medium mb-[var(--space-1)]">
                                                                 Aún no registras actividades hoy
                                                             </p>
-                                                            <p className="text-zinc-600 text-xs mb-4 leading-relaxed max-w-[220px]">
+                                                            <p className="text-[var(--color-text-disabled)] text-xs mb-[var(--space-4)] leading-relaxed max-w-[220px]">
                                                                 No tienes actividades configuradas todavía. Agrega tus rutinas diarias para empezar a llevar un registro.
                                                             </p>
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <p className="text-zinc-300 text-sm font-medium mb-1">
+                                                            <p className="text-[var(--color-text-tertiary)] text-sm font-medium mb-[var(--space-1)]">
                                                                 No se registró ninguna actividad
                                                             </p>
-                                                            <p className="text-zinc-600 text-xs mb-4 leading-relaxed max-w-[220px]">
+                                                            <p className="text-[var(--color-text-disabled)] text-xs mb-[var(--space-4)] leading-relaxed max-w-[220px]">
                                                                 Este día no tenías actividades configuradas. Agrega tus rutinas diarias para empezar a llevar un registro.
                                                             </p>
                                                         </>
                                                     )}
                                                     <Link
                                                         to="/settings"
-                                                        className="text-emerald-400 hover:text-emerald-300 text-xs font-medium transition-colors duration-200 bg-emerald-400/8 border border-emerald-400/15 px-3 py-1.5 rounded-lg"
+                                                        className="text-[var(--color-accent-text)] hover:text-[var(--color-accent-text-hover)] text-xs font-medium transition-colors duration-[var(--transition-base)] bg-[var(--color-success-bg)] border border-[var(--color-success-border)] px-[var(--space-3)] py-[var(--space-1-5)] rounded-[var(--radius-lg)]"
                                                     >
                                                         Ir a Actividades
                                                     </Link>
                                                 </div>
                                             ) : (
-                                                <div className="flex flex-col gap-2">
+                                                <div className="flex flex-col gap-[var(--space-2)]">
                                                     {selectedEntries.map(entry => (
                                                         <div
                                                             key={entry.id}
                                                             className={`
-                                                            flex items-start gap-2.5 p-2.5 rounded-lg transition-colors duration-150
-                                                            ${entry.done ? 'bg-emerald-950/25' : 'bg-zinc-800/30'}
+                                                            flex items-start gap-[var(--space-2-5)] p-[var(--space-2-5)] rounded-[var(--radius-lg)] transition-colors duration-150
+                                                            ${entry.done ? 'bg-emerald-950/25' : 'bg-[var(--color-zinc-800-30)]'}
                                                         `}
                                                         >
                                                             {entry.done ? (
-                                                                <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
+                                                                <CheckCircle2 className="w-4 h-4 text-[var(--color-accent-subtle)] flex-shrink-0 mt-0.5" strokeWidth={2} />
                                                             ) : (
-                                                                <Circle className="w-4 h-4 text-zinc-600 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
+                                                                <Circle className="w-4 h-4 text-[var(--color-text-disabled)] flex-shrink-0 mt-0.5" strokeWidth={1.5} />
                                                             )}
                                                             <div className="flex-1 min-w-0">
-                                                                <div className="flex items-center gap-2 flex-wrap">
-                                                                    <p className={`text-sm font-medium ${entry.done ? 'text-zinc-500 line-through' : 'text-zinc-200'}`}>
+                                                                <div className="flex items-center gap-[var(--space-2)] flex-wrap">
+                                                                    <p className={`text-sm font-medium ${entry.done ? 'text-[var(--color-text-disabled)] line-through' : 'text-[var(--color-text-secondary)]'}`}>
                                                                         {entry.title}
                                                                     </p>
                                                                     {entry.is_temp && (
-                                                                        <span className="text-xs text-amber-400/80 bg-amber-400/8 border border-amber-400/15 px-1.5 py-0.5 rounded-full font-medium leading-none">
+                                                                        <span className="text-xs text-[var(--color-warning-text)] bg-[var(--color-warning-bg)] border border-[var(--color-warning-border)] px-[var(--space-1-5)] py-[var(--space-0-5)] rounded-[var(--radius-full)] font-medium leading-none">
                                                                             Solo ese día
                                                                         </span>
                                                                     )}
                                                                 </div>
                                                                 {entry.note && (
-                                                                    <p className="text-xs text-zinc-600 mt-1 italic leading-relaxed">
+                                                                    <p className="text-xs text-[var(--color-text-disabled)] mt-[var(--space-1)] italic leading-relaxed">
                                                                         {entry.note}
                                                                     </p>
                                                                 )}
@@ -313,9 +313,9 @@ const History = () => {
                                             key="empty"
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
-                                            className="bg-zinc-900/40 border border-zinc-800/50 rounded-xl p-5 flex items-center justify-center h-48"
+                                            className="bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-5)] flex items-center justify-center h-48"
                                         >
-                                            <p className="text-zinc-600 text-sm">
+                                            <p className="text-[var(--color-text-disabled)] text-sm">
                                                 Selecciona un día para ver el detalle
                                             </p>
                                         </motion.div>

@@ -33,7 +33,7 @@ const Login = () => {
 
     if (loading) {
         return (
-            <div className="min-h-[100dvh] flex items-center justify-center bg-zinc-950">
+            <div className="min-h-[100dvh] flex items-center justify-center bg-[var(--color-bg)]">
                 <LoadingSpinner message="Cargando..." />
             </div>
         )
@@ -42,16 +42,16 @@ const Login = () => {
     if (user && !justRegistered && !emailConfirmed) return <Navigate to="/" replace />
 
     if (emailConfirmed) return (
-        <div className="min-h-[100dvh] bg-zinc-950 flex items-center justify-center px-4">
+        <div className="min-h-[100dvh] bg-[var(--color-bg)] flex items-center justify-center px-[var(--space-4)]">
             <div className="w-full max-w-sm text-center">
-                <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 mx-auto">
-                    <Timer className="w-7 h-7 text-emerald-400" strokeWidth={1.5} />
+                <div className="w-14 h-14 rounded-[var(--radius-2xl)] bg-[var(--color-accent-bg)] border border-[var(--color-accent-border)] flex items-center justify-center mb-[var(--space-4)] mx-auto">
+                    <Timer className="w-7 h-7 text-[var(--color-accent-text)]" strokeWidth={1.5} />
                 </div>
-                <h1 className="text-xl font-semibold text-zinc-100 tracking-tight mb-2">Cronos Flow</h1>
-                <div className="bg-zinc-900/60 border border-zinc-800/60 rounded-xl p-6 mt-6">
-                    <CheckCircle2 className="w-10 h-10 text-emerald-400 mx-auto mb-3" strokeWidth={1.5} />
-                    <h2 className="text-zinc-100 font-semibold text-base mb-2">¡Cuenta confirmada!</h2>
-                    <p className="text-zinc-500 text-sm mb-4">Tu email fue verificado correctamente.</p>
+                <h1 className="text-xl font-semibold text-[var(--color-text-primary)] tracking-tight mb-[var(--space-2)]">Cronos Flow</h1>
+                <div className="bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-6)] mt-[var(--space-6)]">
+                    <CheckCircle2 className="w-10 h-10 text-[var(--color-accent-text)] mx-auto mb-[var(--space-3)]" strokeWidth={1.5} />
+                    <h2 className="text-[var(--color-text-primary)] font-semibold text-base mb-[var(--space-2)]">¡Cuenta confirmada!</h2>
+                    <p className="text-[var(--color-text-disabled)] text-sm mb-[var(--space-4)]">Tu email fue verificado correctamente.</p>
                     <button
                         onClick={() => {
                             setJustRegistered(false)
@@ -59,7 +59,7 @@ const Login = () => {
                             setSuccess(null)
                             supabase.auth.signOut()
                         }}
-                        className="w-full bg-emerald-500 text-zinc-950 font-semibold py-2.5 rounded-lg hover:bg-emerald-400 transition-colors duration-200 text-sm"
+                        className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] text-sm"
                     >
                         Ir al login
                     </button>
@@ -143,28 +143,28 @@ const Login = () => {
 
 
     return (
-        <div className="min-h-[100dvh] bg-zinc-950 flex items-center justify-center px-4">
+        <div className="min-h-[100dvh] bg-[var(--color-bg)] flex items-center justify-center px-[var(--space-4)]">
             <div className="w-full max-w-sm">
 
                 {/* Brand Mark */}
                 <MotionDiv
-                    className="flex flex-col items-center mb-8"
+                    className="flex flex-col items-center mb-[var(--space-8)]"
                     {...(shouldReduceMotion ? {} : {
                         initial: { opacity: 0, y: -8 },
                         animate: { opacity: 1, y: 0 },
                         transition: { duration: 0.5, ease: [0.23, 1, 0.32, 1] }
                     })}
                 >
-                    <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4">
-                        <Timer className="w-7 h-7 text-emerald-400" strokeWidth={1.5} />
+                    <div className="w-14 h-14 rounded-[var(--radius-2xl)] bg-[var(--color-accent-bg)] border border-[var(--color-accent-border)] flex items-center justify-center mb-[var(--space-4)]">
+                        <Timer className="w-7 h-7 text-[var(--color-accent-text)]" strokeWidth={1.5} />
                     </div>
-                    <h1 className="text-xl font-semibold text-zinc-100 tracking-tight">Cronos Flow</h1>
-                    <p className="text-zinc-500 text-sm mt-1">Tu registro diario de actividades</p>
+                    <h1 className="text-xl font-semibold text-[var(--color-text-primary)] tracking-tight">Cronos Flow</h1>
+                    <p className="text-[var(--color-text-disabled)] text-sm mt-[var(--space-1)]">Tu registro diario de actividades</p>
                 </MotionDiv>
 
                 {/* Form Card */}
                 <MotionDiv
-                    className="bg-zinc-900/60 border border-zinc-800/60 rounded-xl p-6"
+                    className="bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-6)]"
                     {...(shouldReduceMotion ? {} : {
                         initial: { opacity: 0, y: 16 },
                         animate: { opacity: 1, y: 0 },
@@ -174,10 +174,10 @@ const Login = () => {
                     {isForgotPassword ? (
                         /* ── Forgot Password Form ── */
                         <div>
-                            <h2 className="text-zinc-200 font-medium text-base mb-5">Restablecer contraseña</h2>
-                            <form onSubmit={handleForgotPassword} className="flex flex-col gap-4">
+                            <h2 className="text-[var(--color-text-secondary)] font-medium text-base mb-[var(--space-5)]">Restablecer contraseña</h2>
+                            <form onSubmit={handleForgotPassword} className="flex flex-col gap-[var(--space-4)]">
                                 <div>
-                                    <label className="text-zinc-400 text-xs font-medium mb-1.5 block">Email</label>
+                                    <label className="text-[var(--color-text-muted)] text-xs font-medium mb-[var(--space-1-5)] block">Email</label>
                                     <input
                                         type="email"
                                         value={forgotEmail}
@@ -185,19 +185,19 @@ const Login = () => {
                                         required
                                         placeholder="tu@email.com"
                                         autoFocus
-                                        className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200 placeholder:text-zinc-600"
+                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </div>
 
                                 {error && (
-                                    <div className="flex items-start gap-2 text-red-400 text-sm bg-red-400/8 border border-red-400/15 px-3.5 py-2.5 rounded-lg">
+                                    <div className="flex items-start gap-[var(--space-2)] text-[var(--color-error)] text-sm bg-[var(--color-error-bg)] border border-[var(--color-error-border)] px-[var(--space-3-5)] py-[var(--space-2-5)] rounded-[var(--radius-lg)]">
                                         <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" strokeWidth={2} />
                                         <span>{error}</span>
                                     </div>
                                 )}
 
                                 {success && (
-                                    <div className="flex items-start gap-2 text-emerald-400 text-sm bg-emerald-400/8 border border-emerald-400/15 px-3.5 py-2.5 rounded-lg">
+                                    <div className="flex items-start gap-[var(--space-2)] text-[var(--color-accent-text)] text-sm bg-[var(--color-success-bg)] border border-[var(--color-success-border)] px-[var(--space-3-5)] py-[var(--space-2-5)] rounded-[var(--radius-lg)]">
                                         <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" strokeWidth={2} />
                                         <span>{success}</span>
                                     </div>
@@ -206,7 +206,7 @@ const Login = () => {
                                 <button
                                     type="submit"
                                     disabled={forgotSubmitting}
-                                    className="w-full bg-emerald-500 text-zinc-950 font-semibold py-2.5 rounded-lg hover:bg-emerald-400 transition-colors duration-200 disabled:opacity-50 text-sm"
+                                    className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:opacity-50 text-sm"
                                 >
                                     {forgotSubmitting ? 'Enviando...' : 'Enviar enlace'}
                                 </button>
@@ -218,7 +218,7 @@ const Login = () => {
                                         setError(null)
                                         setSuccess(null)
                                     }}
-                                    className="text-zinc-600 hover:text-zinc-400 text-xs transition-colors duration-200 text-center"
+                                    className="text-[var(--color-text-disabled)] hover:text-[var(--color-text-muted)] text-xs transition-colors duration-[var(--transition-base)] text-center"
                                 >
                                     Volver al login
                                 </button>
@@ -227,58 +227,58 @@ const Login = () => {
                     ) : (
                         /* ── Login / Register Form ── */
                         <>
-                            <h2 className="text-zinc-200 font-medium text-base mb-5">
+                            <h2 className="text-[var(--color-text-secondary)] font-medium text-base mb-[var(--space-5)]">
                                 {isRegister ? 'Crear cuenta' : 'Iniciar sesión'}
                             </h2>
 
-                            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                            <form onSubmit={handleSubmit} className="flex flex-col gap-[var(--space-4)]">
                                 <MotionDiv {...formItemProps(0.15)}>
-                                    <label className="text-zinc-400 text-xs font-medium mb-1.5 block">Email</label>
+                                    <label className="text-[var(--color-text-muted)] text-xs font-medium mb-[var(--space-1-5)] block">Email</label>
                                     <input
                                         type="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
                                         placeholder="tu@email.com"
-                                        className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200 placeholder:text-zinc-600"
+                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </MotionDiv>
 
                                 <MotionDiv {...formItemProps(0.2)}>
-                                    <label className="text-zinc-400 text-xs font-medium mb-1.5 block">Contraseña</label>
+                                    <label className="text-[var(--color-text-muted)] text-xs font-medium mb-[var(--space-1-5)] block">Contraseña</label>
                                     <input
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
                                         required
                                         placeholder="••••••••"
-                                        className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200 placeholder:text-zinc-600"
+                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </MotionDiv>
 
                                 {isRegister && (
                                     <MotionDiv {...formItemProps(0.25)}>
-                                        <label className="text-zinc-400 text-xs font-medium mb-1.5 block">Confirmar contraseña</label>
+                                        <label className="text-[var(--color-text-muted)] text-xs font-medium mb-[var(--space-1-5)] block">Confirmar contraseña</label>
                                         <input
                                             type="password"
                                             value={confirmPassword}
                                             onChange={(e) => setConfirmPassword(e.target.value)}
                                             required={isRegister}
                                             placeholder="••••••••"
-                                            className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm transition-colors duration-200 placeholder:text-zinc-600"
+                                            className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
                                         />
                                     </MotionDiv>
                                 )}
 
                                 {error && (
-                                    <div className="flex items-start gap-2 text-red-400 text-sm bg-red-400/8 border border-red-400/15 px-3.5 py-2.5 rounded-lg">
+                                    <div className="flex items-start gap-[var(--space-2)] text-[var(--color-error)] text-sm bg-[var(--color-error-bg)] border border-[var(--color-error-border)] px-[var(--space-3-5)] py-[var(--space-2-5)] rounded-[var(--radius-lg)]">
                                         <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" strokeWidth={2} />
                                         <span>{error}</span>
                                     </div>
                                 )}
 
                                 {success && (
-                                    <div className="flex items-start gap-2 text-emerald-400 text-sm bg-emerald-400/8 border border-emerald-400/15 px-3.5 py-2.5 rounded-lg">
+                                    <div className="flex items-start gap-[var(--space-2)] text-[var(--color-accent-text)] text-sm bg-[var(--color-success-bg)] border border-[var(--color-success-border)] px-[var(--space-3-5)] py-[var(--space-2-5)] rounded-[var(--radius-lg)]">
                                         <CheckCircle2 className="w-4 h-4 flex-shrink-0 mt-0.5" strokeWidth={2} />
                                         <span>{success}</span>
                                     </div>
@@ -288,7 +288,7 @@ const Login = () => {
                                     <button
                                         type="submit"
                                         disabled={submitting}
-                                        className="w-full bg-emerald-500 text-zinc-950 font-semibold py-2.5 rounded-lg hover:bg-emerald-400 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                                        className="w-full bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-semibold py-[var(--space-2-5)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                                     >
                                         {submitting ? 'Cargando...' : isRegister ? 'Crear cuenta' : 'Entrar'}
                                     </button>
@@ -296,21 +296,21 @@ const Login = () => {
                             </form>
 
                             {!isRegister && (
-                                <p className="text-center mt-3">
+                                <p className="text-center mt-[var(--space-3)]">
                                     <button
                                         onClick={() => {
                                             setIsForgotPassword(true)
                                             setError(null)
                                             setSuccess(null)
                                         }}
-                                        className="text-zinc-600 hover:text-zinc-400 text-xs transition-colors duration-200"
+                                        className="text-[var(--color-text-disabled)] hover:text-[var(--color-text-muted)] text-xs transition-colors duration-[var(--transition-base)]"
                                     >
                                         ¿Olvidaste tu contraseña?
                                     </button>
                                 </p>
                             )}
 
-                            <p className="text-center text-zinc-600 text-sm mt-4">
+                            <p className="text-center text-[var(--color-text-disabled)] text-sm mt-[var(--space-4)]">
                                 {isRegister ? '¿Ya tienes cuenta?' : '¿No tienes cuenta?'}{' '}
                                 <button
                                     onClick={() => {
@@ -318,18 +318,18 @@ const Login = () => {
                                         setError(null)
                                         setSuccess(null)
                                     }}
-                                    className="text-zinc-300 hover:text-emerald-400 transition-colors duration-200 font-medium"
+                                    className="text-[var(--color-text-tertiary)] hover:text-[var(--color-accent-subtle)] transition-colors duration-[var(--transition-base)] font-medium"
                                 >
                                     {isRegister ? 'Inicia sesión' : 'Regístrate'}
                                 </button>
                             </p>
 
                             {!isRegister && (
-                                <div className="mt-5 pt-5 border-t border-zinc-800/60">
+                                <div className="mt-[var(--space-5)] pt-[var(--space-5)] border-t border-[var(--color-border)]">
                                     <button
                                         onClick={handleGuestLogin}
                                         disabled={submitting}
-                                        className="w-full text-zinc-500 hover:text-zinc-300 border border-zinc-800 hover:border-zinc-700 rounded-lg py-2.5 text-sm transition-colors duration-200 disabled:opacity-50"
+                                        className="w-full text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] border border-[var(--color-zinc-800)] hover:border-[var(--color-border-hover)] rounded-[var(--radius-lg)] py-[var(--space-2-5)] text-sm transition-colors duration-[var(--transition-base)] disabled:opacity-50"
                                     >
                                         Probar sin cuenta
                                     </button>

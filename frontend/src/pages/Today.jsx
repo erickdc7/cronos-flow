@@ -31,7 +31,7 @@ const Today = () => {
             particleCount: 120,
             spread: 70,
             origin: { y: 0.6 },
-            colors: ['#34d399', '#10b981', '#6ee7b7', '#a7f3d0']
+            colors: ['var(--color-accent-subtle)', 'var(--color-accent)', 'var(--color-accent-light)', 'var(--color-accent-lighter)']
         })
     }
 
@@ -112,7 +112,7 @@ const Today = () => {
 
     if (loading) {
         return (
-            <div className="min-h-[100dvh] flex items-center justify-center bg-zinc-950">
+            <div className="min-h-[100dvh] flex items-center justify-center bg-[var(--color-bg)]">
                 <LoadingSpinner message="Cargando tu día..." />
             </div>
         )
@@ -120,8 +120,8 @@ const Today = () => {
 
     if (error) {
         return (
-            <div className="min-h-[100dvh] flex items-center justify-center bg-zinc-950">
-                <p className="text-red-400 text-sm">{error}</p>
+            <div className="min-h-[100dvh] flex items-center justify-center bg-[var(--color-bg)]">
+                <p className="text-[var(--color-error)] text-sm">{error}</p>
             </div>
         )
     }
@@ -129,26 +129,26 @@ const Today = () => {
 
 
     return (
-        <div className="min-h-[100dvh] bg-zinc-950 px-4 py-6">
+        <div className="min-h-[100dvh] bg-[var(--color-bg)] px-[var(--space-4)] py-[var(--space-6)]">
             <PageTransition>
                 <div className="max-w-2xl mx-auto">
 
                     {/* Day header */}
-                    <div className="mb-8">
-                        <div className="flex items-start justify-between gap-4">
+                    <div className="mb-[var(--space-8)]">
+                        <div className="flex items-start justify-between gap-[var(--space-4)]">
                             <div className="flex-1">
-                                <p className="text-zinc-600 text-xs font-medium uppercase tracking-wide mb-1 capitalize">{dateLabel}</p>
-                                <h1 className="text-zinc-100 text-2xl font-semibold tracking-tight">Tu día</h1>
+                                <p className="text-[var(--color-text-disabled)] text-xs font-medium uppercase tracking-wide mb-[var(--space-1)] capitalize">{dateLabel}</p>
+                                <h1 className="text-[var(--color-text-primary)] text-2xl font-semibold tracking-tight">Tu día</h1>
 
                                 {/* Linear progress bar */}
-                                <div className="flex items-center gap-3 mt-4">
-                                    <div className="flex-1 bg-zinc-800/80 rounded-full h-1.5 overflow-hidden">
+                                <div className="flex items-center gap-[var(--space-3)] mt-[var(--space-4)]">
+                                    <div className="flex-1 bg-[var(--color-zinc-800-80)] rounded-[var(--radius-full)] h-1.5 overflow-hidden">
                                         <div
-                                            className="bg-emerald-500 h-1.5 rounded-full transition-all duration-700 ease-out"
+                                            className="bg-[var(--color-accent)] h-1.5 rounded-[var(--radius-full)] transition-all duration-[var(--transition-slowest)] ease-out"
                                             style={{ width: `${percentage}%` }}
                                         />
                                     </div>
-                                    <span className="font-mono text-xs text-zinc-500 tabular-nums whitespace-nowrap">
+                                    <span className="font-mono text-xs text-[var(--color-text-disabled)] tabular-nums whitespace-nowrap">
                                         {completed}/{total}
                                     </span>
                                 </div>
@@ -170,7 +170,7 @@ const Today = () => {
                         />
                     ) : (
                         <LayoutGroup>
-                            <div className="flex flex-col gap-2.5 mb-5">
+                            <div className="flex flex-col gap-[var(--space-2-5)] mb-[var(--space-5)]">
                                 {entries.map((entry, index) => (
                                     <ActivityItem
                                         key={entry.id}
@@ -186,8 +186,8 @@ const Today = () => {
 
                     {/* Add temporary activity */}
                     {showTempForm ? (
-                        <form onSubmit={handleAddTemp} className="bg-zinc-900/60 border border-zinc-800/60 rounded-xl p-4">
-                            <p className="text-zinc-500 text-xs mb-3 font-medium">
+                        <form onSubmit={handleAddTemp} className="bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-4)]">
+                            <p className="text-[var(--color-text-disabled)] text-xs mb-[var(--space-3)] font-medium">
                                 Esta actividad solo aparecerá hoy
                             </p>
                             <input
@@ -196,13 +196,13 @@ const Today = () => {
                                 onChange={(e) => setTempTitle(e.target.value)}
                                 placeholder="Nombre de la actividad..."
                                 autoFocus
-                                className="w-full bg-zinc-800/60 text-zinc-100 rounded-lg px-3.5 py-2.5 border border-zinc-700/60 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 text-sm mb-3 transition-colors duration-200 placeholder:text-zinc-600"
+                                className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm mb-[var(--space-3)] transition-colors duration-[var(--transition-base)] placeholder:text-[var(--color-text-placeholder)]"
                             />
-                            <div className="flex gap-2">
+                            <div className="flex gap-[var(--space-2)]">
                                 <button
                                     type="submit"
                                     disabled={addingTemp}
-                                    className="text-sm bg-emerald-500 text-zinc-950 font-medium px-4 py-2 rounded-lg hover:bg-emerald-400 transition-colors duration-200 disabled:opacity-50"
+                                    className="text-sm bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors duration-[var(--transition-base)] disabled:opacity-50"
                                 >
                                     Agregar
                                 </button>
@@ -212,7 +212,7 @@ const Today = () => {
                                         setShowTempForm(false)
                                         setTempTitle('')
                                     }}
-                                    className="text-sm text-zinc-500 hover:text-zinc-300 px-4 py-2 rounded-lg transition-colors duration-200"
+                                    className="text-sm text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] transition-colors duration-[var(--transition-base)]"
                                 >
                                     Cancelar
                                 </button>
@@ -221,7 +221,7 @@ const Today = () => {
                     ) : (
                         <button
                             onClick={() => setShowTempForm(true)}
-                            className="w-full flex items-center justify-center gap-2 border border-dashed border-zinc-800 hover:border-zinc-600 text-zinc-600 hover:text-zinc-400 rounded-xl py-3 text-sm transition-all duration-200 hover:bg-zinc-900/40"
+                            className="w-full flex items-center justify-center gap-[var(--space-2)] border border-dashed border-[var(--color-zinc-800)] hover:border-[var(--color-border-hover)] text-[var(--color-text-disabled)] hover:text-[var(--color-text-muted)] rounded-[var(--radius-xl)] py-[var(--space-3)] text-sm transition-all duration-[var(--transition-base)] hover:bg-[var(--color-bg-elevated)]"
                         >
                             <Plus className="w-4 h-4" strokeWidth={2} />
                             Agregar actividad solo para hoy
