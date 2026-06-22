@@ -35,8 +35,10 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
     }
 
     const handleSaveNote = async () => {
+        const trimmed = note.trim()
         try {
-            const { data } = await updateNote(entry.id, note)
+            const { data } = await updateNote(entry.id, trimmed)
+            setNote(trimmed)
             onUpdate(data)
             setIsEditingNote(false)
         } catch (error) {
