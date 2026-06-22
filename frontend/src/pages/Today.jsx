@@ -206,6 +206,7 @@ const Today = () => {
                                 onChange={(e) => setTempTitle(e.target.value)}
                                 placeholder="Nombre de la actividad..."
                                 autoFocus
+                                maxLength={50}
                                 className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm mb-[var(--space-3)] transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                             />
                             <div className="flex gap-[var(--space-2)]">

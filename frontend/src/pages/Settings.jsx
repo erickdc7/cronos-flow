@@ -147,6 +147,7 @@ const Settings = () => {
                                         onChange={(e) => setNewTitle(e.target.value)}
                                         placeholder="Nombre de la actividad"
                                         autoFocus
+                                        maxLength={50}
                                         className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </div>
@@ -157,6 +158,7 @@ const Settings = () => {
                                         value={newDescription}
                                         onChange={(e) => setNewDescription(e.target.value)}
                                         placeholder="Descripción opcional"
+                                        maxLength={150}
                                         className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </div>
@@ -216,6 +218,7 @@ const Settings = () => {
                                                 value={editTitle}
                                                 onChange={(e) => setEditTitle(e.target.value)}
                                                 autoFocus
+                                                maxLength={50}
                                                 className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base"
                                             />
                                             <input
@@ -223,6 +226,7 @@ const Settings = () => {
                                                 value={editDescription}
                                                 onChange={(e) => setEditDescription(e.target.value)}
                                                 placeholder="Descripción opcional"
+                                                maxLength={150}
                                                 className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                             />
                                             <div className="flex gap-[var(--space-2)]">

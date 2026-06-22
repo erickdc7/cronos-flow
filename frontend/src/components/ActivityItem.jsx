@@ -148,6 +148,7 @@ const ActivityItem = ({ entry, onUpdate, onDelete, index = 0 }) => {
                                 onChange={(e) => setNote(e.target.value)}
                                 placeholder="Escribe una anotación..."
                                 rows={2}
+                                maxLength={200}
                                 className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-secondary)] text-sm rounded-[var(--radius-lg)] px-[var(--space-3)] py-[var(--space-2)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] resize-none transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                             />
                             <div className="flex gap-[var(--space-2)] mt-[var(--space-2)]">
