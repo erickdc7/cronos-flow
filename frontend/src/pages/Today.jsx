@@ -27,11 +27,21 @@ const Today = () => {
     const fireConfetti = () => {
         if (shouldReduceMotion) return
 
+        // canvas-confetti renders on a <canvas> and cannot resolve CSS var().
+        // Read the computed values from the document root at runtime.
+        const root = getComputedStyle(document.documentElement)
+        const getColor = (varName) => root.getPropertyValue(varName).trim()
+
         confetti({
             particleCount: 120,
             spread: 70,
             origin: { y: 0.6 },
-            colors: ['var(--color-accent-subtle)', 'var(--color-accent)', 'var(--color-accent-light)', 'var(--color-accent-lighter)']
+            colors: [
+                getColor('--color-accent'),
+                getColor('--color-accent-hover'),
+                getColor('--color-emerald-300'),
+                getColor('--color-emerald-200')
+            ]
         })
     }
 
