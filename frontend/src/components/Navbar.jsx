@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { getActivities } from '../lib/api'
-import { Timer, CalendarDays, Clock, ListTodo, LogOut, AlertTriangle, X } from 'lucide-react'
+import { CalendarDays, Clock, ListTodo, LogOut, AlertTriangle, X } from 'lucide-react'
 
 const navLinks = [
     { to: '/', label: 'Hoy', icon: Clock },
@@ -48,8 +48,8 @@ const Navbar = () => {
 
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2 group">
-                        <div className="w-8 h-8 rounded-[var(--radius-lg)] bg-[var(--color-accent-bg)] border border-[var(--color-accent-border)] flex items-center justify-center transition-colors-base group-hover:bg-[var(--color-accent-bg-hover)]">
-                            <Timer className="w-4 h-4 text-[var(--color-accent-text)]" strokeWidth={2} />
+                        <div className="w-8 h-8 rounded-[var(--radius-lg)] flex items-center justify-center overflow-hidden">
+                            <img src="/favicon.png" alt="Cronos Flow" className="w-8 h-8 object-contain" />
                         </div>
                         <span className="text-[var(--color-text-primary)] font-semibold text-sm tracking-tight hidden sm:block">
                             Cronos Flow
