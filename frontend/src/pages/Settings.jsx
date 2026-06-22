@@ -250,7 +250,7 @@ const Settings = () => {
                                             <div className="flex-1 min-w-0">
                                                 <p className="text-[var(--color-text-secondary)] text-sm font-medium truncate">{activity.title}</p>
                                                 {activity.description && (
-                                                    <p className="text-[var(--color-text-disabled)] text-xs mt-[var(--space-0-5)] truncate">{activity.description}</p>
+                                                    <p className="text-[var(--color-text-disabled)] text-xs mt-[var(--space-0-5)]">{activity.description}</p>
                                                 )}
                                             </div>
                                             <div className="flex items-center gap-[var(--space-1-5)] flex-shrink-0">
