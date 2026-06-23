@@ -36,5 +36,6 @@ export const deleteActivity = (id) => api.delete(`/api/activities/${id}`)
 // History
 export const getHistory = (page = 1, limit = 7) => api.get('/api/history', { params: { page, limit } })
 export const getHistoryByDate = (date) => api.get(`/api/history/${date}`)
+export const getHistoryStats = () => api.get('/api/history/stats')
 export const syncToday = () => api.post('/api/activities/sync-today')
 export const deleteTempEntry = (id) => api.delete(`/api/entries/${id}`)

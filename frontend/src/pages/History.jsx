@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react'
 import { CheckCircle2, Circle, CalendarOff, ChevronLeft, ChevronRight, ListPlus } from 'lucide-react'
-import { getHistory, getHistoryByDate } from '../lib/api'
+import { getHistory, getHistoryByDate, getHistoryStats } from '../lib/api'
+import StatsSection from '../components/StatsSection'
 import PageTransition from '../components/PageTransition'
 import LoadingSpinner from '../components/LoadingSpinner'
 import EmptyState from '../components/EmptyState'
@@ -25,6 +26,7 @@ const History = () => {
     const [loading, setLoading] = useState(true)
     const [loadingDetail, setLoadingDetail] = useState(false)
     const shouldReduceMotion = useReducedMotion()
+    const [allStats, setAllStats] = useState([])
 
     const fetchHistory = async () => {
         setLoading(true)
@@ -49,6 +51,18 @@ const History = () => {
         fetchHistory()
         // eslint-disable-next-line react-hooks/set-state-in-effect
     }, [page])
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const { data } = await getHistoryStats()
+                setAllStats(data)
+            } catch (err) {
+                console.error('Error al cargar estadísticas:', err)
+            }
+        }
+        fetchStats()
+    }, [])
 
     const handleSelectDay = async (date) => {
         setLoadingDetail(true)
@@ -325,6 +339,11 @@ const History = () => {
 
                         </div>
                     )}
+                    {/* Stats Section */}
+                    {allStats.length > 0 && (
+                        <StatsSection stats={allStats} />
+                    )}
+
                 </div>
             </PageTransition>
         </div>

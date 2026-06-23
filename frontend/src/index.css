@@ -409,3 +409,41 @@ textarea::placeholder {
     transition-timing-function: var(--ease-out);
   }
 }
+
+/* ================================================================
+   react-calendar-heatmap overrides
+   ================================================================ */
+.heatmap-container .react-calendar-heatmap {
+  width: 100%;
+}
+
+.react-calendar-heatmap text {
+  fill: var(--color-text-disabled) !important;
+  font-size: 9px;
+  font-family: 'Geist Mono', ui-monospace, monospace;
+}
+
+.react-calendar-heatmap rect {
+  rx: 3;
+  ry: 3;
+}
+
+.heatmap-container .react-calendar-heatmap .color-empty {
+  fill: var(--color-zinc-800) !important;
+}
+
+.heatmap-container .react-calendar-heatmap .color-scale-1 {
+  fill: var(--color-emerald-950) !important;
+}
+
+.heatmap-container .react-calendar-heatmap .color-scale-2 {
+  fill: var(--color-emerald-500-50) !important;
+}
+
+.heatmap-container .react-calendar-heatmap .color-scale-3 {
+  fill: var(--color-emerald-500) !important;
+}
+
+.heatmap-container .react-calendar-heatmap .color-scale-4 {
+  fill: var(--color-emerald-400) !important;
+}

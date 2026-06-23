@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const supabase = require('../lib/supabase')
 
-// GET /api/history — traer lista de todos los días registrados
+// GET /api/history — traer lista de todos los días registrados (paginado)
 router.get('/', async (req, res) => {
     const userId = req.user.id
     const page = Math.max(parseInt(req.query.page, 10) || 1, 1)
@@ -50,6 +50,34 @@ router.get('/', async (req, res) => {
     } catch (error) {
         console.error(error)
         res.status(500).json({ error: 'Error al obtener el historial' })
+    }
+})
+
+// GET /api/history/stats — todos los días con stats (optimizado, 1 query con join)
+router.get('/stats', async (req, res) => {
+    const userId = req.user.id
+
+    try {
+        const { data: logs, error } = await supabase
+            .from('daily_logs')
+            .select('date, log_entries(done)')
+            .eq('user_id', userId)
+            .order('date', { ascending: true })
+
+        if (error) throw error
+
+        const stats = logs.map(log => {
+            const entries = log.log_entries || []
+            const total = entries.length
+            const completed = entries.filter(e => e.done).length
+            return { date: log.date, completed, total }
+        })
+
+        res.json(stats)
+
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ error: 'Error al obtener las estadísticas' })
     }
 })
 
