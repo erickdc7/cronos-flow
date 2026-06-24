@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import CalendarHeatmap from 'react-calendar-heatmap'
 import 'react-calendar-heatmap/dist/styles.css'
 import { BarChart, Bar, LineChart, Line, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
@@ -15,8 +15,25 @@ const getCSSColor = (varName) => {
     return getComputedStyle(document.documentElement).getPropertyValue(varName).trim()
 }
 
+// Responsive breakpoint hook
+const useScreenSize = () => {
+    const [width, setWidth] = useState(window.innerWidth)
+
+    useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth)
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
+    // sm: 640, md: 768, lg: 1024
+    if (width < 640) return 'mobile'
+    if (width < 1024) return 'tablet'
+    return 'desktop'
+}
+
 const StatsSection = ({ stats }) => {
     const [activeTab, setActiveTab] = useState('heatmap')
+    const screen = useScreenSize()
 
     // Prepare heatmap data
     const heatmapData = useMemo(() => {
@@ -26,10 +43,22 @@ const StatsSection = ({ stats }) => {
         }))
     }, [stats])
 
-    // Heatmap date range: last 365 days
-    const heatmapEndDate = new Date()
-    const heatmapStartDate = new Date()
-    heatmapStartDate.setFullYear(heatmapStartDate.getFullYear() - 1)
+    // Heatmap date range — subtract 1 day because the library internally adds +1
+    const today = new Date()
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+    const heatmapEndDate = new Date(todayStr + 'T00:00:00')
+    heatmapEndDate.setDate(heatmapEndDate.getDate() - 1)
+
+    // Heatmap start date: mobile = 3 months, otherwise = 1 year
+    const heatmapStartDate = useMemo(() => {
+        const start = new Date(todayStr + 'T00:00:00')
+        if (screen === 'mobile') {
+            start.setMonth(start.getMonth() - 3)
+        } else {
+            start.setFullYear(start.getFullYear() - 1)
+        }
+        return start
+    }, [todayStr, screen])
 
     // Classify heatmap values for color scale
     const classForValue = (value) => {
@@ -52,10 +81,14 @@ const StatsSection = ({ stats }) => {
         return `${formatted}: ${value.count}% completado`
     }
 
-    // Prepare bar chart data (last 14 days from stats)
+    // Responsive data slice counts
+    const barCount = screen === 'mobile' ? 4 : 14
+    const lineCount = screen === 'mobile' ? 3 : screen === 'tablet' ? 7 : 10
+
+    // Prepare bar chart data
     const barData = useMemo(() => {
-        const last14 = stats.slice(-14)
-        return last14.map(day => {
+        const sliced = stats.slice(-barCount)
+        return sliced.map(day => {
             const date = new Date(day.date + 'T00:00:00')
             return {
                 date: date.toLocaleDateString('es-PE', { day: 'numeric', month: 'short' }),
@@ -63,11 +96,12 @@ const StatsSection = ({ stats }) => {
                 Total: day.total,
             }
         })
-    }, [stats])
+    }, [stats, barCount])
 
-    // Prepare line chart data (all days)
+    // Prepare line chart data
     const lineData = useMemo(() => {
-        return stats.map(day => {
+        const sliced = stats.slice(-lineCount)
+        return sliced.map(day => {
             const date = new Date(day.date + 'T00:00:00')
             return {
                 date: date.toLocaleDateString('es-PE', { day: 'numeric', month: 'short' }),
@@ -75,14 +109,13 @@ const StatsSection = ({ stats }) => {
                 porcentaje: day.total > 0 ? Math.round((day.completed / day.total) * 100) : 0,
             }
         })
-    }, [stats])
+    }, [stats, lineCount])
 
     // Colors from CSS vars (resolved at render time)
     const accentColor = getCSSColor('--color-accent') || '#10b981'
     const accentHover = getCSSColor('--color-accent-hover') || '#34d399'
     const zinc700 = getCSSColor('--color-zinc-700') || '#3f3f46'
     const zinc800 = getCSSColor('--color-zinc-800') || '#27272a'
-    const textMuted = getCSSColor('--color-text-muted') || '#a1a1aa'
     const textDisabled = getCSSColor('--color-text-disabled') || '#71717a'
 
     const CustomTooltip = ({ active, payload, label }) => {
@@ -210,7 +243,6 @@ const StatsSection = ({ stats }) => {
                                     tick={{ fill: textDisabled, fontSize: 11 }}
                                     axisLine={{ stroke: zinc800 }}
                                     tickLine={false}
-                                    interval="preserveStartEnd"
                                 />
                                 <YAxis
                                     tick={{ fill: textDisabled, fontSize: 11 }}
