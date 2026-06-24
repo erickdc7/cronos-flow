@@ -6,6 +6,7 @@ import PageTransition from '../components/PageTransition'
 import LoadingSpinner from '../components/LoadingSpinner'
 import EmptyState from '../components/EmptyState'
 import ConfirmDialog from '../components/ConfirmDialog'
+import FrequencySelector, { getScheduleLabel } from '../components/FrequencySelector'
 
 const Settings = () => {
     const [activities, setActivities] = useState([])
@@ -13,10 +14,12 @@ const Settings = () => {
     const [showForm, setShowForm] = useState(false)
     const [newTitle, setNewTitle] = useState('')
     const [newDescription, setNewDescription] = useState('')
+    const [newSchedule, setNewSchedule] = useState('daily')
     const [adding, setAdding] = useState(false)
     const [editingId, setEditingId] = useState(null)
     const [editTitle, setEditTitle] = useState('')
     const [editDescription, setEditDescription] = useState('')
+    const [editSchedule, setEditSchedule] = useState('daily')
     const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, id: null })
     const shouldReduceMotion = useReducedMotion()
 
@@ -42,10 +45,11 @@ const Settings = () => {
         if (!newTitle.trim()) return
         setAdding(true)
         try {
-            const { data } = await createActivity(newTitle.trim(), newDescription.trim())
+            const { data } = await createActivity(newTitle.trim(), newDescription.trim(), newSchedule)
             setActivities(prev => [...prev, data])
             setNewTitle('')
             setNewDescription('')
+            setNewSchedule('daily')
             setShowForm(false)
         } catch (err) {
             console.error('Error al crear actividad:', err)
@@ -58,6 +62,7 @@ const Settings = () => {
         setEditingId(activity.id)
         setEditTitle(activity.title)
         setEditDescription(activity.description || '')
+        setEditSchedule(activity.schedule || 'daily')
     }
 
     const handleSaveEdit = async (id) => {
@@ -65,7 +70,8 @@ const Settings = () => {
         try {
             const { data } = await updateActivity(id, {
                 title: editTitle.trim(),
-                description: editDescription.trim() || null
+                description: editDescription.trim() || null,
+                schedule: editSchedule
             })
             setActivities(prev => prev.map(a => a.id === data.id ? data : a))
             setEditingId(null)
@@ -162,6 +168,7 @@ const Settings = () => {
                                         className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                     />
                                 </div>
+                                <FrequencySelector value={newSchedule} onChange={setNewSchedule} />
                                 <div className="flex gap-[var(--space-2)] pt-[var(--space-1)]">
                                     <button
                                         type="submit"
@@ -176,6 +183,7 @@ const Settings = () => {
                                             setShowForm(false)
                                             setNewTitle('')
                                             setNewDescription('')
+                                            setNewSchedule('daily')
                                         }}
                                         className="text-sm text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] transition-colors-base"
                                     >
@@ -229,6 +237,7 @@ const Settings = () => {
                                                 maxLength={150}
                                                 className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
                                             />
+                                            <FrequencySelector value={editSchedule} onChange={setEditSchedule} />
                                             <div className="flex gap-[var(--space-2)]">
                                                 <button
                                                     onClick={() => handleSaveEdit(activity.id)}
@@ -252,6 +261,9 @@ const Settings = () => {
                                                 {activity.description && (
                                                     <p className="text-[var(--color-text-disabled)] text-xs mt-[var(--space-0-5)]">{activity.description}</p>
                                                 )}
+                                                <span className="inline-block text-[10px] text-[var(--color-accent-subtle)] bg-[var(--color-accent-bg)] px-[var(--space-1-5)] py-[1px] rounded-[var(--radius-sm)] mt-[var(--space-1)] font-medium">
+                                                    {getScheduleLabel(activity.schedule)}
+                                                </span>
                                             </div>
                                             <div className="flex items-center gap-[var(--space-1-5)] flex-shrink-0">
                                                 <button

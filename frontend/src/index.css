@@ -274,8 +274,8 @@ button,
   -webkit-tap-highlight-color: transparent;
 }
 
-button:active:not(:disabled),
-[role="button"]:active:not(:disabled) {
+button:active:not(:disabled):not(.no-press),
+[role="button"]:active:not(:disabled):not(.no-press) {
   transform: scale(0.97);
 }
 
@@ -446,4 +446,83 @@ textarea::placeholder {
 
 .heatmap-container .react-calendar-heatmap .color-scale-4 {
   fill: var(--color-emerald-400) !important;
+}
+
+/* ================================================================
+   react-day-picker overrides
+   ================================================================ */
+.rdp-cronos-wrapper .rdp-root {
+  --rdp-accent-color: var(--color-accent);
+  --rdp-accent-background-color: var(--color-accent-bg);
+  --rdp-day_button-height: 32px;
+  --rdp-day_button-width: 32px;
+  font-family: 'Geist', system-ui, sans-serif;
+}
+
+.rdp-cronos-wrapper .rdp-month_caption {
+  color: var(--color-text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.rdp-cronos-wrapper .rdp-weekday {
+  color: var(--color-text-disabled);
+  font-size: 0.65rem;
+  font-weight: 500;
+}
+
+.rdp-cronos-wrapper .rdp-day button {
+  color: var(--color-text-tertiary);
+  font-size: 0.75rem;
+  border-radius: var(--radius-md);
+}
+
+.rdp-cronos-wrapper .rdp-day button:hover {
+  background: var(--color-accent-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.rdp-cronos-wrapper .rdp-selected .rdp-day_button {
+  background: var(--color-accent) !important;
+  color: var(--color-zinc-950) !important;
+  font-weight: 600;
+}
+
+.rdp-cronos-wrapper .rdp-today:not(.rdp-selected) .rdp-day_button {
+  border: 1px solid var(--color-accent-border);
+  color: var(--color-accent-text);
+}
+
+.rdp-cronos-wrapper .rdp-disabled .rdp-day_button {
+  color: var(--color-zinc-700) !important;
+  opacity: 0.5;
+}
+
+.rdp-cronos-wrapper .rdp-outside .rdp-day_button {
+  color: var(--color-zinc-700);
+}
+
+.rdp-cronos-wrapper .rdp-button_previous,
+.rdp-cronos-wrapper .rdp-button_next {
+  color: var(--color-text-disabled);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  width: 28px;
+  height: 28px;
+}
+
+.rdp-cronos-wrapper .rdp-button_previous:hover,
+.rdp-cronos-wrapper .rdp-button_next:hover {
+  color: var(--color-text-tertiary);
+  background: var(--color-bg-surface);
+}
+
+/* Select dropdown inside date picker */
+.rdp-cronos-wrapper select {
+  background: var(--color-bg-input);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.75rem;
+  padding: 2px 4px;
 }

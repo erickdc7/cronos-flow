@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const supabase = require('../lib/supabase')
+const { matchesSchedule, isSpecificDate } = require('../lib/schedule')
 
 // GET /api/today — trae o crea el log del día actual
 router.get('/', async (req, res) => {
@@ -8,6 +9,25 @@ router.get('/', async (req, res) => {
     const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone }) // "2026-05-31"
 
     try {
+        // 0. Auto-cleanup: delete specific-date activities whose date has passed
+        const { data: expiredActivities } = await supabase
+            .from('activities')
+            .select('id, schedule')
+            .eq('user_id', userId)
+            .eq('is_active', true)
+
+        if (expiredActivities) {
+            const toDelete = expiredActivities.filter(a =>
+                isSpecificDate(a.schedule) && a.schedule < today
+            )
+            if (toDelete.length > 0) {
+                await supabase
+                    .from('activities')
+                    .delete()
+                    .in('id', toDelete.map(a => a.id))
+            }
+        }
+
         // 1. Buscar si ya existe un log para hoy
         let { data: log, error: logError } = await supabase
             .from('daily_logs')
@@ -27,7 +47,7 @@ router.get('/', async (req, res) => {
             if (createError) throw createError
             log = newLog
 
-            // 3. Copiar todas las actividades activas como entries del día
+            // 3. Copiar actividades activas cuyo schedule coincida con hoy
             const { data: activities, error: activitiesError } = await supabase
                 .from('activities')
                 .select('*')
@@ -38,19 +58,26 @@ router.get('/', async (req, res) => {
             if (activitiesError) throw activitiesError
 
             if (activities && activities.length > 0) {
-                const entries = activities.map(activity => ({
-                    log_id: log.id,
-                    activity_id: activity.id,
-                    title: activity.title,
-                    done: false,
-                    is_temp: false
-                }))
+                // Filter by schedule
+                const matchingActivities = activities.filter(a =>
+                    matchesSchedule(a.schedule, today)
+                )
 
-                const { error: entriesError } = await supabase
-                    .from('log_entries')
-                    .insert(entries)
+                if (matchingActivities.length > 0) {
+                    const entries = matchingActivities.map(activity => ({
+                        log_id: log.id,
+                        activity_id: activity.id,
+                        title: activity.title,
+                        done: false,
+                        is_temp: false
+                    }))
 
-                if (entriesError) throw entriesError
+                    const { error: entriesError } = await supabase
+                        .from('log_entries')
+                        .insert(entries)
+
+                    if (entriesError) throw entriesError
+                }
             }
         }
 

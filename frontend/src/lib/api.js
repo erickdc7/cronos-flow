@@ -29,7 +29,7 @@ export const addTempEntry = (log_id, title) => api.post('/api/entries', { log_id
 
 // Activities
 export const getActivities = () => api.get('/api/activities')
-export const createActivity = (title, description) => api.post('/api/activities', { title, description })
+export const createActivity = (title, description, schedule) => api.post('/api/activities', { title, description, schedule })
 export const updateActivity = (id, data) => api.patch(`/api/activities/${id}`, data)
 export const deleteActivity = (id) => api.delete(`/api/activities/${id}`)
 

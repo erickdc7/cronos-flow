@@ -1,10 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const supabase = require('../lib/supabase')
+const { matchesSchedule, isSpecificDate } = require('../lib/schedule')
 
-// GET /api/activities — traer todas las actividades fijas
+// GET /api/activities — traer todas las actividades fijas (excluye las de fecha pasada)
 router.get('/', async (req, res) => {
     const userId = req.user.id
+    const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
 
     try {
         const { data, error } = await supabase
@@ -15,7 +17,18 @@ router.get('/', async (req, res) => {
 
         if (error) throw error
 
-        res.json(data)
+        // Auto-delete specific-date activities whose date has passed
+        const expired = data.filter(a => isSpecificDate(a.schedule) && a.schedule < today)
+        if (expired.length > 0) {
+            await supabase
+                .from('activities')
+                .delete()
+                .in('id', expired.map(a => a.id))
+        }
+
+        // Return only non-expired activities
+        const active = data.filter(a => !expired.some(e => e.id === a.id))
+        res.json(active)
 
     } catch (error) {
         console.error(error)
@@ -26,7 +39,7 @@ router.get('/', async (req, res) => {
 // POST /api/activities — crear una actividad fija permanente
 router.post('/', async (req, res) => {
     const userId = req.user.id
-    const { title, description } = req.body
+    const { title, description, schedule } = req.body
 
     if (!title) {
         return res.status(400).json({ error: 'El título es requerido' })
@@ -51,6 +64,7 @@ router.post('/', async (req, res) => {
                 user_id: userId,
                 title,
                 description: description || null,
+                schedule: schedule || 'daily',
                 order_index: nextIndex
             })
             .select()
@@ -58,35 +72,36 @@ router.post('/', async (req, res) => {
 
         if (error) throw error
 
-        // Sincronizar con el log del día actual si ya existe
+        // Sincronizar con el log del día actual si ya existe y el schedule coincide
         const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
 
-        const { data: todayLog } = await supabase
-            .from('daily_logs')
-            .select('id')
-            .eq('user_id', userId)
-            .eq('date', today)
-            .single()
-
-        if (todayLog) {
-            // Verificar que no exista ya esa actividad en el log de hoy
-            const { data: existingEntry } = await supabase
-                .from('log_entries')
+        if (matchesSchedule(data.schedule, today)) {
+            const { data: todayLog } = await supabase
+                .from('daily_logs')
                 .select('id')
-                .eq('log_id', todayLog.id)
-                .eq('activity_id', data.id)
+                .eq('user_id', userId)
+                .eq('date', today)
                 .single()
 
-            if (!existingEntry) {
-                await supabase
+            if (todayLog) {
+                const { data: existingEntry } = await supabase
                     .from('log_entries')
-                    .insert({
-                        log_id: todayLog.id,
-                        activity_id: data.id,
-                        title: data.title,
-                        done: false,
-                        is_temp: false
-                    })
+                    .select('id')
+                    .eq('log_id', todayLog.id)
+                    .eq('activity_id', data.id)
+                    .single()
+
+                if (!existingEntry) {
+                    await supabase
+                        .from('log_entries')
+                        .insert({
+                            log_id: todayLog.id,
+                            activity_id: data.id,
+                            title: data.title,
+                            done: false,
+                            is_temp: false
+                        })
+                }
             }
         }
 
@@ -101,7 +116,7 @@ router.post('/', async (req, res) => {
 // PATCH /api/activities/:id — editar una actividad fija
 router.patch('/:id', async (req, res) => {
     const { id } = req.params
-    const { title, description, is_active, order_index } = req.body
+    const { title, description, is_active, order_index, schedule } = req.body
 
     try {
         const updates = {}
@@ -109,6 +124,7 @@ router.patch('/:id', async (req, res) => {
         if (description !== undefined) updates.description = description
         if (is_active !== undefined) updates.is_active = is_active
         if (order_index !== undefined) updates.order_index = order_index
+        if (schedule !== undefined) updates.schedule = schedule
 
         const { data, error } = await supabase
             .from('activities')
@@ -141,31 +157,35 @@ router.patch('/:id', async (req, res) => {
 
         if (is_active === true) {
             const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
-            const { data: todayLog } = await supabase
-                .from('daily_logs')
-                .select('id')
-                .eq('user_id', req.user.id)
-                .eq('date', today)
-                .single()
 
-            if (todayLog) {
-                const { data: existingEntry } = await supabase
-                    .from('log_entries')
+            // Only sync to today if schedule matches
+            if (matchesSchedule(data.schedule, today)) {
+                const { data: todayLog } = await supabase
+                    .from('daily_logs')
                     .select('id')
-                    .eq('log_id', todayLog.id)
-                    .eq('activity_id', id)
+                    .eq('user_id', req.user.id)
+                    .eq('date', today)
                     .single()
 
-                if (!existingEntry) {
-                    await supabase
+                if (todayLog) {
+                    const { data: existingEntry } = await supabase
                         .from('log_entries')
-                        .insert({
-                            log_id: todayLog.id,
-                            activity_id: data.id,
-                            title: data.title,
-                            done: false,
-                            is_temp: false
-                        })
+                        .select('id')
+                        .eq('log_id', todayLog.id)
+                        .eq('activity_id', id)
+                        .single()
+
+                    if (!existingEntry) {
+                        await supabase
+                            .from('log_entries')
+                            .insert({
+                                log_id: todayLog.id,
+                                activity_id: data.id,
+                                title: data.title,
+                                done: false,
+                                is_temp: false
+                            })
+                    }
                 }
             }
         }
@@ -205,6 +225,24 @@ router.post('/sync-today', async (req, res) => {
     const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
 
     try {
+        // Auto-delete expired specific-date activities
+        const { data: allActivities } = await supabase
+            .from('activities')
+            .select('id, schedule')
+            .eq('user_id', userId)
+
+        if (allActivities) {
+            const expired = allActivities.filter(a =>
+                isSpecificDate(a.schedule) && a.schedule < today
+            )
+            if (expired.length > 0) {
+                await supabase
+                    .from('activities')
+                    .delete()
+                    .in('id', expired.map(a => a.id))
+            }
+        }
+
         // Buscar el log de hoy
         const { data: todayLog } = await supabase
             .from('daily_logs')
@@ -217,12 +255,16 @@ router.post('/sync-today', async (req, res) => {
             return res.json({ message: 'No hay log para hoy todavía', synced: 0 })
         }
 
-        // Traer todas las actividades activas
+        // Traer todas las actividades activas que aplican hoy
         const { data: activities } = await supabase
             .from('activities')
             .select('*')
             .eq('user_id', userId)
             .eq('is_active', true)
+
+        const matchingActivities = (activities || []).filter(a =>
+            matchesSchedule(a.schedule, today)
+        )
 
         // Traer entries que ya existen hoy
         const { data: existingEntries } = await supabase
@@ -235,7 +277,7 @@ router.post('/sync-today', async (req, res) => {
             .filter(Boolean)
 
         // Filtrar las que faltan
-        const missing = activities.filter(
+        const missing = matchingActivities.filter(
             a => !existingActivityIds.includes(a.id)
         )
 
