@@ -13,7 +13,7 @@ const SCHEDULE_OPTIONS = [
 ]
 
 // Check if a schedule value is a specific date
-const isSpecificDate = (schedule) => /^\d{4}-\d{2}-\d{2}$/.test(schedule)
+export const isSpecificDate = (schedule) => /^\d{4}-\d{2}-\d{2}$/.test(schedule)
 
 // Format date as DD/MM/YYYY for display
 const formatDateDisplay = (dateStr) => {
@@ -51,9 +51,9 @@ export const getScheduleLabel = (schedule) => {
     return schedule
 }
 
-const FrequencySelector = ({ value = 'daily', onChange }) => {
+const FrequencySelector = ({ value = 'daily', onChange, specificOnly = false }) => {
     // Internal state to track "specific" mode even before a date is chosen
-    const [mode, setMode] = useState(isSpecificDate(value) ? 'specific' : value)
+    const [mode, setMode] = useState(specificOnly ? 'specific' : (isSpecificDate(value) ? 'specific' : value))
     const dateValue = isSpecificDate(value) ? value : ''
 
     const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -148,53 +148,57 @@ const FrequencySelector = ({ value = 'daily', onChange }) => {
 
     return (
         <div className="flex flex-col gap-[var(--space-2)]">
-            <label className="text-[var(--color-text-muted)] text-xs font-medium">
-                Frecuencia
-            </label>
+            {!specificOnly && (
+                <label className="text-[var(--color-text-muted)] text-xs font-medium">
+                    Frecuencia
+                </label>
+            )}
 
-            {/* Custom Dropdown */}
-            <div className="relative" ref={dropdownRef}>
-                <button
-                    type="button"
-                    onClick={() => setDropdownOpen(prev => !prev)}
-                    className={`
-                        no-press w-full flex items-center justify-between bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border text-sm transition-colors-base text-left
-                        ${dropdownOpen
-                            ? 'border-[var(--color-border-focus)] ring-1 ring-[var(--color-accent-ring)]'
-                            : 'border-[var(--color-border)] hover:border-[var(--color-border-focus)]'
-                        }
-                    `}
-                >
-                    <span>{currentLabel}</span>
-                    <ChevronDown className={`w-3.5 h-3.5 text-[var(--color-text-disabled)] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} strokeWidth={2} />
-                </button>
+            {/* Custom Dropdown — hidden in specificOnly mode */}
+            {!specificOnly && (
+                <div className="relative" ref={dropdownRef}>
+                    <button
+                        type="button"
+                        onClick={() => setDropdownOpen(prev => !prev)}
+                        className={`
+                            no-press w-full flex items-center justify-between bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border text-sm transition-colors-base text-left
+                            ${dropdownOpen
+                                ? 'border-[var(--color-border-focus)] ring-1 ring-[var(--color-accent-ring)]'
+                                : 'border-[var(--color-border)] hover:border-[var(--color-border-focus)]'
+                            }
+                        `}
+                    >
+                        <span>{currentLabel}</span>
+                        <ChevronDown className={`w-3.5 h-3.5 text-[var(--color-text-disabled)] transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} strokeWidth={2} />
+                    </button>
 
-                {/* Dropdown menu */}
-                {dropdownOpen && (
-                    <div className="absolute z-50 mt-[var(--space-1)] w-full bg-[var(--color-zinc-900)] border border-[var(--color-border)] rounded-[var(--radius-lg)] shadow-2xl overflow-hidden">
-                        {SCHEDULE_OPTIONS.map((opt) => {
-                            const isActive = mode === opt.value || (opt.value === 'specific' && mode === 'specific')
-                            return (
-                                <button
-                                    key={opt.value}
-                                    type="button"
-                                    onClick={() => handleOptionSelect(opt.value)}
-                                    className={`
-                                        w-full flex items-center justify-between px-[var(--space-3-5)] py-[var(--space-2-5)] text-sm transition-colors duration-150 text-left
-                                        ${isActive
-                                            ? 'bg-[var(--color-accent-bg)] text-[var(--color-accent-text)]'
-                                            : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-surface)] hover:text-[var(--color-text-primary)]'
-                                        }
-                                    `}
-                                >
-                                    <span>{opt.label}</span>
-                                    {isActive && <Check className="w-3.5 h-3.5" strokeWidth={2} />}
-                                </button>
-                            )
-                        })}
-                    </div>
-                )}
-            </div>
+                    {/* Dropdown menu */}
+                    {dropdownOpen && (
+                        <div className="absolute z-50 mt-[var(--space-1)] w-full bg-[var(--color-zinc-900)] border border-[var(--color-border)] rounded-[var(--radius-lg)] shadow-2xl overflow-hidden">
+                            {SCHEDULE_OPTIONS.map((opt) => {
+                                const isActive = mode === opt.value || (opt.value === 'specific' && mode === 'specific')
+                                return (
+                                    <button
+                                        key={opt.value}
+                                        type="button"
+                                        onClick={() => handleOptionSelect(opt.value)}
+                                        className={`
+                                            w-full flex items-center justify-between px-[var(--space-3-5)] py-[var(--space-2-5)] text-sm transition-colors duration-150 text-left
+                                            ${isActive
+                                                ? 'bg-[var(--color-accent-bg)] text-[var(--color-accent-text)]'
+                                                : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-surface)] hover:text-[var(--color-text-primary)]'
+                                            }
+                                        `}
+                                    >
+                                        <span>{opt.label}</span>
+                                        {isActive && <Check className="w-3.5 h-3.5" strokeWidth={2} />}
+                                    </button>
+                                )
+                            })}
+                        </div>
+                    )}
+                </div>
+            )}
 
             {/* Date picker (only when 'specific' mode) */}
             {mode === 'specific' && (

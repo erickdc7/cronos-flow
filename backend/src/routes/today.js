@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
     const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone }) // "2026-05-31"
 
     try {
-        // 0. Auto-cleanup: delete specific-date activities whose date has passed
+        // 0. Auto-deactivate specific-date activities whose date has passed
         const { data: expiredActivities } = await supabase
             .from('activities')
             .select('id, schedule')
@@ -17,14 +17,14 @@ router.get('/', async (req, res) => {
             .eq('is_active', true)
 
         if (expiredActivities) {
-            const toDelete = expiredActivities.filter(a =>
+            const toDeactivate = expiredActivities.filter(a =>
                 isSpecificDate(a.schedule) && a.schedule < today
             )
-            if (toDelete.length > 0) {
+            if (toDeactivate.length > 0) {
                 await supabase
                     .from('activities')
-                    .delete()
-                    .in('id', toDelete.map(a => a.id))
+                    .update({ is_active: false })
+                    .in('id', toDeactivate.map(a => a.id))
             }
         }
 
@@ -58,7 +58,6 @@ router.get('/', async (req, res) => {
             if (activitiesError) throw activitiesError
 
             if (activities && activities.length > 0) {
-                // Filter by schedule
                 const matchingActivities = activities.filter(a =>
                     matchesSchedule(a.schedule, today)
                 )

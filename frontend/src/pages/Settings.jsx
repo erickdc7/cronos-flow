@@ -6,7 +6,7 @@ import PageTransition from '../components/PageTransition'
 import LoadingSpinner from '../components/LoadingSpinner'
 import EmptyState from '../components/EmptyState'
 import ConfirmDialog from '../components/ConfirmDialog'
-import FrequencySelector, { getScheduleLabel } from '../components/FrequencySelector'
+import FrequencySelector, { getScheduleLabel, isSpecificDate } from '../components/FrequencySelector'
 
 const Settings = () => {
     const [activities, setActivities] = useState([])
@@ -21,6 +21,8 @@ const Settings = () => {
     const [editDescription, setEditDescription] = useState('')
     const [editSchedule, setEditSchedule] = useState('daily')
     const [deleteDialog, setDeleteDialog] = useState({ isOpen: false, id: null })
+    const [rescheduleDialog, setRescheduleDialog] = useState({ isOpen: false, activity: null })
+    const [rescheduleDate, setRescheduleDate] = useState('')
     const shouldReduceMotion = useReducedMotion()
 
     const fetchActivities = async () => {
@@ -80,7 +82,22 @@ const Settings = () => {
         }
     }
 
+    // Helper: check if a specific-date activity is expired
+    const isExpiredSpecificDate = (activity) => {
+        if (!isSpecificDate(activity.schedule)) return false
+        const today = new Date()
+        const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+        return activity.schedule < todayStr
+    }
+
     const handleToggleActive = async (activity) => {
+        // If trying to activate an expired specific-date activity, show reschedule modal
+        if (!activity.is_active && isExpiredSpecificDate(activity)) {
+            setRescheduleDialog({ isOpen: true, activity })
+            setRescheduleDate('')
+            return
+        }
+
         try {
             const { data } = await updateActivity(activity.id, {
                 is_active: !activity.is_active
@@ -88,6 +105,21 @@ const Settings = () => {
             setActivities(prev => prev.map(a => a.id === data.id ? data : a))
         } catch (err) {
             console.error('Error al actualizar:', err)
+        }
+    }
+
+    const handleRescheduleConfirm = async () => {
+        if (!rescheduleDate || !isSpecificDate(rescheduleDate)) return
+        try {
+            const { data } = await updateActivity(rescheduleDialog.activity.id, {
+                is_active: true,
+                schedule: rescheduleDate
+            })
+            setActivities(prev => prev.map(a => a.id === data.id ? data : a))
+            setRescheduleDialog({ isOpen: false, activity: null })
+            setRescheduleDate('')
+        } catch (err) {
+            console.error('Error al reprogramar:', err)
         }
     }
 
@@ -299,6 +331,53 @@ const Settings = () => {
                                     )}
                                 </motion.div>
                             ))}
+                        </div>
+                    )}
+
+                    {/* Reschedule Modal */}
+                    {rescheduleDialog.isOpen && (
+                        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                            <div
+                                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                                onClick={() => setRescheduleDialog({ isOpen: false, activity: null })}
+                            />
+                            <motion.div
+                                initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
+                                className="relative bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-6)] w-full max-w-sm shadow-2xl"
+                            >
+                                <h3 className="text-[var(--color-text-primary)] font-semibold text-base mb-[var(--space-1)]">
+                                    Reprogramar actividad
+                                </h3>
+                                <p className="text-[var(--color-text-disabled)] text-xs mb-[var(--space-4)]">
+                                    La fecha de <span className="text-[var(--color-text-secondary)] font-medium">{rescheduleDialog.activity?.title}</span> ya pasó. Selecciona una nueva fecha para reactivarla.
+                                </p>
+
+                                <FrequencySelector
+                                    value={rescheduleDate || 'specific'}
+                                    onChange={(val) => {
+                                        if (isSpecificDate(val)) setRescheduleDate(val)
+                                    }}
+                                    specificOnly
+                                />
+
+                                <div className="flex gap-[var(--space-2)] mt-[var(--space-5)]">
+                                    <button
+                                        onClick={handleRescheduleConfirm}
+                                        disabled={!rescheduleDate || !isSpecificDate(rescheduleDate)}
+                                        className="text-sm bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors-base disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)]"
+                                    >
+                                        Reprogramar
+                                    </button>
+                                    <button
+                                        onClick={() => setRescheduleDialog({ isOpen: false, activity: null })}
+                                        className="text-sm text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] transition-colors-base"
+                                    >
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </motion.div>
                         </div>
                     )}
 

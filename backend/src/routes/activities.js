@@ -3,12 +3,25 @@ const router = express.Router()
 const supabase = require('../lib/supabase')
 const { matchesSchedule, isSpecificDate } = require('../lib/schedule')
 
-// GET /api/activities — traer todas las actividades fijas (excluye las de fecha pasada)
+// GET /api/activities — traer todas las actividades fijas
 router.get('/', async (req, res) => {
     const userId = req.user.id
     const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
 
     try {
+        // Auto-deactivate specific-date activities whose date has passed
+        await supabase
+            .from('activities')
+            .update({ is_active: false })
+            .eq('user_id', userId)
+            .eq('is_active', true)
+            .lt('schedule', today)
+            .neq('schedule', 'daily')
+            .neq('schedule', 'weekdays')
+            .neq('schedule', 'mon-wed-fri')
+            .neq('schedule', 'tue-thu')
+            .neq('schedule', 'weekends')
+
         const { data, error } = await supabase
             .from('activities')
             .select('*')
@@ -17,18 +30,7 @@ router.get('/', async (req, res) => {
 
         if (error) throw error
 
-        // Auto-delete specific-date activities whose date has passed
-        const expired = data.filter(a => isSpecificDate(a.schedule) && a.schedule < today)
-        if (expired.length > 0) {
-            await supabase
-                .from('activities')
-                .delete()
-                .in('id', expired.map(a => a.id))
-        }
-
-        // Return only non-expired activities
-        const active = data.filter(a => !expired.some(e => e.id === a.id))
-        res.json(active)
+        res.json(data)
 
     } catch (error) {
         console.error(error)
@@ -225,11 +227,12 @@ router.post('/sync-today', async (req, res) => {
     const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
 
     try {
-        // Auto-delete expired specific-date activities
+        // Auto-deactivate expired specific-date activities
         const { data: allActivities } = await supabase
             .from('activities')
             .select('id, schedule')
             .eq('user_id', userId)
+            .eq('is_active', true)
 
         if (allActivities) {
             const expired = allActivities.filter(a =>
@@ -238,7 +241,7 @@ router.post('/sync-today', async (req, res) => {
             if (expired.length > 0) {
                 await supabase
                     .from('activities')
-                    .delete()
+                    .update({ is_active: false })
                     .in('id', expired.map(a => a.id))
             }
         }
