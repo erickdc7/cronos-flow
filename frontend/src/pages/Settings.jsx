@@ -310,7 +310,7 @@ const Settings = () => {
                                                     className={`p-[var(--space-1-5)] rounded-md transition-colors-base ${activity.is_active
                                                         ? 'text-[var(--color-accent-subtle)] hover:bg-[var(--color-accent-bg)]'
                                                         : 'text-[var(--color-text-disabled)] hover:bg-[var(--color-bg-surface)] hover:text-[var(--color-text-muted)]'
-                                                    }`}
+                                                        }`}
                                                     title={activity.is_active ? 'Desactivar' : 'Activar'}
                                                 >
                                                     {activity.is_active ? (
@@ -351,7 +351,7 @@ const Settings = () => {
                                     Reprogramar actividad
                                 </h3>
                                 <p className="text-[var(--color-text-disabled)] text-xs mb-[var(--space-4)]">
-                                    La fecha de <span className="text-[var(--color-text-secondary)] font-medium">{rescheduleDialog.activity?.title}</span> ya pasó. Selecciona una nueva fecha para reactivarla.
+                                    La fecha de la actividad <span className="text-[var(--color-text-secondary)] font-medium">"{rescheduleDialog.activity?.title}"</span> ya pasó. Selecciona una nueva fecha para reactivarla.
                                 </p>
 
                                 <FrequencySelector
