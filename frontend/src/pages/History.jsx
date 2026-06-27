@@ -287,9 +287,16 @@ const History = () => {
                                                 </div>
                                             ) : (
                                                 <div className="flex flex-col gap-[var(--space-2)]">
-                                                    {selectedEntries.map(entry => (
-                                                        <div
+                                                    {selectedEntries.map((entry, index) => (
+                                                        <motion.div
                                                             key={entry.id}
+                                                            initial={shouldReduceMotion ? false : { opacity: 0, y: 6 }}
+                                                            animate={{ opacity: 1, y: 0 }}
+                                                            transition={{
+                                                                duration: 0.25,
+                                                                delay: index * 0.04,
+                                                                ease: [0.23, 1, 0.32, 1]
+                                                            }}
                                                             className={`
                                                             flex items-start gap-[var(--space-2-5)] p-[var(--space-2-5)] rounded-[var(--radius-lg)] transition-colors duration-150
                                                             ${entry.done ? 'bg-emerald-950/25' : 'bg-[var(--color-zinc-800-30)]'}
@@ -317,7 +324,7 @@ const History = () => {
                                                                     </p>
                                                                 )}
                                                             </div>
-                                                        </div>
+                                                        </motion.div>
                                                     ))}
                                                 </div>
                                             )}
