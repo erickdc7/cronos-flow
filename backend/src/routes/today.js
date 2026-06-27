@@ -93,24 +93,26 @@ router.get('/', async (req, res) => {
             .map(entry => entry.activity_id)
             .filter(Boolean)
 
-        let activeActivityIds = new Set()
+        // Traer actividades con su schedule para verificar frecuencia
+        let activeActivitiesMap = new Map()
 
         if (activityIds.length > 0) {
-            const { data: activeActivities, error: activeActivitiesError } = await supabase
+            const { data: activeActivities } = await supabase
                 .from('activities')
-                .select('id')
+                .select('id, schedule')
                 .eq('user_id', userId)
                 .eq('is_active', true)
                 .in('id', activityIds)
 
-            if (activeActivitiesError) throw activeActivitiesError
-
-            activeActivityIds = new Set(activeActivities.map(activity => activity.id))
+            activeActivities?.forEach(a => activeActivitiesMap.set(a.id, a))
         }
 
-        const visibleEntries = entries.filter(entry =>
-            entry.is_temp || activeActivityIds.has(entry.activity_id)
-        )
+        const visibleEntries = entries.filter(entry => {
+            if (entry.is_temp) return true
+            const activity = activeActivitiesMap.get(entry.activity_id)
+            if (!activity) return false
+            return matchesSchedule(activity.schedule, today)
+        })
 
         res.json({ log, entries: visibleEntries })
 
