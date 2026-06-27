@@ -48,7 +48,7 @@ const Settings = () => {
         setAdding(true)
         try {
             const { data } = await createActivity(newTitle.trim(), newDescription.trim(), newSchedule)
-            setActivities(prev => [...prev, data].sort((a, b) => a.title.localeCompare(b.title)))
+            setActivities(prev => [...prev, data].sort((a, b) => a.title.localeCompare(b.title)))   
             setNewTitle('')
             setNewDescription('')
             setNewSchedule('daily')
