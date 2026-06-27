@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { motion, useReducedMotion } from 'motion/react'
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { Plus, Pencil, Trash2, ToggleLeft, ToggleRight, Sparkles } from 'lucide-react'
 import { getActivities, createActivity, updateActivity, deleteActivity, syncToday } from '../lib/api'
 import PageTransition from '../components/PageTransition'
@@ -167,64 +167,67 @@ const Settings = () => {
                     </div>
 
                     {/* New activity form */}
-                    {showForm && (
-                        <motion.form
-                            onSubmit={handleCreate}
-                            initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-                            className="bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-5)] mb-[var(--space-5)]"
-                        >
-                            <h2 className="text-[var(--color-text-secondary)] font-medium text-sm mb-[var(--space-4)]">Nueva actividad permanente</h2>
-                            <div className="flex flex-col gap-[var(--space-3)]">
-                                <div>
-                                    <label className="text-[var(--color-text-muted)] text-xs font-medium mb-[var(--space-1-5)] block">Nombre *</label>
-                                    <input
-                                        type="text"
-                                        value={newTitle}
-                                        onChange={(e) => setNewTitle(e.target.value)}
-                                        placeholder="Nombre de la actividad"
-                                        autoFocus
-                                        maxLength={50}
-                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
-                                    />
+                    <AnimatePresence>
+                        {showForm && (
+                            <motion.form
+                                onSubmit={handleCreate}
+                                initial={shouldReduceMotion ? false : { opacity: 0, y: -8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8 }}
+                                transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
+                                className="bg-[var(--color-bg-surface)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-5)] mb-[var(--space-8)]"
+                            >
+                                <h2 className="text-[var(--color-text-secondary)] font-medium text-sm mb-[var(--space-4)]">Nueva actividad permanente</h2>
+                                <div className="flex flex-col gap-[var(--space-3)]">
+                                    <div>
+                                        <label className="text-[var(--color-text-muted)] text-xs font-medium mb-[var(--space-1-5)] block">Nombre *</label>
+                                        <input
+                                            type="text"
+                                            value={newTitle}
+                                            onChange={(e) => setNewTitle(e.target.value)}
+                                            placeholder="Nombre de la actividad"
+                                            autoFocus
+                                            maxLength={50}
+                                            className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-[var(--color-text-muted)] text-xs font-medium mb-[var(--space-1-5)] block">Descripción</label>
+                                        <input
+                                            type="text"
+                                            value={newDescription}
+                                            onChange={(e) => setNewDescription(e.target.value)}
+                                            placeholder="Descripción opcional"
+                                            maxLength={150}
+                                            className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
+                                        />
+                                    </div>
+                                    <FrequencySelector value={newSchedule} onChange={setNewSchedule} />
+                                    <div className="flex gap-[var(--space-2)] pt-[var(--space-1)]">
+                                        <button
+                                            type="submit"
+                                            disabled={adding}
+                                            className="text-sm bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors-base disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)]"
+                                        >
+                                            {adding ? 'Guardando...' : 'Guardar'}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setShowForm(false)
+                                                setNewTitle('')
+                                                setNewDescription('')
+                                                setNewSchedule('daily')
+                                            }}
+                                            className="text-sm text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] transition-colors-base"
+                                        >
+                                            Cancelar
+                                        </button>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label className="text-[var(--color-text-muted)] text-xs font-medium mb-[var(--space-1-5)] block">Descripción</label>
-                                    <input
-                                        type="text"
-                                        value={newDescription}
-                                        onChange={(e) => setNewDescription(e.target.value)}
-                                        placeholder="Descripción opcional"
-                                        maxLength={150}
-                                        className="w-full bg-[var(--color-bg-input)] text-[var(--color-text-primary)] rounded-[var(--radius-lg)] px-[var(--space-3-5)] py-[var(--space-2-5)] border border-[var(--color-border)] focus:outline-none focus:border-[var(--color-border-focus)] focus:ring-1 focus:ring-[var(--color-accent-ring)] text-sm transition-colors-base placeholder:text-[var(--color-text-placeholder)]"
-                                    />
-                                </div>
-                                <FrequencySelector value={newSchedule} onChange={setNewSchedule} />
-                                <div className="flex gap-[var(--space-2)] pt-[var(--space-1)]">
-                                    <button
-                                        type="submit"
-                                        disabled={adding}
-                                        className="text-sm bg-[var(--color-accent)] text-[var(--color-zinc-950)] font-medium px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] hover:bg-[var(--color-accent-hover)] transition-colors-base disabled:bg-[var(--color-zinc-800-60)] disabled:text-[var(--color-text-disabled-on-bg)]"
-                                    >
-                                        {adding ? 'Guardando...' : 'Guardar'}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        onClick={() => {
-                                            setShowForm(false)
-                                            setNewTitle('')
-                                            setNewDescription('')
-                                            setNewSchedule('daily')
-                                        }}
-                                        className="text-sm text-[var(--color-text-disabled)] hover:text-[var(--color-text-tertiary)] px-[var(--space-4)] py-[var(--space-2)] rounded-[var(--radius-lg)] transition-colors-base"
-                                    >
-                                        Cancelar
-                                    </button>
-                                </div>
-                            </div>
-                        </motion.form>
-                    )}
+                            </motion.form>
+                        )}
+                    </AnimatePresence>
 
                     {/* Activity list */}
                     {activities.length === 0 ? (
