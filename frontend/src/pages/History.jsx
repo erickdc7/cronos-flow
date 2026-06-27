@@ -248,7 +248,7 @@ const History = () => {
                                             animate={{ opacity: 1, x: 0 }}
                                             exit={{ opacity: 0, x: -8 }}
                                             transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-                                            className="bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-5)] sticky top-20"
+                                            className="bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-[var(--radius-xl)] p-[var(--space-5)] sticky top-20 max-h-[600px] overflow-y-auto"
                                         >
                                             <h2 className="text-[var(--color-text-secondary)] font-medium text-sm mb-[var(--space-4)] capitalize">
                                                 {formatDate(selectedLog.date)}
