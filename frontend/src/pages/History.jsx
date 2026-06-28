@@ -61,8 +61,17 @@ const History = () => {
                 console.error('Error al cargar estadísticas:', err)
             }
         }
+
         fetchStats()
-    }, [])
+
+        // Recargar stats cuando el usuario vuelve a esta pestaña o página
+        const handleVisibilityChange = () => {
+            if (!document.hidden) fetchStats()
+        }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange)
+        return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
+    }, [page])
 
     const handleSelectDay = async (date) => {
         setLoadingDetail(true)
