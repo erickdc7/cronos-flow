@@ -21,16 +21,32 @@ router.get('/', async (req, res) => {
 
         if (error) throw error
 
-        // Para cada día, contar cuántas actividades hay y cuántas se completaron
+        // Traer actividades con su schedule para filtrar correctamente
+        const { data: activities } = await supabase
+            .from('activities')
+            .select('id, schedule')
+            .eq('user_id', userId)
+
+        const activityScheduleMap = new Map(
+            (activities || []).map(a => [a.id, a.schedule])
+        )
+
         const logsWithStats = await Promise.all(
             logs.map(async (log) => {
                 const { data: entries } = await supabase
                     .from('log_entries')
-                    .select('done')
+                    .select('done, is_temp, activity_id')
                     .eq('log_id', log.id)
 
-                const total = entries?.length || 0
-                const completed = entries?.filter(e => e.done).length || 0
+                const visibleEntries = (entries || []).filter(entry => {
+                    if (entry.is_temp) return true
+                    if (!entry.activity_id) return false
+                    const schedule = activityScheduleMap.get(entry.activity_id)
+                    return matchesSchedule(schedule || 'daily', log.date)
+                })
+
+                const total = visibleEntries.length
+                const completed = visibleEntries.filter(e => e.done).length
 
                 return { ...log, total, completed }
             })
@@ -128,7 +144,26 @@ router.get('/:date', async (req, res) => {
 
         if (entriesError) throw entriesError
 
-        res.json({ log, entries })
+        // Traer actividades con su schedule para filtrar correctamente
+        const { data: activities } = await supabase
+            .from('activities')
+            .select('id, schedule')
+            .eq('user_id', userId)
+
+        const activityScheduleMap = new Map(
+            (activities || []).map(a => [a.id, a.schedule])
+        )
+
+        const visibleEntries = (entries || []).filter(entry => {
+            if (entry.is_temp) return true
+            if (!entry.activity_id) return false
+            const schedule = activityScheduleMap.get(entry.activity_id)
+            return matchesSchedule(schedule || 'daily', date)
+        })
+
+        if (entriesError) throw entriesError
+
+        res.json({ log, entries: visibleEntries })
 
     } catch (error) {
         console.error(error)
