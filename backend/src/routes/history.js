@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const supabase = require('../lib/supabase')
+const { matchesSchedule } = require('../lib/schedule')
 
 // GET /api/history — traer lista de todos los días registrados (paginado)
 router.get('/', async (req, res) => {
@@ -60,16 +61,36 @@ router.get('/stats', async (req, res) => {
     try {
         const { data: logs, error } = await supabase
             .from('daily_logs')
-            .select('date, log_entries(done)')
+            .select('date, log_entries(done, is_temp, activity_id)')
             .eq('user_id', userId)
             .order('date', { ascending: true })
 
         if (error) throw error
 
+        // Traer todas las actividades del usuario con su schedule
+        const { data: activities } = await supabase
+            .from('activities')
+            .select('id, schedule')
+            .eq('user_id', userId)
+
+        const activityScheduleMap = new Map(
+            (activities || []).map(a => [a.id, a.schedule])
+        )
+
         const stats = logs.map(log => {
             const entries = log.log_entries || []
-            const total = entries.length
-            const completed = entries.filter(e => e.done).length
+
+            // Filtrar entries igual que en today.js:
+            // incluir temporales siempre, y permanentes solo si su schedule coincide con la fecha del log
+            const visibleEntries = entries.filter(entry => {
+                if (entry.is_temp) return true
+                if (!entry.activity_id) return false
+                const schedule = activityScheduleMap.get(entry.activity_id)
+                return matchesSchedule(schedule || 'daily', log.date)
+            })
+
+            const total = visibleEntries.length
+            const completed = visibleEntries.filter(e => e.done).length
             return { date: log.date, completed, total }
         })
 
