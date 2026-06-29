@@ -21,15 +21,16 @@ router.get('/', async (req, res) => {
 
         if (error) throw error
 
-        // Traer actividades con su schedule para filtrar correctamente
         const { data: activities } = await supabase
             .from('activities')
-            .select('id, schedule')
+            .select('id, schedule, is_active')
             .eq('user_id', userId)
 
         const activityScheduleMap = new Map(
-            (activities || []).map(a => [a.id, a.schedule])
+            (activities || []).map(a => [a.id, a])
         )
+
+        const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
 
         const logsWithStats = await Promise.all(
             logs.map(async (log) => {
@@ -38,11 +39,15 @@ router.get('/', async (req, res) => {
                     .select('done, is_temp, activity_id')
                     .eq('log_id', log.id)
 
+                const isPast = log.date < today
+
                 const visibleEntries = (entries || []).filter(entry => {
                     if (entry.is_temp) return true
                     if (!entry.activity_id) return false
-                    const schedule = activityScheduleMap.get(entry.activity_id)
-                    return matchesSchedule(schedule || 'daily', log.date)
+                    const activity = activityScheduleMap.get(entry.activity_id)
+                    if (!activity) return false
+                    if (!isPast && !activity.is_active) return false
+                    return matchesSchedule(activity.schedule || 'daily', log.date)
                 })
 
                 const total = visibleEntries.length
@@ -70,7 +75,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-// GET /api/history/stats — todos los días con stats (optimizado, 1 query con join)
+// GET /api/history/stats — todos los días con stats
 router.get('/stats', async (req, res) => {
     const userId = req.user.id
 
@@ -83,26 +88,28 @@ router.get('/stats', async (req, res) => {
 
         if (error) throw error
 
-        // Traer todas las actividades del usuario con su schedule
         const { data: activities } = await supabase
             .from('activities')
-            .select('id, schedule')
+            .select('id, schedule, is_active')
             .eq('user_id', userId)
 
         const activityScheduleMap = new Map(
-            (activities || []).map(a => [a.id, a.schedule])
+            (activities || []).map(a => [a.id, a])
         )
+
+        const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
 
         const stats = logs.map(log => {
             const entries = log.log_entries || []
+            const isPast = log.date < today
 
-            // Filtrar entries igual que en today.js:
-            // incluir temporales siempre, y permanentes solo si su schedule coincide con la fecha del log
             const visibleEntries = entries.filter(entry => {
                 if (entry.is_temp) return true
                 if (!entry.activity_id) return false
-                const schedule = activityScheduleMap.get(entry.activity_id)
-                return matchesSchedule(schedule || 'daily', log.date)
+                const activity = activityScheduleMap.get(entry.activity_id)
+                if (!activity) return false
+                if (!isPast && !activity.is_active) return false
+                return matchesSchedule(activity.schedule || 'daily', log.date)
             })
 
             const total = visibleEntries.length
@@ -144,24 +151,26 @@ router.get('/:date', async (req, res) => {
 
         if (entriesError) throw entriesError
 
-        // Traer actividades con su schedule para filtrar correctamente
         const { data: activities } = await supabase
             .from('activities')
-            .select('id, schedule')
+            .select('id, schedule, is_active')
             .eq('user_id', userId)
 
         const activityScheduleMap = new Map(
-            (activities || []).map(a => [a.id, a.schedule])
+            (activities || []).map(a => [a.id, a])
         )
+
+        const today = new Date().toLocaleDateString('en-CA', { timeZone: req.timezone })
+        const isPast = date < today
 
         const visibleEntries = (entries || []).filter(entry => {
             if (entry.is_temp) return true
             if (!entry.activity_id) return false
-            const schedule = activityScheduleMap.get(entry.activity_id)
-            return matchesSchedule(schedule || 'daily', date)
+            const activity = activityScheduleMap.get(entry.activity_id)
+            if (!activity) return false
+            if (!isPast && !activity.is_active) return false
+            return matchesSchedule(activity.schedule || 'daily', date)
         })
-
-        if (entriesError) throw entriesError
 
         res.json({ log, entries: visibleEntries })
 
