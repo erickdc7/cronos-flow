@@ -1,6 +1,7 @@
 /**
  * Checks if an activity's schedule matches a given date.
- * @param {string} schedule - The schedule type: 'daily', 'weekdays', 'mon-wed-fri', 'tue-thu', 'weekends', or 'YYYY-MM-DD'
+ * @param {string} schedule - The schedule type: 'daily', 'weekdays', 'mon-wed-fri', 
+ * 'tue-thu', 'weekends', 'custom:1,3,5' (comma-separated day numbers 0-6), or 'YYYY-MM-DD'
  * @param {string} dateStr - The date to check in 'YYYY-MM-DD' format
  * @returns {boolean}
  */
@@ -9,6 +10,12 @@ function matchesSchedule(schedule, dateStr) {
 
     const date = new Date(dateStr + 'T00:00:00')
     const day = date.getDay() // 0=Sun, 1=Mon, ..., 6=Sat
+
+    // Custom days: 'custom:1,3,5'
+    if (schedule.startsWith('custom:')) {
+        const days = schedule.replace('custom:', '').split(',').map(Number)
+        return days.includes(day)
+    }
 
     switch (schedule) {
         case 'weekdays':
@@ -32,4 +39,30 @@ function isSpecificDate(schedule) {
     return /^\d{4}-\d{2}-\d{2}$/.test(schedule)
 }
 
-module.exports = { matchesSchedule, isSpecificDate }
+/**
+ * Converts a custom schedule string to a human-readable label in Spanish.
+ * @param {string} schedule 
+ * @returns {string}
+ */
+function getScheduleLabel(schedule) {
+    if (!schedule || schedule === 'daily') return 'Diaria'
+
+    if (schedule.startsWith('custom:')) {
+        const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+        const days = schedule.replace('custom:', '').split(',').map(Number)
+        return days.map(d => dayNames[d]).join(', ')
+    }
+
+    const labels = {
+        weekdays: 'Lun - Vie',
+        'mon-wed-fri': 'Lun, Mié, Vie',
+        'tue-thu': 'Mar, Jue',
+        weekends: 'Sáb - Dom'
+    }
+
+    if (labels[schedule]) return labels[schedule]
+    if (isSpecificDate(schedule)) return schedule
+    return schedule
+}
+
+module.exports = { matchesSchedule, isSpecificDate, getScheduleLabel }

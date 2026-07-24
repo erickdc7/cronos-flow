@@ -6,7 +6,7 @@ import PageTransition from '../components/PageTransition'
 import LoadingSpinner from '../components/LoadingSpinner'
 import EmptyState from '../components/EmptyState'
 import ConfirmDialog from '../components/ConfirmDialog'
-import FrequencySelector, { getScheduleLabel, isSpecificDate } from '../components/FrequencySelector'
+import FrequencySelector, { isSpecificDate } from '../components/FrequencySelector'
 
 const Settings = () => {
     const [activities, setActivities] = useState([])
@@ -48,7 +48,7 @@ const Settings = () => {
         setAdding(true)
         try {
             const { data } = await createActivity(newTitle.trim(), newDescription.trim(), newSchedule)
-            setActivities(prev => [...prev, data].sort((a, b) => a.title.localeCompare(b.title)))   
+            setActivities(prev => [...prev, data].sort((a, b) => a.title.localeCompare(b.title)))
             setNewTitle('')
             setNewDescription('')
             setNewSchedule('daily')
@@ -297,7 +297,27 @@ const Settings = () => {
                                                     <p className="text-[var(--color-text-disabled)] text-xs mt-[var(--space-0-5)]">{activity.description}</p>
                                                 )}
                                                 <span className="inline-block text-[10px] text-[var(--color-accent-subtle)] bg-[var(--color-accent-bg)] px-[var(--space-1-5)] py-[1px] rounded-[var(--radius-sm)] mt-[var(--space-1)] font-medium">
-                                                    {getScheduleLabel(activity.schedule)}
+                                                    {(() => {
+                                                        const s = activity.schedule
+                                                        if (!s || s === 'daily') return 'Diaria'
+                                                        if (s.startsWith('custom:')) {
+                                                            const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+                                                            const days = s.replace('custom:', '').split(',').map(Number)
+                                                            return days.map(d => dayNames[d]).join(', ')
+                                                        }
+                                                        const labels = {
+                                                            weekdays: 'Lun - Vie',
+                                                            'mon-wed-fri': 'Lun, Mié, Vie',
+                                                            'tue-thu': 'Mar, Jue',
+                                                            weekends: 'Sáb - Dom'
+                                                        }
+                                                        if (labels[s]) return labels[s]
+                                                        if (/^\d{4}-\d{2}-\d{2}$/.test(s)) {
+                                                            const [y, m, d] = s.split('-')
+                                                            return `${d}/${m}/${y}`
+                                                        }
+                                                        return s
+                                                    })()}
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-[var(--space-1-5)] flex-shrink-0">

@@ -10,11 +10,25 @@ const SCHEDULE_OPTIONS = [
     { value: 'mon-wed-fri', label: 'Lun - Mié - Vie' },
     { value: 'tue-thu', label: 'Mar - Jue' },
     { value: 'weekends', label: 'Sáb - Dom' },
+    { value: 'custom-days', label: 'Días de la semana...' },
     { value: 'specific', label: 'Día específico' },
+]
+
+const WEEK_DAYS = [
+    { value: 1, label: 'L' },
+    { value: 2, label: 'M' },
+    { value: 3, label: 'X' },
+    { value: 4, label: 'J' },
+    { value: 5, label: 'V' },
+    { value: 6, label: 'S' },
+    { value: 0, label: 'D' },
 ]
 
 // Check if a schedule value is a specific date
 export const isSpecificDate = (schedule) => /^\d{4}-\d{2}-\d{2}$/.test(schedule)
+
+// Check if a schedule value is a custom days-of-week pattern
+export const isCustomDays = (schedule) => typeof schedule === 'string' && schedule.startsWith('custom:')
 
 // Format date as DD/MM/YYYY for display
 const formatDateDisplay = (dateStr) => {
@@ -46,32 +60,54 @@ const getTodayPlaceholder = () => formatDateDisplay(getTodayStr())
 // Get the schedule label for display
 export const getScheduleLabel = (schedule) => {
     if (!schedule || schedule === 'daily') return 'Diaria'
+    if (isCustomDays(schedule)) {
+        const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+        const days = schedule.replace('custom:', '').split(',').map(Number)
+        return days.map(d => dayNames[d]).join(', ')
+    }
     const option = SCHEDULE_OPTIONS.find(o => o.value === schedule)
     if (option) return option.label
     if (isSpecificDate(schedule)) return formatDateDisplay(schedule)
     return schedule
 }
 
+const getModeFromValue = (val, specificOnly) => {
+    if (specificOnly) return 'specific'
+    if (isSpecificDate(val)) return 'specific'
+    if (isCustomDays(val)) return 'custom-days'
+    return val || 'daily'
+}
+
+const getDaysFromValue = (val) => {
+    if (isCustomDays(val)) {
+        return val.replace('custom:', '').split(',').map(Number)
+    }
+    return []
+}
+
 const FrequencySelector = ({ value = 'daily', onChange, specificOnly = false }) => {
-    // Internal state to track "specific" mode even before a date is chosen
-    const [mode, setMode] = useState(specificOnly ? 'specific' : (isSpecificDate(value) ? 'specific' : value))
+    const [mode, setMode] = useState(getModeFromValue(value, specificOnly))
     const dateValue = isSpecificDate(value) ? value : ''
 
     const [dropdownOpen, setDropdownOpen] = useState(false)
     const [showCalendar, setShowCalendar] = useState(false)
     const [dateInput, setDateInput] = useState(dateValue ? formatDateDisplay(dateValue) : '')
     const [dateError, setDateError] = useState(false)
+    const [selectedDays, setSelectedDays] = useState(getDaysFromValue(value))
 
     const dropdownRef = useRef(null)
     const calendarRef = useRef(null)
 
     // Sync mode when value changes externally
     useEffect(() => {
-        setMode(isSpecificDate(value) ? 'specific' : value)
+        setMode(getModeFromValue(value, specificOnly))
         if (isSpecificDate(value)) {
             setDateInput(formatDateDisplay(value))
         }
-    }, [value])
+        if (isCustomDays(value)) {
+            setSelectedDays(getDaysFromValue(value))
+        }
+    }, [value, specificOnly])
 
     // Close dropdown on outside click
     useEffect(() => {
@@ -94,9 +130,31 @@ const FrequencySelector = ({ value = 'daily', onChange, specificOnly = false }) 
             setDateInput('')
             setDateError(false)
             // Don't call onChange yet — wait for valid date
+        } else if (optionValue === 'custom-days') {
+            setMode('custom-days')
+            if (!isCustomDays(value)) {
+                setSelectedDays([])
+            } else if (selectedDays.length > 0) {
+                const sorted = [...selectedDays].sort((a, b) => a - b)
+                onChange(`custom:${sorted.join(',')}`)
+            }
+            // Don't call onChange yet if no days selected — wait for at least one
         } else {
             setMode(optionValue)
             onChange(optionValue)
+        }
+    }
+
+    const handleDayToggle = (dayValue) => {
+        const newDays = selectedDays.includes(dayValue)
+            ? selectedDays.filter(d => d !== dayValue)
+            : [...selectedDays, dayValue]
+
+        setSelectedDays(newDays)
+
+        if (newDays.length > 0) {
+            const sorted = [...newDays].sort((a, b) => a - b)
+            onChange(`custom:${sorted.join(',')}`)
         }
     }
 
@@ -142,10 +200,14 @@ const FrequencySelector = ({ value = 'daily', onChange, specificOnly = false }) 
     const todayDate = new Date(getTodayStr() + 'T00:00:00')
     const selectedCalendarDate = isSpecificDate(value) ? new Date(value + 'T00:00:00') : undefined
 
-    // Current displayed label — always show "Día específico" when in specific mode
+    // Current displayed label
     const currentLabel = mode === 'specific'
         ? 'Día específico'
-        : (SCHEDULE_OPTIONS.find(o => o.value === mode)?.label || 'Diaria')
+        : mode === 'custom-days'
+            ? (selectedDays.length > 0
+                ? getScheduleLabel(`custom:${[...selectedDays].sort((a, b) => a - b).join(',')}`)
+                : 'Días de la semana...')
+            : (SCHEDULE_OPTIONS.find(o => o.value === mode)?.label || 'Diaria')
 
     return (
         <div className="flex flex-col gap-[var(--space-2)]">
@@ -177,7 +239,7 @@ const FrequencySelector = ({ value = 'daily', onChange, specificOnly = false }) 
                     {dropdownOpen && (
                         <div className="absolute z-50 mt-[var(--space-1)] w-full bg-[var(--color-zinc-900)] border border-[var(--color-border)] rounded-[var(--radius-lg)] shadow-2xl overflow-hidden">
                             {SCHEDULE_OPTIONS.map((opt) => {
-                                const isActive = mode === opt.value || (opt.value === 'specific' && mode === 'specific')
+                                const isActive = mode === opt.value
                                 return (
                                     <button
                                         key={opt.value}
@@ -197,6 +259,35 @@ const FrequencySelector = ({ value = 'daily', onChange, specificOnly = false }) 
                                 )
                             })}
                         </div>
+                    )}
+                </div>
+            )}
+
+            {/* Days of week selector (only when 'custom-days' mode) */}
+            {mode === 'custom-days' && (
+                <div className="flex flex-col gap-[var(--space-2)]">
+                    <div className="flex gap-[var(--space-1-5)]">
+                        {WEEK_DAYS.map(day => (
+                            <button
+                                key={day.value}
+                                type="button"
+                                onClick={() => handleDayToggle(day.value)}
+                                className={`
+                                    w-9 h-9 rounded-full text-xs font-semibold transition-colors-base flex items-center justify-center border
+                                    ${selectedDays.includes(day.value)
+                                        ? 'bg-[var(--color-accent)] text-[var(--color-zinc-950)] border-[var(--color-accent)]'
+                                        : 'bg-[var(--color-bg-input)] text-[var(--color-text-muted)] border-[var(--color-border)] hover:border-[var(--color-border-hover)] hover:text-[var(--color-text-secondary)]'
+                                    }
+                                `}
+                            >
+                                {day.label}
+                            </button>
+                        ))}
+                    </div>
+                    {selectedDays.length === 0 && (
+                        <p className="text-[var(--color-text-disabled)] text-[11px]">
+                            Selecciona al menos un día
+                        </p>
                     )}
                 </div>
             )}
